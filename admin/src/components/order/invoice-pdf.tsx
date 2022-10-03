@@ -6,27 +6,27 @@ import usePrice from '@utils/use-price'
 import dayjs from 'dayjs'
 
 export default function InvoicePdf({ order }: { order: Order }) {
-    const subtotal = usePrice(
+    const { price: subtotal } = usePrice(
         order && {
             amount: order.amount,
         }
     )
-    const total = usePrice(
+    const { price: total } = usePrice(
         order && {
             amount: order.paid_total,
         }
     )
-    const discount = usePrice(
+    const { price: discount } = usePrice(
         order && {
             amount: order.discount!,
         }
     )
-    const delivery_fee = usePrice(
+    const { price: delivery_fee } = usePrice(
         order && {
             amount: order.delivery_fee!,
         }
     )
-    const sales_tax = usePrice(
+    const { price: sales_tax } = usePrice(
         order && {
             amount: order.sales_tax,
         }

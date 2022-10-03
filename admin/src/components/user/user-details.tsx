@@ -10,7 +10,7 @@ import { useMeQuery } from '@data/user/use-me.query'
 const UserDetails = () => {
     const { t } = useTranslation('common')
     const { data, isLoading: loading } = useMeQuery()
-    if (loading) return <Loader text={t('text-loading')} />
+    if (loading) return <Loader text={t('')} />
 
     const { name, email, profile, is_active } = data!
 

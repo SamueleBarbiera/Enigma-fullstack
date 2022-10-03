@@ -57,27 +57,27 @@ export default function OrderDetailsPage() {
             },
         })
     }
-    const subtotal = usePrice(
+    const { price:subtotal} = usePrice(
         data && {
             amount: data.order.amount,
         }
     )
-    const total = usePrice(
+    const{ price: total} = usePrice(
         data && {
             amount: data.order.paid_total,
         }
     )
-    const discount = usePrice(
+    const { price:discount} = usePrice(
         data && {
             amount: data.order.discount!,
         }
     )
-    const delivery_fee = usePrice(
+    const { price:delivery_fee} = usePrice(
         data && {
             amount: data.order.delivery_fee!,
         }
     )
-    const sales_tax = usePrice(
+    const { price:sales_tax} = usePrice(
         data && {
             amount: data.order.sales_tax,
         }

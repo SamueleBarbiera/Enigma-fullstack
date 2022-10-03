@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Table } from '@components/ui/table'
-import { Product, ProductType, Shop } from '@ts-types/generated'
-import usePrice from '@utils/use-price'
+import { Product, Shop } from '@ts-types/generated'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
@@ -39,7 +38,7 @@ const PopularProductList = ({ products, title }: IProps) => {
             // width: 120,
             align: 'center',
             ellipsis: true,
-            render: (prod: Shop) => <span className="truncate whitespace-nowrap">{prod?.name}</span>,
+            render: (prod: Shop) => <span className="truncate whitespace-nowrap">{prod.name}</span>,
         },
 
         {

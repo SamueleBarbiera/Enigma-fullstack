@@ -17,7 +17,7 @@ import usePrice from '@utils/use-price'
 import { useTranslation } from 'next-i18next'
 import isEmpty from 'lodash/isEmpty'
 import { useShopQuery } from '@data/shop/use-shop.query'
-import { GetStaticPaths } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import { CubeIcon } from '@components/icons/shops/cube'
 import { OrdersIcon } from '@components/icons/sidebar'
 import { PriceWalletIcon } from '@components/icons/shops/price-wallet'
@@ -33,12 +33,12 @@ export default function ShopPage() {
         locale,
     } = useRouter()
     const { data, isLoading: loading, error } = useShopQuery(shop!.toString())
-    const totalEarnings = usePrice(
+    const { price: totalEarnings } = usePrice(
         data && {
             amount: data.shop.balance?.total_earnings ?? 0,
         }
     )
-    const currentBalance = usePrice(
+    const { price: currentBalance } = usePrice(
         data && {
             amount: data.shop.balance?.current_balance ?? 0,
         }
@@ -267,11 +267,11 @@ ShopPage.authenticate = {
     permissions: adminOwnerAndStaffOnly,
 }
 
-export const getStaticProps = async ({ locale }: any) => ({
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common', 'table'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common', 'table'])),
     },
 })
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = () => {
     return { paths: [], fallback: 'blocking' }
 }

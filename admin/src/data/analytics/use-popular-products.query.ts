@@ -6,13 +6,13 @@ import { Product as TProduct } from '@ts-types/generated'
 import { stringifySearchQuery } from '@utils/data-mappers'
 
 const fetchPopularProducts = async ({ queryKey }: QueryParamsType) => {
-    const [params] = queryKey
+    const [_key, params] = queryKey
     const { limit = 15, shop_id } = params as { limit: number; shop_id: number }
     const searchString = stringifySearchQuery({
         shop_id,
     })
     const url = `${API_ENDPOINTS.POPULAR_PRODUCTS}?search=${searchString}&limit=${limit}`
-    const data = (await Product.popularProducts(url)) as Promise<TProduct[]>
+    const { data } = await Product.popularProducts(url)
     return data
 }
 

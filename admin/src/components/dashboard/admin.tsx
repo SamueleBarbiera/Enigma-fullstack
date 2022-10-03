@@ -47,10 +47,11 @@ export default function Dashboard() {
 
     const { data: withdrawsData, isLoading: withdrawLoading } = useWithdrawsQuery({ limit: 10 })
 
-    let salesByYear: number[] = Array.from({ length: 12 }, (_) => 0)
+    let salesByYear: number[] = Array.from({ length: 12 }, () => 0)
     if (data?.totalYearSaleByMonth?.length) {
-        salesByYear = data.totalYearSaleByMonth.map((item: any) => item.total.toFixed(2))
+        salesByYear = data.totalYearSaleByMonth.map((item) => Number(item?.total?.toFixed(2)))
     }
+
     return (
         <>
             {loading || orderLoading || popularProductLoading || withdrawLoading ? (

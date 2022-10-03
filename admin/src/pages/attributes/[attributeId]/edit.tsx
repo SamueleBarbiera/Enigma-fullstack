@@ -6,7 +6,7 @@ import CreateOrUpdateAttributeForm from '@components/attribute/attribute-form'
 import { useAttributeQuery } from '@data/attributes/use-attribute.query'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticPaths } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 
 export default function UpdateAttributePage() {
     const { t } = useTranslation()
@@ -25,12 +25,12 @@ export default function UpdateAttributePage() {
     )
 }
 
-export const getStaticProps = async ({ locale }: any) => ({
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = () => {
     return { paths: [], fallback: 'blocking' }
 }
 UpdateAttributePage.Layout = Layout

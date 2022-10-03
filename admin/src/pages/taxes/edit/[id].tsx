@@ -4,7 +4,7 @@ import CreateOrUpdateTaxForm from '@components/tax/tax-form'
 import ErrorMessage from '@components/ui/error-message'
 import Loader from '@components/ui/loader/loader'
 import { useTaxQuery } from '@data/tax/use-tax.query'
-import { GetStaticPaths } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 
@@ -26,11 +26,11 @@ export default function UpdateTaxPage() {
 }
 UpdateTaxPage.Layout = Layout
 
-export const getStaticProps = async ({ locale }: any) => ({
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = () => {
     return { paths: [], fallback: 'blocking' }
 }

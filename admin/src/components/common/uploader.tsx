@@ -1,5 +1,5 @@
 import { UploadIcon } from '@components/icons/upload-icon'
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Attachment } from '@ts-types/generated'
 import { CloseIcon } from '@components/icons/close-icon'
@@ -17,12 +17,7 @@ const getPreviewImage = (value: any) => {
 export default function Uploader({ onChange, value, multiple }: any) {
     const { t } = useTranslation()
     const [files, setFiles] = useState<Attachment[]>(getPreviewImage(value))
-    useMemo(() => {
-        // Make sure to revoke the data uris to avoid memory leaks
-        files.forEach((file: any) => URL.revokeObjectURL(file.thumbnail))
-    }, [files])
     const { mutate: upload, isLoading: loading } = useUploadMutation()
-
     const { getRootProps, getInputProps } = useDropzone({
         accept: 'image/*',
         multiple,
@@ -80,6 +75,14 @@ export default function Uploader({ onChange, value, multiple }: any) {
             )
         }
     })
+
+    useEffect(
+        () => () => {
+            // Make sure to revoke the data uris to avoid memory leaks
+            files.forEach((file: any) => URL.revokeObjectURL(file.thumbnail))
+        },
+        [files]
+    )
 
     return (
         <section className="upload">
