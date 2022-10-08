@@ -7,6 +7,7 @@ import ShopForm from '@components/shop/shop-form'
 import ShopLayout from '@components/layouts/shop'
 import { adminAndOwnerOnly } from '@utils/auth-utils'
 import { useShopQuery } from '@data/shop/use-shop.query'
+import { GetServerSideProps } from 'next'
 
 export default function UpdateShopPage() {
     const { query } = useRouter()
@@ -29,8 +30,8 @@ UpdateShopPage.authenticate = {
 }
 UpdateShopPage.Layout = ShopLayout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common'])),
     },
 })

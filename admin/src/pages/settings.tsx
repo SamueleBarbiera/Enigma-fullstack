@@ -6,6 +6,7 @@ import { useSettingsQuery } from '@data/settings/use-settings.query'
 import { useShippingClassesQuery } from '@data/shipping/use-shippingClasses.query'
 import { useTaxesQuery } from '@data/tax/use-taxes.query'
 import { adminOnly } from '@utils/auth-utils'
+import { GetServerSideProps } from 'next'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
@@ -43,8 +44,8 @@ Settings.authenticate = {
 }
 Settings.Layout = AdminLayout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common'])),
     },
 })

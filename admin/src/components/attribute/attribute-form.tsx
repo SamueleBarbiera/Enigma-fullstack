@@ -25,7 +25,7 @@ interface IProps {
 }
 export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
     const router = useRouter()
-    const [errorMessage, setErrorMessage] = useState<string | unknown>('')
+    const [errorMessage, setErrorMessage] = useState<string>('')
 
     const {
         query: { shop },
@@ -64,7 +64,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                 },
                 {
                     onError: (error) => {
-                        setErrorMessage(error?.toString())
+                        setErrorMessage(error?.toString() ?? '')
                         animateScroll.scrollToTop()
                     },
                 }
@@ -94,7 +94,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                     variant="error"
                     closeable={true}
                     className="mt-5"
-                    onClose={() => setErrorMessage(null)}
+                    onClose={() => setErrorMessage('')}
                 />
             ) : null}
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -111,7 +111,12 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                         <Input
                             label={t('form:input-label-name')}
                             {...register('name')}
-                            error={t(errors.name?.message)}
+                            error={t(
+                                errors.name?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                             variant="outline"
                             className="mb-5"
                         />
@@ -139,16 +144,16 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                                             className="sm:col-span-2"
                                             label={t('form:input-label-value-star')}
                                             variant="outline"
-                                            {...register(`values.${index}.value` as const)}
-                                            defaultValue={item.value} // make sure to set up defaultValue
-                                            error={t(errors.values?.[index]?.value?.message)}
+                                            {...register(`values.value`)}
+                                            defaultValue={item.id} // make sure to set up defaultValue
+                                            error={t(errors.values?.value?.message ?? '')}
                                         />
                                         <Input
                                             className="sm:col-span-2"
                                             label={t('form:input-label-meta')}
                                             variant="outline"
-                                            {...register(`values.${index}.meta` as const)}
-                                            defaultValue={item.meta} // make sure to set up defaultValue
+                                            {...register(`values.meta`)}
+                                            defaultValue={item.id} // make sure to set up defaultValue
                                         />
                                         <button
                                             onClick={() => remove(index)}

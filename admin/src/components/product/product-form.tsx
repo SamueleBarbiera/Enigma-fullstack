@@ -104,7 +104,7 @@ const productType = [
     { name: 'Simple Product', value: ProductType.Simple },
     { name: 'Variable Product', value: ProductType.Variable },
 ]
-function getFormattedVariations(variations: any) {
+function getFormattedVariations(variations) {
     const variationGroup = groupBy(variations, 'attribute.slug')
     return Object.values(variationGroup).map((vg) => {
         return {
@@ -155,7 +155,7 @@ export default function CreateOrUpdateProductForm({ initialValues }: IProps) {
     const methods = useForm<FormValues>({
         resolver: yupResolver(productValidationSchema),
         shouldUnregister: true,
-        //@ts-expect-error
+
         defaultValues: initialValues
             ? cloneDeep({
                   ...initialValues,
@@ -362,7 +362,12 @@ export default function CreateOrUpdateProductForm({ initialValues }: IProps) {
                             <Input
                                 label={`${t('form:input-label-name')}*`}
                                 {...register('name')}
-                                error={t(errors.name?.message!)}
+                                error={t(
+                                    errors.name?.message as
+                                        | string
+                                        | TemplateStringsArray
+                                        | (string | TemplateStringsArray)[]
+                                )}
                                 variant="outline"
                                 className="mb-5"
                             />
@@ -370,7 +375,12 @@ export default function CreateOrUpdateProductForm({ initialValues }: IProps) {
                             <Input
                                 label={`${t('form:input-label-unit')}*`}
                                 {...register('unit')}
-                                error={t(errors.unit?.message!)}
+                                error={t(
+                                    errors.unit?.message as
+                                        | string
+                                        | TemplateStringsArray
+                                        | (string | TemplateStringsArray)[]
+                                )}
                                 variant="outline"
                                 className="mb-5"
                             />
@@ -378,7 +388,12 @@ export default function CreateOrUpdateProductForm({ initialValues }: IProps) {
                             <TextArea
                                 label={t('form:input-label-description')}
                                 {...register('description')}
-                                error={t(errors.description?.message!)}
+                                error={t(
+                                    errors.description?.message as
+                                        | string
+                                        | TemplateStringsArray
+                                        | (string | TemplateStringsArray)[]
+                                )}
                                 variant="outline"
                                 className="mb-5"
                             />

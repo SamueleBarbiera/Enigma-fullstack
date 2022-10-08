@@ -3,6 +3,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import ShopLayout from '@components/layouts/shop'
 import AddStaffForm from '@components/shop/staff-form'
 import { adminAndOwnerOnly } from '@utils/auth-utils'
+import { GetServerSideProps } from 'next'
 
 export default function AddStaffPage() {
     const { t } = useTranslation()
@@ -20,8 +21,8 @@ AddStaffPage.authenticate = {
 }
 AddStaffPage.Layout = ShopLayout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'form', 'common'])),
     },
 })

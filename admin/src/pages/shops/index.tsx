@@ -10,6 +10,7 @@ import Search from '@components/common/search'
 import { adminOnly } from '@utils/auth-utils'
 import { useShopsQuery } from '@data/shop/use-shops.query'
 import { SortOrder } from '@ts-types/generated'
+import { GetServerSideProps } from 'next'
 
 export default function AllShopPage() {
     const { t } = useTranslation()
@@ -57,8 +58,8 @@ AllShopPage.authenticate = {
 }
 AllShopPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })

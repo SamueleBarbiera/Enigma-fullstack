@@ -6,6 +6,7 @@ import { useProductQuery } from '@data/product/product.query'
 import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
+import { GetServerSideProps } from 'next'
 
 export default function UpdateProductPage() {
     const { t } = useTranslation()
@@ -25,8 +26,8 @@ export default function UpdateProductPage() {
 }
 UpdateProductPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['common', 'form'])),
     },
 })

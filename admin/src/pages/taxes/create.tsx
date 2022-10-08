@@ -1,5 +1,6 @@
 import Layout from '@components/layouts/admin'
 import CreateOrUpdateTaxForm from '@components/tax/tax-form'
+import { GetServerSideProps } from 'next'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
@@ -16,8 +17,8 @@ export default function CreateTaxPage() {
 }
 CreateTaxPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'form', 'common'])),
     },
 })

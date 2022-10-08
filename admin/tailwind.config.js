@@ -1,5 +1,5 @@
 function withOpacity(variableName) {
-    return ({opacityValue}) => {
+    return ({ opacityValue }) => {
         if (opacityValue !== undefined) {
             return `rgba(var(${variableName}), ${opacityValue})`
         } else {
@@ -10,11 +10,8 @@ function withOpacity(variableName) {
 
 /** @type {import('tailwindcss').Config} */
 
-
 module.exports = {
-    plugins: [
-        require('prettier-plugin-tailwindcss'),require('tailwindcss-rtl')
-    ],
+    plugins: [require('prettier-plugin-tailwindcss'), require('tailwindcss-rtl')],
     content: ['./src/components/**/*.{js,ts,jsx,tsx}', './src/pages/**/*.{js,ts,jsx,tsx}'],
     theme: {
         extend: {
@@ -105,5 +102,4 @@ module.exports = {
             padding: ['last', 'first'],
         },
     },
-    
 }

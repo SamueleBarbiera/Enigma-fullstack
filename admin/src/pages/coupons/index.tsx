@@ -11,6 +11,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { SortOrder } from '@ts-types/generated'
 import { adminOnly } from '@utils/auth-utils'
+import { GetServerSideProps } from 'next'
 
 export default function Coupons() {
     const { t } = useTranslation()
@@ -30,9 +31,6 @@ export default function Coupons() {
         sortedBy,
     })
 
-    if (loading) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
-
     function handleSearch({ searchText }: { searchText: string }) {
         setSearchTerm(searchText)
         setPage(1)
@@ -40,6 +38,9 @@ export default function Coupons() {
     function handlePagination(current: number) {
         setPage(current)
     }
+
+    if (loading) return <Loader text={t('common:text-loading')} />
+    if (error) return <ErrorMessage message={error.message} />
     return (
         <>
             <Card className="mb-8 flex flex-col items-center xl:flex-row">
@@ -65,8 +66,8 @@ Coupons.authenticate = {
 }
 Coupons.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common', 'table'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common', 'table'])),
     },
 })

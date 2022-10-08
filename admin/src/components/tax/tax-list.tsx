@@ -15,7 +15,7 @@ export type IProps = {
 }
 const TaxList = ({ taxes, onSort, onOrder }: IProps) => {
     const { t } = useTranslation()
-    const { alignLeft } = useIsRTL()
+    
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -58,7 +58,7 @@ const TaxList = ({ taxes, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align: alignLeft as AlignType,
+            align'left' as AlignType,
             width: 150,
             onHeaderCell: () => onHeaderClick('name'),
         },

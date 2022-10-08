@@ -1,6 +1,6 @@
 import { QueryParamsType, QueryOptionsType } from '@ts-types/custom.types'
 import { mapPaginatorData, stringifySearchQuery } from '@utils/data-mappers'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import Orders from '@repositories/type'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 import { Order, OrderPaginator, PaginatorInfo } from '@ts-types/generated'

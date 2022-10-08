@@ -78,7 +78,9 @@ const AddStaffForm = () => {
                         type="text"
                         variant="outline"
                         className="mb-4"
-                        error={t(errors.name?.message!)}
+                        error={t(
+                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                     />
                     <Input
                         label={t('form:input-label-email')}
@@ -86,12 +88,19 @@ const AddStaffForm = () => {
                         type="email"
                         variant="outline"
                         className="mb-4"
-                        error={t(errors.email?.message!)}
+                        error={t(
+                            errors.email?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                     />
                     <PasswordInput
                         label={t('form:input-label-password')}
                         {...register('password')}
-                        error={t(errors.password?.message!)}
+                        error={t(
+                            errors.password?.message as
+                                | string
+                                | TemplateStringsArray
+                                | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-4"
                     />

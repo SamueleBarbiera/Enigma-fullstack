@@ -1,5 +1,5 @@
 import Input from '@components/ui/input'
-import { useForm } from 'react-hook-form'
+import { Control, useForm } from 'react-hook-form'
 import Button from '@components/ui/button'
 import Description from '@components/ui/description'
 import Card from '@components/common/card'
@@ -23,7 +23,7 @@ interface FormValues {
     }
 }
 
-export default function ProfileUpdate({ me }: any) {
+export default function ProfileUpdate(me: { id: number; profile: { id: string } }) {
     const { t } = useTranslation()
     const { mutate: updateUser, isLoading: loading } = useUpdateUserMutation()
     const {
@@ -33,19 +33,20 @@ export default function ProfileUpdate({ me }: any) {
         formState: { errors },
     } = useForm<FormValues>({
         defaultValues: {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             ...(me && pick(me, ['name', 'profile.bio', 'profile.contact', 'profile.avatar'])),
         },
     })
 
-    async function onSubmit(values: FormValues) {
+    function onSubmit(values: FormValues) {
         const { name, profile } = values
         updateUser({
             variables: {
-                id: me?.id,
+                id: me.id,
                 input: {
                     name: name,
                     profile: {
-                        id: me?.profile?.id,
+                        id: me.profile.id,
                         bio: profile.bio,
                         contact: profile.contact,
                         avatar: {
@@ -84,21 +85,27 @@ export default function ProfileUpdate({ me }: any) {
                     <Input
                         label={t('form:input-label-name')}
                         {...register('name')}
-                        error={t(errors.name?.message!)}
+                        error={t(
+                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
                     <TextArea
                         label={t('form:input-label-bio')}
                         {...register('profile.bio')}
-                        error={t(errors.profile?.bio?.message!)}
+                        error={t(
+                            errors.profile?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-6"
                     />
                     <Input
                         label={t('form:input-label-contact')}
                         {...register('profile.contact')}
-                        error={t(errors.profile?.contact?.message!)}
+                        error={t(
+                            errors.profile?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />

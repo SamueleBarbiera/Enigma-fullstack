@@ -25,7 +25,7 @@ type IProps = {
 
 const WithdrawList = ({ withdraws, onPagination, onSort, onOrder }: IProps) => {
     const { t } = useTranslation()
-    const { alignLeft } = useIsRTL()
+    
 
     const router = useRouter()
 
@@ -71,7 +71,7 @@ const WithdrawList = ({ withdraws, onPagination, onSort, onOrder }: IProps) => {
             title: t('table:table-item-shop-name'),
             dataIndex: 'shop',
             key: 'shop',
-            align: alignLeft,
+            align'left',
             render: (shop: Shop) => shop.name,
         },
         {
@@ -147,7 +147,6 @@ const WithdrawList = ({ withdraws, onPagination, onSort, onOrder }: IProps) => {
         <>
             <div className="mb-6 overflow-hidden rounded shadow">
                 <Table
-                    //@ts-ignore
                     columns={columns}
                     emptyText={t('table:empty-table-data')}
                     data={withdraws?.data}

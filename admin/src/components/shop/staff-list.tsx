@@ -17,7 +17,7 @@ type IProps = {
 
 const StaffList = ({ staffs, onPagination, onSort, onOrder }: IProps) => {
     const { t } = useTranslation()
-    const { alignLeft, alignRight } = useIsRTL()
+    
     const { data, paginatorInfo } = staffs!
 
     const [sortingObj, setSortingObj] = useState<{
@@ -54,14 +54,14 @@ const StaffList = ({ staffs, onPagination, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align: alignLeft as AlignType,
+            align'left' as AlignType,
             onHeaderCell: () => onHeaderClick('name'),
         },
         {
             title: t('table:table-item-email'),
             dataIndex: 'email',
             key: 'email',
-            align: alignLeft as AlignType,
+            align'left' as AlignType,
         },
         {
             title: t('table:table-item-status'),
@@ -74,7 +74,7 @@ const StaffList = ({ staffs, onPagination, onSort, onOrder }: IProps) => {
             title: t('table:table-item-actions'),
             dataIndex: 'id',
             key: 'actions',
-            align: alignRight as AlignType,
+            align'right' as AlignType,
             render: (id: string) => {
                 return <ActionButtons id={id} deleteModalView="DELETE_STAFF" />
             },

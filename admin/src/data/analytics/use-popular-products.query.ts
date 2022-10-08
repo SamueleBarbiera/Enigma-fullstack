@@ -1,5 +1,5 @@
 import { QueryParamsType } from '@ts-types/custom.types'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import Product from '@repositories/product'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 import { Product as TProduct } from '@ts-types/generated'

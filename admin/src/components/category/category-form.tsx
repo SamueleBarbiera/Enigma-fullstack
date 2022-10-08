@@ -66,7 +66,7 @@ export default function CreateOrUpdateCategoriesForm({ initialValues }: IProps) 
         formState: { errors },
     } = useForm<FormValues>({
         // shouldUnregister: true,
-        //@ts-expect-error
+
         defaultValues: initialValues
             ? {
                   ...initialValues,
@@ -155,7 +155,9 @@ export default function CreateOrUpdateCategoriesForm({ initialValues }: IProps) 
                     <Input
                         label={t('form:input-label-name')}
                         {...register('name')}
-                        error={t(errors.name?.message!)}
+                        error={t(
+                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />

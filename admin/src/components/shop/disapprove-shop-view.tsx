@@ -14,7 +14,7 @@ const ProductDeleteView = () => {
                 variables: { id: modalData as string },
             },
             {
-                onSettled: () => {
+                onSettled: async () => {
                     closeModal()
                 },
             }

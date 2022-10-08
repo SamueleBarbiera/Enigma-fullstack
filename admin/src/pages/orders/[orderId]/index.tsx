@@ -29,7 +29,7 @@ interface FormValues {
 export default function OrderDetailsPage() {
     const { t } = useTranslation()
     const { query } = useRouter()
-    const { alignLeft, alignRight } = useIsRTL()
+    
 
     const { mutate: updateOrder, isLoading: updating } = useUpdateOrderMutation()
     const { data: orderStatusData } = useOrderStatusesQuery({})
@@ -101,7 +101,7 @@ export default function OrderDetailsPage() {
             title: t('table:table-item-products'),
             dataIndex: 'name',
             key: 'name',
-            align: alignLeft,
+            align'left',
             render: (name: string, item: Product) => (
                 <div>
                     <span>{name}</span>
@@ -114,7 +114,7 @@ export default function OrderDetailsPage() {
             title: t('table:table-item-total'),
             dataIndex: 'price',
             key: 'price',
-            align: alignRight,
+            align'right',
             // render: (_: any, item: any) => {
             //     const price = usePrice({
             //         amount: parseFloat(item.pivot.subtotal),

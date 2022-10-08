@@ -15,13 +15,13 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import SelectInput from '@components/ui/select-input'
 import ShopLayout from '@components/layouts/shop'
-import { useIsRTL } from '@utils/locals'
 import { adminOwnerAndStaffOnly } from '@utils/auth-utils'
 import { useUpdateOrderMutation } from '@data/order/use-order-update.mutation'
 import { useOrderStatusesQuery } from '@data/order-status/use-order-statuses.query'
 import { useOrderQuery } from '@data/order/use-order.query'
-import { Attachment, Order, Product } from '@ts-types/generated'
+import { Attachment, Product } from '@ts-types/generated'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
+import { GetServerSideProps } from 'next'
 
 interface FormValues {
     order_status: any
@@ -30,7 +30,6 @@ interface FormValues {
 export default function OrderDetailsPage() {
     const { t } = useTranslation()
     const { query } = useRouter()
-    const { 'left', 'right' } = useIsRTL()
     const { mutate: updateOrder, isLoading: updating } = useUpdateOrderMutation()
     const { data: orderStatusData } = useOrderStatusesQuery({
         limit: 100,
@@ -57,27 +56,27 @@ export default function OrderDetailsPage() {
             },
         })
     }
-    const { price:subtotal} = usePrice(
+    const { price: subtotal } = usePrice(
         data && {
             amount: data.order.amount,
         }
     )
-    const{ price: total} = usePrice(
+    const { price: total } = usePrice(
         data && {
             amount: data.order.paid_total,
         }
     )
-    const { price:discount} = usePrice(
+    const { price: discount } = usePrice(
         data && {
             amount: data.order.discount!,
         }
     )
-    const { price:delivery_fee} = usePrice(
+    const { price: delivery_fee } = usePrice(
         data && {
             amount: data.order.delivery_fee!,
         }
     )
-    const { price:sales_tax} = usePrice(
+    const { price: sales_tax } = usePrice(
         data && {
             amount: data.order.sales_tax,
         }
@@ -241,8 +240,8 @@ OrderDetailsPage.authenticate = {
 }
 OrderDetailsPage.Layout = ShopLayout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['common', 'form', 'table'])),
+        ...(await serverSideTranslations(locale ?? '', ['common', 'form', 'table'])),
     },
 })

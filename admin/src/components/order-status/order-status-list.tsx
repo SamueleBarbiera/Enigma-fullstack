@@ -17,7 +17,7 @@ export interface IProps {
 const OrderStatusList = ({ order_statuses, onPagination, onSort, onOrder }: IProps) => {
     const { data, paginatorInfo } = order_statuses!
     const { t } = useTranslation()
-    const { alignLeft, alignRight } = useIsRTL()
+    
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -59,7 +59,7 @@ const OrderStatusList = ({ order_statuses, onPagination, onSort, onOrder }: IPro
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align: alignLeft,
+            align'left',
             onHeaderCell: () => onHeaderClick('name'),
             render: (name: string, record: OrderStatus) => (
                 <span className="font-semibold" style={{ color: record.color }}>
@@ -85,7 +85,7 @@ const OrderStatusList = ({ order_statuses, onPagination, onSort, onOrder }: IPro
             title: t('table:table-item-actions'),
             dataIndex: 'id',
             key: 'actions',
-            align: alignRight,
+            align'right',
             render: (id: string, record: OrderStatus) => (
                 <ActionButtons id={id} editUrl={`${ROUTES.ORDER_STATUS}/edit/${record.name}`} />
             ),
@@ -96,7 +96,6 @@ const OrderStatusList = ({ order_statuses, onPagination, onSort, onOrder }: IPro
         <>
             <div className="mb-6 overflow-hidden rounded shadow">
                 <Table
-                    //@ts-expect-error
                     columns={columns}
                     emptyText={t('table:empty-table-data')}
                     data={data}

@@ -104,7 +104,9 @@ export default function CreateOrUpdateOrderStatusForm({ initialValues }: any) {
                     <Input
                         label={t('form:input-label-name')}
                         {...register('name')}
-                        error={t(errors.name?.message!)}
+                        error={t(
+                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
@@ -114,13 +116,17 @@ export default function CreateOrUpdateOrderStatusForm({ initialValues }: any) {
                         note={t('form:input-label-serial-help-text')}
                         {...register('serial')}
                         type="number"
-                        error={t(errors.serial?.message!)}
+                        error={t(
+                            errors.serial?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                     />
                     <ColorPicker
                         label={t('form:input-label-color')}
                         {...register('color')}
-                        error={t(errors.color?.message!)}
+                        error={t(
+                            errors.color?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         className="mt-5"
                     >
                         <DisplayColorCode control={control} />

@@ -28,7 +28,7 @@ const OrderList = ({ orders, onPagination, onSort, onOrder }: IProps) => {
     const { t } = useTranslation()
     const rowExpandable = (record: any) => record.children?.length
     const router = useRouter()
-    const { alignLeft } = useIsRTL()
+    
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -112,7 +112,7 @@ const OrderList = ({ orders, onPagination, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'status',
             key: 'status',
-            align: alignLeft,
+            align'left',
             onHeaderCell: () => onHeaderClick('status'),
             render: (status: OrderStatus) => (
                 <span className="whitespace-nowrap font-semibold" style={{ color: status.color }}>
@@ -124,7 +124,7 @@ const OrderList = ({ orders, onPagination, onSort, onOrder }: IProps) => {
             title: t('table:table-item-shipping-address'),
             dataIndex: 'shipping_address',
             key: 'shipping_address',
-            align: alignLeft,
+            align'left',
             render: (shipping_address: UserAddress) => <div>{formatAddress(shipping_address)}</div>,
         },
         {
@@ -159,7 +159,6 @@ const OrderList = ({ orders, onPagination, onSort, onOrder }: IProps) => {
         <>
             <div className="mb-6 overflow-hidden rounded shadow">
                 <Table
-                    //@ts-expect-error
                     columns={columns}
                     emptyText={t('table:empty-table-data')}
                     data={data}

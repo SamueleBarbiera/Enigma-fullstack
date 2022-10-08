@@ -81,7 +81,9 @@ export default function CreateOrUpdateShippingForm({ initialValues }: IProps) {
                     <Input
                         label={t('form:input-label-name')}
                         {...register('name', { required: 'Name is required' })}
-                        error={t(errors.name?.message!)}
+                        error={t(
+                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
@@ -114,7 +116,12 @@ export default function CreateOrUpdateShippingForm({ initialValues }: IProps) {
                             label={t('form:input-label-amount')}
                             {...register('amount')}
                             type="number"
-                            error={t(errors.amount?.message!)}
+                            error={t(
+                                errors.amount?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                             variant="outline"
                             className="mb-5"
                         />

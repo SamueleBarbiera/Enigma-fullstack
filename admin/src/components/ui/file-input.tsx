@@ -1,23 +1,21 @@
-import Uploader from "@components/common/uploader";
-import { Controller } from "react-hook-form";
+import Uploader from '@components/common/uploader'
+import { Control, Controller, FieldValues } from 'react-hook-form'
 
 interface FileInputProps {
-  control: any;
-  name: string;
-  multiple?: boolean;
+    control: Control<FieldValues, unknown> | undefined
+    name: string
+    multiple?: boolean
 }
 
 const FileInput = ({ control, name, multiple = true }: FileInputProps) => {
-  return (
-    <Controller
-      control={control}
-      name={name}
-      defaultValue={[]}
-      render={({ field: { ref, ...rest } }) => (
-        <Uploader {...rest} multiple={multiple} />
-      )}
-    />
-  );
-};
+    return (
+        <Controller
+            control={control}
+            name={name}
+            defaultValue={[]}
+            render={({ field: { ...rest } }) => <Uploader {...rest} multiple={multiple} />}
+        />
+    )
+}
 
-export default FileInput;
+export default FileInput

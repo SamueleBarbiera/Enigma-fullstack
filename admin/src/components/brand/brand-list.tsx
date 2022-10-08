@@ -5,24 +5,23 @@ import { getIcon } from '@utils/get-icon'
 import * as typeIcons from '@components/icons/type'
 import { ROUTES } from '@utils/routes'
 import { useTranslation } from 'next-i18next'
-import { useIsRTL } from '@utils/locals'
 import { useState } from 'react'
 import TitleWithSort from '@components/ui/title-with-sort'
 import Image from 'next/image'
 import Pagination from '@components/ui/pagination'
 import { TypesPaginator } from '@data/type/use-types.query'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export interface IProps {
     types: TypesPaginator | undefined | null
     onPagination: (key: number) => void
-    onSort: (current: any) => void
+    onSort: (current: unknown) => void
     onOrder: (current: string) => void
 }
 
 const TypeList = ({ types, onSort, onOrder, onPagination }: IProps) => {
     const { t } = useTranslation()
     const { data, paginatorInfo } = types!
-    const { alignLeft, alignRight } = useIsRTL()
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -46,14 +45,14 @@ const TypeList = ({ types, onSort, onOrder, onPagination }: IProps) => {
         },
     })
 
-    const columns = [
+    const columns: readonly (ColumnGroupType<Type> | ColumnType<Type>)[] = [
         {
             title: t('table:table-item-id'),
             dataIndex: 'id',
             key: 'id',
             align: 'center',
             width: 60,
-            render: (id: any) => <span className="whitespace-nowrap">{id}</span>,
+            render: (id: string) => <span className="whitespace-nowrap">{id}</span>,
         },
         {
             title: (
@@ -66,9 +65,9 @@ const TypeList = ({ types, onSort, onOrder, onPagination }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align: alignLeft,
+            align: 'left',
             onHeaderCell: () => onHeaderClick('name'),
-            render: (name: any) => <span className="whitespace-nowrap">{name}</span>,
+            render: (name: string) => <span className="whitespace-nowrap">{name}</span>,
         },
 
         {
@@ -77,12 +76,12 @@ const TypeList = ({ types, onSort, onOrder, onPagination }: IProps) => {
             key: 'image',
             align: 'center',
             render: (images: any[]) => {
-                if (!images?.length) return null
+                if (!images.length) return null
 
                 return (
                     <div className="flex flex-row items-center justify-center gap-x-2">
-                        {images.map((item: any) => {
-                            return item?.image?.map((image: any, index: number) => (
+                        {images.map((item: { image: any[] }) => {
+                            return item.image.map((image: any, index: number) => (
                                 <Image
                                     src={image?.original ?? '/'}
                                     alt={`brand-image-${image.id}`}
@@ -121,7 +120,7 @@ const TypeList = ({ types, onSort, onOrder, onPagination }: IProps) => {
             title: t('table:table-item-actions'),
             dataIndex: 'slug',
             key: 'actions',
-            align: alignRight,
+            align: 'right',
             render: (id: string, record: Type) => (
                 <ActionButtons id={record.id} editUrl={`${ROUTES.BRANDS}/${id}/edit`} deleteModalView="DELETE_TYPE" />
             ),
@@ -132,7 +131,6 @@ const TypeList = ({ types, onSort, onOrder, onPagination }: IProps) => {
         <>
             <div className="mb-8 overflow-hidden rounded shadow">
                 <Table
-                    //@ts-expect-error
                     columns={columns}
                     emptyText={t('table:empty-table-data')}
                     data={data}

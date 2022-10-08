@@ -1,9 +1,9 @@
-import {UpdateTagInput} from '@ts-types/generated'
-import {useMutation, useQueryClient} from 'react-query'
-import {toast} from 'react-toastify'
+import { UpdateTagInput } from '@ts-types/generated'
+import { MutationFunction, useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
 import Tag from '@repositories/tag'
-import {API_ENDPOINTS} from '@utils/api/endpoints'
-import {useTranslation} from 'next-i18next'
+import { API_ENDPOINTS } from '@utils/api/endpoints'
+import { useTranslation } from 'next-i18next'
 export interface ITagUpdateVariables {
     variables: {
         id: string
@@ -12,15 +12,20 @@ export interface ITagUpdateVariables {
 }
 
 export const useUpdateTagMutation = () => {
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     const queryClient = useQueryClient()
-    return useMutation(({variables: {id, input}}: ITagUpdateVariables) => Tag.update(`${API_ENDPOINTS.TAGS}/${id}`, input), {
-        onSuccess: () => {
-            toast.success(t('common:successfully-updated'))
+    return useMutation(
+        (variables: { id: string; input: UpdateTagInput }) => {
+            return Tag.update(`${API_ENDPOINTS.TAGS}/${variables.id}`, variables.input)
         },
-        // Always refetch after error or success:
-        onSettled: () => {
-            queryClient.invalidateQueries(API_ENDPOINTS.TAGS)
-        },
-    })
+        {
+            onSuccess: () => {
+                toast.success(t('common:successfully-updated'))
+            },
+            // Always refetch after error or success:
+            onSettled: async () => {
+                await queryClient.invalidateQueries([API_ENDPOINTS.TAGS])
+            },
+        }
+    )
 }

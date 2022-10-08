@@ -19,7 +19,7 @@ interface IProps {
 const CustomerList = ({ customers, onPagination /* onSort, onOrder*/ }: IProps) => {
     const { data, paginatorInfo } = customers!
     const { t } = useTranslation()
-    const { alignLeft } = useIsRTL()
+    
 
     const { data: DataUser } = useMeQuery()
 
@@ -68,13 +68,13 @@ const CustomerList = ({ customers, onPagination /* onSort, onOrder*/ }: IProps) 
             title: t('table:table-item-title'),
             dataIndex: 'name',
             key: 'name',
-            align: alignLeft as AlignType,
+            align'left' as AlignType,
         },
         {
             title: t('table:table-item-email'),
             dataIndex: 'email',
             key: 'email',
-            align: alignLeft as AlignType,
+            align'left' as AlignType,
         },
         {
             title: t('table:table-item-status'),

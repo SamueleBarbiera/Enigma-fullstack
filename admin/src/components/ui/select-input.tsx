@@ -1,12 +1,23 @@
 import Select from '@components/ui/select/select'
-import { Controller } from 'react-hook-form'
+import { Control, Controller, FieldPath, FieldPathValue, FieldValues, RegisterOptions } from 'react-hook-form'
 
-interface SelectInputProps {
-    control: any
-    rules?: any
-    name: string
+export declare type ControllerProps<
+    TFieldValues extends FieldValues = FieldValues,
+    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = {
+    name: TName
+    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
+    shouldUnregister?: boolean
+    defaultValue?: FieldPathValue<TFieldValues, TName>
+    control?: Control<TFieldValues>
     options: object[]
     [key: string]: unknown
+
+    getOptionLabel: unknown
+    getOptionValue: unknown
+    isMulti: unknown
+    isClearable: unknown
+    isLoading: boolean
 }
 
 const SelectInput = ({
@@ -20,7 +31,7 @@ const SelectInput = ({
     isClearable,
     isLoading,
     ...rest
-}: SelectInputProps) => {
+}: ControllerProps) => {
     return (
         <Controller
             control={control}

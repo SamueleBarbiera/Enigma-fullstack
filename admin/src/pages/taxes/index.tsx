@@ -11,6 +11,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { ROUTES } from '@utils/routes'
 import { SortOrder } from '@ts-types/generated'
+import { GetServerSideProps } from 'next'
 
 export default function TaxesPage() {
     const { t } = useTranslation()
@@ -53,8 +54,8 @@ export default function TaxesPage() {
 }
 TaxesPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })

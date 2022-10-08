@@ -11,6 +11,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { ROUTES } from '@utils/routes'
 import { SortOrder } from '@ts-types/generated'
+import { GetServerSideProps } from 'next'
 
 export default function Customers() {
     const [searchTerm, setSearchTerm] = useState('')
@@ -54,7 +55,7 @@ export default function Customers() {
 
                         <div className="flex w-full items-center ms-auto md:w-3/4">
                             <Search onSearch={handleSearch} />
-                            <LinkButton href={`${ROUTES.USERS}/create`} className="ms-4 h-12 md:ms-6">
+                            <LinkButton href={`${ROUTES.USERS}/create`} className="h-12 ms-4 md:ms-6">
                                 <span>+ {t('form:button-label-add-customer')}</span>
                             </LinkButton>
                         </div>
@@ -73,8 +74,8 @@ export default function Customers() {
 }
 Customers.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })

@@ -63,7 +63,6 @@ const RecentOrders = ({ orders, title }: IProps) => {
                     {title}
                 </h3>
                 <Table
-                    //@ts-expect-error
                     columns={columns}
                     emptyText={t('table:empty-table-data')}
                     data={orders}

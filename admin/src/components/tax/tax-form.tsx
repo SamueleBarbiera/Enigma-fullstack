@@ -72,7 +72,9 @@ export default function CreateOrUpdateTaxForm({ initialValues }: IProps) {
                     <Input
                         label={t('form:input-label-name')}
                         {...register('name', { required: 'Name is required' })}
-                        error={t(errors.name?.message!)}
+                        error={t(
+                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
@@ -80,35 +82,45 @@ export default function CreateOrUpdateTaxForm({ initialValues }: IProps) {
                         label={t('form:input-label-rate')}
                         {...register('rate')}
                         type="number"
-                        error={t(errors.rate?.message!)}
+                        error={t(
+                            errors.rate?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
                     <Input
                         label={t('form:input-label-country')}
                         {...register('country')}
-                        error={t(errors.country?.message!)}
+                        error={t(
+                            errors.country?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
                     <Input
                         label={t('form:input-label-city')}
                         {...register('city')}
-                        error={t(errors.city?.message!)}
+                        error={t(
+                            errors.city?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
                     <Input
                         label={t('form:input-label-state')}
                         {...register('state')}
-                        error={t(errors.state?.message!)}
+                        error={t(
+                            errors.state?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
                     <Input
                         label={t('form:input-label-zip')}
                         {...register('zip')}
-                        error={t(errors.zip?.message!)}
+                        error={t(
+                            errors.zip?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />

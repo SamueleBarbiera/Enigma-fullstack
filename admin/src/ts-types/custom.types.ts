@@ -1,4 +1,4 @@
-import { QueryKey } from 'react-query'
+import { QueryKey } from '@tanstack/react-query'
 import { SortOrder } from './generated'
 
 export interface CategoriesQueryOptionsType {

@@ -40,7 +40,6 @@ export default function CreateOrUpdateWithdrawForm({ initialValues }: IProps) {
         handleSubmit,
         formState: { errors },
     } = useForm<FormValues>({
-        //@ts-ignore
         defaultValues: initialValues,
         resolver: yupResolver(withdrawValidationSchema),
     })
@@ -96,14 +95,24 @@ export default function CreateOrUpdateWithdrawForm({ initialValues }: IProps) {
                         <Input
                             label={t('form:input-label-amount')}
                             {...register('amount')}
-                            error={t(errors.amount?.message!)}
+                            error={t(
+                                errors.amount?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                             variant="outline"
                             className="mb-5"
                         />
                         <Input
                             label={t('form:input-label-payment-method')}
                             {...register('payment_method')}
-                            error={t(errors.payment_method?.message!)}
+                            error={t(
+                                errors.payment_method?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                             variant="outline"
                             className="mb-5"
                         />

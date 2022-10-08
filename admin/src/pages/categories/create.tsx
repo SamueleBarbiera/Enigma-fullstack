@@ -2,6 +2,7 @@ import Layout from '@components/layouts/admin'
 import CreateOrUpdateCategoriesForm from '@components/category/category-form'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
+import { GetServerSideProps } from 'next'
 
 export default function CreateCategoriesPage() {
     const { t } = useTranslation()
@@ -17,8 +18,8 @@ export default function CreateCategoriesPage() {
 
 CreateCategoriesPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common'])),
     },
 })

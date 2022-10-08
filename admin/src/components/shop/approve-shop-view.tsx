@@ -39,7 +39,12 @@ const ApproveShopView = () => {
                         defaultValue="10"
                         variant="outline"
                         className="mb-4"
-                        error={t(errors.admin_commission_rate?.message!)}
+                        error={t(
+                            errors.admin_commission_rate?.message as
+                                | string
+                                | TemplateStringsArray
+                                | (string | TemplateStringsArray)[]
+                        )}
                     />
                     <Button type="submit" loading={loading} disabled={loading} className="ms-auto">
                         {t('form:button-label-submit')}

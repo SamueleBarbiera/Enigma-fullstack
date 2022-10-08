@@ -1,5 +1,5 @@
 import Analytics from '@repositories/analytics'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { Analytics as TAnalytics } from '@ts-types/generated'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 

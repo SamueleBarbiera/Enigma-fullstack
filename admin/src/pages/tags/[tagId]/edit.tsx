@@ -7,6 +7,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import CreateOrUpdateTagForm from '@components/tag/tag-form'
 import { adminOnly } from '@utils/auth-utils'
 import { useTagQuery } from '@data/tag/use-tag.query'
+import { GetServerSideProps } from 'next'
 
 export default function UpdateTagPage() {
     const { t } = useTranslation()
@@ -30,8 +31,8 @@ UpdateTagPage.authenticate = {
 }
 UpdateTagPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common'])),
     },
 })

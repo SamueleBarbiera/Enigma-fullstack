@@ -6,6 +6,7 @@ import Loader from '@components/ui/loader/loader'
 import { useCategoryQuery } from '@data/category/use-category.query'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetServerSideProps } from 'next'
 
 export default function UpdateCategoriesPage() {
     const { query } = useRouter()
@@ -28,8 +29,8 @@ export default function UpdateCategoriesPage() {
 
 UpdateCategoriesPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common'])),
     },
 })

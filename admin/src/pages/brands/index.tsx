@@ -12,6 +12,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { ROUTES } from '@utils/routes'
 import { adminOnly } from '@utils/auth-utils'
+import { GetServerSideProps } from 'next'
 
 export default function TypesPage() {
     const { t } = useTranslation()
@@ -68,8 +69,8 @@ TypesPage.authenticate = {
 
 TypesPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })

@@ -219,14 +219,24 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                     <Input
                         label={t('form:input-label-site-title')}
                         {...register('siteTitle')}
-                        error={t(errors.siteTitle?.message!)}
+                        error={t(
+                            errors.siteTitle?.message as
+                                | string
+                                | TemplateStringsArray
+                                | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
                     <Input
                         label={t('form:input-label-site-subtitle')}
                         {...register('siteSubtitle')}
-                        error={t(errors.siteSubtitle?.message!)}
+                        error={t(
+                            errors.siteSubtitle?.message as
+                                | string
+                                | TemplateStringsArray
+                                | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
@@ -247,7 +257,12 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         label={`${t('form:input-label-min-order-amount')}`}
                         {...register('minimumOrderAmount')}
                         type="number"
-                        error={t(errors.minimumOrderAmount?.message!)}
+                        error={t(
+                            errors.minimumOrderAmount?.message as
+                                | string
+                                | TemplateStringsArray
+                                | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
@@ -352,7 +367,12 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         {...register('contactDetails.contact')}
                         variant="outline"
                         className="mb-5"
-                        error={t(errors.contactDetails?.contact?.message!)}
+                        error={t(
+                            errors.contactDetails?.contact?.message as
+                                | string
+                                | TemplateStringsArray
+                                | (string | TemplateStringsArray)[]
+                        )}
                     />
 
                     <Input
@@ -361,7 +381,12 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         variant="outline"
                         className="mb-5"
                         type="email"
-                        error={t(errors.contactDetails?.email?.message!)}
+                        error={t(
+                            errors.contactDetails?.email?.message as
+                                | string
+                                | TemplateStringsArray
+                                | (string | TemplateStringsArray)[]
+                        )}
                     />
 
                     <Input
@@ -369,7 +394,12 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         {...register('contactDetails.website')}
                         variant="outline"
                         className="mb-5"
-                        error={t(errors.contactDetails?.website?.message!)}
+                        error={t(
+                            errors.contactDetails?.website?.message as
+                                | string
+                                | TemplateStringsArray
+                                | (string | TemplateStringsArray)[]
+                        )}
                     />
 
                     {/* Social and Icon picker */}

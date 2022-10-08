@@ -1,6 +1,6 @@
 import { QueryParamsType, QueryOptionsType } from '@ts-types/custom.types'
 import { mapPaginatorData } from '@utils/data-mappers'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import User from '@repositories/user'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 

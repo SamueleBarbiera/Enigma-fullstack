@@ -1,26 +1,28 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import http from '@utils/api/http'
+import { AxiosResponse } from 'axios'
 
 export default class Base<C, U> {
-    public http = async <T>(url: string, type: string, variables: T | null = null, options?: any) => {
-        return (http as any)[type](url, variables, options)
+    public http = <T>(url: string, type: string, variables: T | null = null, options?: unknown) => {
+        return http[type](url, variables, options) as AxiosResponse
     }
-    public all = async (url: string) => {
+    public all = (url: string) => {
         return this.http(url, 'get')
     }
 
-    public find = async (url: string) => {
+    public find = (url: string) => {
         return this.http(url, 'get')
     }
 
-    public create = async (url: string, variables: C) => {
+    public create = (url: string, variables: C) => {
         return this.http<C>(url, 'post', variables)
     }
 
-    public update = async (url: string, variables: U) => {
+    public update = (url: string, variables: U) => {
         return this.http<U>(url, 'put', variables)
     }
 
-    public delete = async (url: string) => {
+    public erase = (url: string) => {
         return this.http(url, 'delete')
     }
 }

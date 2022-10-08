@@ -6,7 +6,6 @@ import { Coupon, CouponPaginator, SortOrder } from '@ts-types/generated'
 import ActionButtons from '@components/common/action-buttons'
 import { siteSettings } from '@settings/site.settings'
 import { Attachment } from '@ts-types/generated'
-import usePrice from '@utils/use-price'
 import { ROUTES } from '@utils/routes'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import utc from 'dayjs/plugin/utc'
@@ -14,6 +13,7 @@ import timezone from 'dayjs/plugin/timezone'
 import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 import TitleWithSort from '@components/ui/title-with-sort'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 dayjs.extend(relativeTime)
 dayjs.extend(utc)
@@ -50,7 +50,7 @@ const CouponList = ({ coupons, onPagination, onSort, onOrder }: IProps) => {
         },
     })
 
-    const columns = [
+    const columns: readonly (ColumnGroupType<Coupon> | ColumnType<Coupon>)[] = [
         {
             title: t('table:table-item-id'),
             dataIndex: 'id',
@@ -159,7 +159,6 @@ const CouponList = ({ coupons, onPagination, onSort, onOrder }: IProps) => {
         <>
             <div className="mb-6 overflow-hidden rounded shadow">
                 <Table
-                    //@ts-expect-error
                     columns={columns}
                     emptyText={t('table:empty-table-data')}
                     data={data}

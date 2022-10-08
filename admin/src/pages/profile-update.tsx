@@ -6,6 +6,7 @@ import Loader from '@components/ui/loader/loader'
 import { useMeQuery } from '@data/user/use-me.query'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetServerSideProps } from 'next'
 
 export default function ProfilePage() {
     const { t } = useTranslation()
@@ -25,8 +26,8 @@ export default function ProfilePage() {
 }
 ProfilePage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common'])),
     },
 })

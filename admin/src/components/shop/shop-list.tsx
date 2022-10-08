@@ -20,7 +20,7 @@ type IProps = {
 const ShopList = ({ shops, onPagination, onSort, onOrder }: IProps) => {
     const { data, paginatorInfo } = shops! ?? {}
     const { t } = useTranslation()
-    const { alignLeft, alignRight } = useIsRTL()
+    
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -73,7 +73,7 @@ const ShopList = ({ shops, onPagination, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align: alignLeft,
+            align'left',
             onHeaderCell: () => onHeaderClick('name'),
             render: (name: any) => <span className="whitespace-nowrap">{name}</span>,
         },
@@ -136,7 +136,7 @@ const ShopList = ({ shops, onPagination, onSort, onOrder }: IProps) => {
             title: t('table:table-item-actions'),
             dataIndex: 'id',
             key: 'actions',
-            align: alignRight,
+            align'right',
             render: (id: string, { slug, is_active }: any) => {
                 return <ActionButtons id={id} approveButton={true} detailsUrl={`/${slug}`} isShopActive={is_active} />
             },
@@ -147,7 +147,6 @@ const ShopList = ({ shops, onPagination, onSort, onOrder }: IProps) => {
         <>
             <div className="mb-6 overflow-hidden rounded shadow">
                 <Table
-                    //@ts-ignore
                     columns={columns}
                     emptyText={t('table:empty-table-data')}
                     data={data}

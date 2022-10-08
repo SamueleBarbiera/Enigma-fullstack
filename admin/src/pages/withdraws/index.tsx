@@ -7,8 +7,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import WithdrawList from '@components/withdraw/withdraw-list'
 import { adminOnly } from '@utils/auth-utils'
 import { useWithdrawsQuery } from '@data/withdraw/use-withdraws.query'
-import { useState } from 'react'
+import { SetStateAction, useState } from 'react'
 import { SortOrder } from '@ts-types/generated'
+import { GetServerSideProps } from 'next'
 
 export default function WithdrawsPage() {
     const { t } = useTranslation()
@@ -26,7 +27,7 @@ export default function WithdrawsPage() {
         orderBy,
     })
 
-    function handlePagination(current: any) {
+    function handlePagination(current: SetStateAction<number>) {
         setPage(current)
     }
 
@@ -46,7 +47,7 @@ export default function WithdrawsPage() {
                         </div>
                     </Card>
                     <WithdrawList
-                        withdraws={data?.withdraws}
+                        withdraws={data.withdraws}
                         onPagination={handlePagination}
                         onOrder={setOrder}
                         onSort={setColumn}
@@ -61,8 +62,8 @@ WithdrawsPage.authenticate = {
 }
 WithdrawsPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })

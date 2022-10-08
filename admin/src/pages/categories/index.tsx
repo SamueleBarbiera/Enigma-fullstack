@@ -12,6 +12,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { ROUTES } from '@utils/routes'
 import { useCategoriesQuery } from '@data/category/use-categories.query'
 import { adminOnly } from '@utils/auth-utils'
+import { GetServerSideProps } from 'next'
 
 export default function Categories() {
     const [searchTerm, setSearchTerm] = useState('')
@@ -75,8 +76,8 @@ Categories.authenticate = {
 }
 Categories.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common', 'table'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common', 'table'])),
     },
 })

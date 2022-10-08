@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
-import { Attribute, Shop, SortOrder } from '@ts-types/generated'
+import { Attribute, AttributeValue, Shop, SortOrder } from '@ts-types/generated'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import TitleWithSort from '@components/ui/title-with-sort'
@@ -9,7 +9,7 @@ import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export interface IProps {
     attributes: Attribute[] | undefined
-    onSort: (current: any) => void
+    onSort: (current: unknown) => void
     onOrder: (current: string) => void
 }
 const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
@@ -61,9 +61,9 @@ const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align: alignLeft,
+            align'left',
             onHeaderCell: () => onHeaderClick('name'),
-            render: (name: any) => <span className="whitespace-nowrap">{name}</span>,
+            render: (name) => <span className="whitespace-nowrap">{name}</span>,
         },
         {
             title: t('table:table-item-shop'),
@@ -78,12 +78,12 @@ const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
             title: t('table:table-item-values'),
             dataIndex: 'values',
             key: 'values',
-            align: alignLeft,
-            render: (values: any) => {
+            align'left',
+            render: (values: AttributeValue[]) => {
                 return (
                     <span className="block truncate">
-                        {values?.map((singleValues: any, index: number) => {
-                            return index > 0 ? `, ${singleValues.value}` : `${singleValues.value}`
+                        {values.map((singleValues, index: number) => {
+                            return index > 0 ? `, ${singleValues.value!}` : `${singleValues.value!}`
                         })}
                     </span>
                 )
@@ -93,7 +93,7 @@ const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
             title: t('table:table-item-actions'),
             dataIndex: 'id',
             key: 'actions',
-            align: alignRight,
+            align'right',
             render: (id: string) => (
                 <ActionButtons id={id} editUrl={`${router.asPath}/${id}/edit`} deleteModalView="DELETE_ATTRIBUTE" />
             ),

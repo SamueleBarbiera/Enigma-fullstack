@@ -5,24 +5,21 @@ import { getIcon } from '@utils/get-icon'
 import * as categoriesIcon from '@components/icons/category'
 import { ROUTES } from '@utils/routes'
 import { useTranslation } from 'next-i18next'
-import { useIsRTL } from '@utils/locals'
-import { SortOrder } from '@ts-types/generated'
+import { SortOrder, Tag, TagPaginator } from '@ts-types/generated'
 import { useState } from 'react'
 import TitleWithSort from '@components/ui/title-with-sort'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
-export type IProps = {
-    tags: any | undefined | null
+export interface IProps {
+    tags: TagPaginator
     onPagination: (key: number) => void
-    onSort: (current: any) => void
+    onSort: (current: unknown) => void
     onOrder: (current: string) => void
 }
 
 const TagList = ({ tags, onPagination, onSort, onOrder }: IProps) => {
     const { t } = useTranslation()
-    const { data, paginatorInfo } = tags! ?? {}
-    const rowExpandable = (record: any) => record.children?.length
-
-    const { alignLeft } = useIsRTL()
+    const { data, paginatorInfo } = tags
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -46,7 +43,7 @@ const TagList = ({ tags, onPagination, onSort, onOrder }: IProps) => {
         },
     })
 
-    const columns = [
+    const columns: readonly (ColumnGroupType<Tag> | ColumnType<Tag>)[] = [
         {
             title: t('table:table-item-id'),
             dataIndex: 'id',
@@ -65,7 +62,7 @@ const TagList = ({ tags, onPagination, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align: alignLeft,
+            align: 'left',
             onHeaderCell: () => onHeaderClick('name'),
         },
 
@@ -110,16 +107,13 @@ const TagList = ({ tags, onPagination, onSort, onOrder }: IProps) => {
         <>
             <div className="mb-6 overflow-hidden rounded shadow">
                 <Table
-                    //@ts-ignore
                     columns={columns}
                     emptyText={t('table:empty-table-data')}
-                    //@ts-ignore
                     data={data}
                     rowKey="id"
                     scroll={{ x: 1000 }}
                     expandable={{
                         expandedRowRender: () => '',
-                        rowExpandable: rowExpandable,
                     }}
                 />
             </div>

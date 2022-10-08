@@ -15,6 +15,7 @@ import { SortOrder } from '@ts-types/generated'
 import { useModalAction } from '@components/ui/modal/modal.context'
 import { MoreIcon } from '@components/icons/more-icon'
 import Button from '@components/ui/button'
+import { GetServerSideProps } from 'next'
 
 export default function AttributePage() {
     const {
@@ -74,7 +75,7 @@ export default function AttributePage() {
                     </button>
                 </div>
             </Card>
-            <AttributeList attributes={data?.attributes as any} onOrder={setOrder} onSort={setColumn} />
+            <AttributeList attributes={data?.attributes} onOrder={setOrder} onSort={setColumn} />
         </>
     )
 }
@@ -82,8 +83,8 @@ AttributePage.authenticate = {
     permissions: adminOwnerAndStaffOnly,
 }
 AttributePage.Layout = ShopLayout
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })

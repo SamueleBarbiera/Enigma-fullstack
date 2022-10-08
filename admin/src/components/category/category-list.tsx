@@ -20,7 +20,7 @@ const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => 
     const { data, paginatorInfo } = categories!
     const rowExpandable = (record: any) => record.children?.length
 
-    const { alignLeft } = useIsRTL()
+    
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -63,7 +63,7 @@ const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => 
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align: alignLeft,
+            align'left',
             width: 150,
             onHeaderCell: () => onHeaderClick('name'),
         },
@@ -71,7 +71,7 @@ const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => 
             title: t('table:table-item-details'),
             dataIndex: 'details',
             key: 'details',
-            align: alignLeft,
+            align'left',
             width: 350,
             render: (details: string) => {
                 if (!details) return null
@@ -134,7 +134,6 @@ const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => 
         <>
             <div className="mb-6 overflow-hidden rounded shadow">
                 <Table
-                    //@ts-expect-error
                     columns={columns}
                     emptyText={t('table:empty-table-data')}
                     data={data}

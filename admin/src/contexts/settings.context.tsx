@@ -1,24 +1,87 @@
+import { SettingsOptions } from '@ts-types/generated'
 import React, { createContext, useContext, useMemo, useState } from 'react'
-export interface State {
-    settings: any
+
+export interface Context {
+    seo?: Seo
+    logo: Logo
+    currency: string
+    taxClass: number
+    siteTitle: string
+    deliveryTime?: DeliveryTime[]
+    signupPoints: unknown
+    siteSubtitle: string
+    shippingClass: number
+    contactDetails?: ContactDetails
+    minimumOrderAmount: number
+    currencyToWalletRatio?: unknown
 }
 
-const initialState = {
-    siteTitle: 'Enigma',
-    siteSubtitle: '',
-    currency: 'USD',
+export interface Seo {
+    ogImage: unknown[]
+    ogTitle: unknown
+    metaTags: unknown
+    metaTitle: unknown
+    canonicalUrl: unknown
+    ogDescription: unknown
+    twitterHandle: unknown
+    metaDescription: unknown
+    twitterCardType: unknown
+}
+
+export interface Logo {
+    id: number
+    original: string
+    thumbnail: string
+}
+
+export interface DeliveryTime {
+    title: string
+    description: string
+}
+
+export interface ContactDetails {
+    email: string
+    contact: string
+    socials: Social[]
+    website: string
+    location: unknown[]
+}
+
+export interface Social {
+    url: string
+    icon: string
+    label: string
+}
+
+const initialState: SettingsOptions = {
     logo: {
-        id: 1,
-        thumbnail: '/logo.svg',
-        original: '/logo.svg',
+        id: '1',
+        original: 'http://localhost:8000/storage/326/1024.png',
+        thumbnail: 'http://localhost:8000/storage/326/conversions/1024-thumbnail.jpg',
     },
+    currency: 'EUR',
+    taxClass: '1',
+    siteTitle: 'Enigma',
+    deliveryTime: [
+        {
+            title: '',
+            description: '',
+        },
+    ],
+    signupPoints: 0,
+    siteSubtitle: 'Your next ecommerce',
+    shippingClass: '1',
+
+    minimumOrderAmount: 1,
 }
 
-export const SettingsContext = createContext<State | any>(initialState)
+export const SettingsContext = createContext<Context | SettingsOptions>(initialState)
 
 SettingsContext.displayName = 'SettingsContext'
 
-export const SettingsProvider: React.FC<{ initialValue: any; props: any }> = ({ initialValue, ...props }) => {
+export type SettingProvider = { initialValue?: SettingsOptions | undefined; props?: unknown }
+
+export const SettingsProvider = ({ initialValue, ...props }: SettingProvider) => {
     const [state, updateSettings] = useState(initialValue ?? initialState)
     const value = useMemo(
         () => ({
@@ -32,8 +95,5 @@ export const SettingsProvider: React.FC<{ initialValue: any; props: any }> = ({ 
 
 export const useSettings = () => {
     const context = useContext(SettingsContext)
-    if (context === undefined) {
-        throw new Error(`useSettings must be used within a SettingsProvider`)
-    }
     return context
 }

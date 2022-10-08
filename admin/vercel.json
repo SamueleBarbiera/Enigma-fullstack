@@ -1,12 +1,12 @@
 {
-  "env": {
-    "NEXT_PUBLIC_REST_API_ENDPOINT": "Add your REST API Endpoints",
-    "NEXT_PUBLIC_SHOP_URL": "Your shop frontend URL"
-  },
-  "build": {
     "env": {
-      "NEXT_PUBLIC_REST_API_ENDPOINT": "Add your REST API Endpoints",
-      "NEXT_PUBLIC_SHOP_URL": "Your shop frontend URL"
+        "NEXT_PUBLIC_REST_API_ENDPOINT": "Add your REST API Endpoints",
+        "NEXT_PUBLIC_SHOP_URL": "Your shop frontend URL"
+    },
+    "build": {
+        "env": {
+            "NEXT_PUBLIC_REST_API_ENDPOINT": "Add your REST API Endpoints",
+            "NEXT_PUBLIC_SHOP_URL": "Your shop frontend URL"
+        }
     }
-  }
 }

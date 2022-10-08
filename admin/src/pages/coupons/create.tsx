@@ -2,6 +2,7 @@ import Layout from '@components/layouts/admin'
 import CouponCreateOrUpdateForm from '@components/coupon/coupon-form'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetServerSideProps } from 'next'
 
 export default function CreateCouponPage() {
     const { t } = useTranslation()
@@ -16,8 +17,8 @@ export default function CreateCouponPage() {
 }
 CreateCouponPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common'])),
     },
 })

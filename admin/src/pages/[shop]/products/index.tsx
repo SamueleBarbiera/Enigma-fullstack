@@ -20,6 +20,7 @@ import { ArrowUp } from '@components/icons/arrow-up'
 import { useModalAction } from '@components/ui/modal/modal.context'
 import { MoreIcon } from '@components/icons/more-icon'
 import Button from '@components/ui/button'
+import { GetServerSideProps } from 'next'
 
 export default function ProductsPage() {
     const {
@@ -86,7 +87,7 @@ export default function ProductsPage() {
                         <div className="flex w-full items-center">
                             <Search onSearch={handleSearch} />
 
-                            <LinkButton href={`/${shop}/products/create`} className="ms-4 h-12 md:ms-6">
+                            <LinkButton href={`/${shop}/products/create`} className="h-12 ms-4 md:ms-6">
                                 <span className="hidden md:block">+ {t('form:button-label-add-product')}</span>
                                 <span className="md:hidden">+ {t('form:button-label-add')}</span>
                             </LinkButton>
@@ -146,8 +147,8 @@ ProductsPage.authenticate = {
 }
 ProductsPage.Layout = ShopLayout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })

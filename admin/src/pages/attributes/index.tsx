@@ -9,6 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { SortOrder } from '@ts-types/generated'
 import { useState } from 'react'
 import { adminOnly } from '@utils/auth-utils'
+import { GetServerSideProps } from 'next'
 
 export default function AttributePage() {
     const { t } = useTranslation()
@@ -31,9 +32,9 @@ export default function AttributePage() {
     )
 }
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })
 

@@ -3,6 +3,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import ShopLayout from '@components/layouts/shop'
 import { adminOwnerAndStaffOnly } from '@utils/auth-utils'
+import { GetServerSideProps } from 'next'
 
 export default function CreateAttributePage() {
     const { t } = useTranslation()
@@ -19,8 +20,8 @@ CreateAttributePage.authenticate = {
     permissions: adminOwnerAndStaffOnly,
 }
 CreateAttributePage.Layout = ShopLayout
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['common', 'form'])),
     },
 })

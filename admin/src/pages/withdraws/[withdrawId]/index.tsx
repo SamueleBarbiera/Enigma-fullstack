@@ -100,8 +100,8 @@ const Withdraw = () => {
                                     <SelectInput
                                         name="status"
                                         control={control}
-                                        getOptionLabel={(option: any) => option.name}
-                                        getOptionValue={(option: any) => option.id}
+                                        getOptionLabel={(option: { name: string }) => option.name}
+                                        getOptionValue={(option: { id: string }) => option.id}
                                         options={WithdrawStatus}
                                         placeholder={t('form:input-placeholder-order-status')}
                                         rules={{

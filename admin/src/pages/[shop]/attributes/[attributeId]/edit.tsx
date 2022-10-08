@@ -7,6 +7,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import ShopLayout from '@components/layouts/shop'
 import { adminOwnerAndStaffOnly } from '@utils/auth-utils'
 import { useAttributeQuery } from '@data/attributes/use-attribute.query'
+import { GetServerSideProps } from 'next'
 export default function UpdateAttributePage() {
     const { t } = useTranslation()
     const { query } = useRouter()
@@ -26,8 +27,8 @@ UpdateAttributePage.authenticate = {
     permissions: adminOwnerAndStaffOnly,
 }
 UpdateAttributePage.Layout = ShopLayout
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })

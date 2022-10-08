@@ -14,7 +14,7 @@ export interface IProps {
 }
 const ShippingList = ({ shippings, onSort, onOrder }: IProps) => {
     const { t } = useTranslation()
-    const { alignLeft } = useIsRTL()
+    
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -57,7 +57,7 @@ const ShippingList = ({ shippings, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align: alignLeft,
+            align'left',
             width: 150,
             onHeaderCell: () => onHeaderClick('name'),
         },
@@ -111,7 +111,6 @@ const ShippingList = ({ shippings, onSort, onOrder }: IProps) => {
     return (
         <div className="mb-8 overflow-hidden rounded shadow">
             <Table
-                //@ts-expect-error
                 columns={columns}
                 emptyText={t('table:empty-table-data')}
                 data={shippings}

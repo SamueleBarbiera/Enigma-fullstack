@@ -1,5 +1,6 @@
-import NextLink, {LinkProps as NextLinkProps} from 'next/link'
+import NextLink, { LinkProps as NextLinkProps } from 'next/link'
 import cn from 'classnames'
+import { ReactElement } from 'react'
 
 const classes = {
     root: 'inline-flex items-center justify-center flex-shrink-0 font-semibold leading-none rounded outline-none transition duration-300 ease-in-out focus:outline-none focus:shadow',
@@ -14,7 +15,7 @@ const classes = {
 
 export interface ButtonProps {
     className?: string
-    children?: any
+    children?: ReactElement
     variant?: 'normal' | 'outline'
     size?: 'big' | 'medium' | 'small'
     active?: boolean
@@ -22,7 +23,16 @@ export interface ButtonProps {
     disabled?: boolean
 }
 
-const LinkButton: React.FC<NextLinkProps & ButtonProps> = ({href, children, className, variant = 'normal', size = 'medium', active, disabled = false, ...props}) => {
+const LinkButton: React.FC<NextLinkProps & ButtonProps> = ({
+    href,
+    children,
+    className,
+    variant = 'normal',
+    size = 'medium',
+
+    disabled = false,
+    ...props
+}: NextLinkProps & ButtonProps) => {
     const rootClassName = cn(
         classes.root,
         {
@@ -34,7 +44,7 @@ const LinkButton: React.FC<NextLinkProps & ButtonProps> = ({href, children, clas
             [classes.medium]: size === 'medium',
             [classes.big]: size === 'big',
         },
-        className,
+        className
     )
 
     return (

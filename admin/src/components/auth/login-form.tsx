@@ -76,13 +76,17 @@ const LoginForm = () => {
                     type="email"
                     variant="outline"
                     className="mb-4"
-                    error={t(errors.email?.message!)}
+                    error={t(
+                        errors.email?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                    )}
                 />
                 <PasswordInput
                     label={t('form:input-label-password')}
                     forgotPassHelpText={t('form:input-forgot-password-label')}
                     {...register('password')}
-                    error={t(errors.password?.message!)}
+                    error={t(
+                        errors.password?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                    )}
                     variant="outline"
                     className="mb-4"
                     forgotPageLink="/forgot-password"

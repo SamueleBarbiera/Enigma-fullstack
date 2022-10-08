@@ -2,6 +2,7 @@ import Layout from '@components/layouts/admin'
 import CreateOrUpdateTypeForm from '@components/brand/brand-form'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
+import { GetServerSideProps } from 'next'
 
 export default function CreateTypePage() {
     const { t } = useTranslation()
@@ -16,8 +17,8 @@ export default function CreateTypePage() {
 }
 CreateTypePage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common'])),
     },
 })

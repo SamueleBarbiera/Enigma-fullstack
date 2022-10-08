@@ -188,13 +188,23 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
                             {...register('name')}
                             variant="outline"
                             className="mb-5"
-                            error={t(errors.name?.message!)}
+                            error={t(
+                                errors.name?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                         <TextArea
                             label={t('form:input-label-description')}
                             {...register('description')}
                             variant="outline"
-                            error={t(errors.description?.message!)}
+                            error={t(
+                                errors.description?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                     </Card>
                 </div>
@@ -211,27 +221,47 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
                             {...register('balance.payment_info.name')}
                             variant="outline"
                             className="mb-5"
-                            error={t(errors.balance?.payment_info?.name?.message!)}
+                            error={t(
+                                errors.balance?.payment_info?.name?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                         <Input
                             label={t('form:input-label-account-holder-email')}
                             {...register('balance.payment_info.email')}
                             variant="outline"
                             className="mb-5"
-                            error={t(errors.balance?.payment_info?.email?.message!)}
+                            error={t(
+                                errors.balance?.payment_info?.email?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                         <Input
                             label={t('form:input-label-bank-name')}
                             {...register('balance.payment_info.bank')}
                             variant="outline"
                             className="mb-5"
-                            error={t(errors.balance?.payment_info?.bank?.message!)}
+                            error={t(
+                                errors.balance?.payment_info?.bank?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                         <Input
                             label={t('form:input-label-account-number')}
                             {...register('balance.payment_info.account')}
                             variant="outline"
-                            error={t(errors.balance?.payment_info?.account?.message!)}
+                            error={t(
+                                errors.balance?.payment_info?.account?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                     </Card>
                 </div>
@@ -248,34 +278,59 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
                             {...register('address.country')}
                             variant="outline"
                             className="mb-5"
-                            error={t(errors.address?.country?.message!)}
+                            error={t(
+                                errors.address?.country?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                         <Input
                             label={t('form:input-label-city')}
                             {...register('address.city')}
                             variant="outline"
                             className="mb-5"
-                            error={t(errors.address?.city?.message!)}
+                            error={t(
+                                errors.address?.city?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                         <Input
                             label={t('form:input-label-state')}
                             {...register('address.state')}
                             variant="outline"
                             className="mb-5"
-                            error={t(errors.address?.state?.message!)}
+                            error={t(
+                                errors.address?.state?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                         <Input
                             label={t('form:input-label-zip')}
                             {...register('address.zip')}
                             variant="outline"
                             className="mb-5"
-                            error={t(errors.address?.zip?.message!)}
+                            error={t(
+                                errors.address?.zip?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                         <TextArea
                             label={t('form:input-label-street-address')}
                             {...register('address.street_address')}
                             variant="outline"
-                            error={t(errors.address?.street_address?.message!)}
+                            error={t(
+                                errors.address?.street_address?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                     </Card>
                 </div>
@@ -305,14 +360,24 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
                             {...register('settings.contact')}
                             variant="outline"
                             className="mb-5"
-                            error={t(errors.settings?.contact?.message!)}
+                            error={t(
+                                errors.settings?.contact?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                         <Input
                             label={t('form:input-label-website')}
                             {...register('settings.website')}
                             variant="outline"
                             className="mb-5"
-                            error={t(errors.settings?.website?.message!)}
+                            error={t(
+                                errors.settings?.website?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
                         />
                         <div>
                             {fields.map((item: ShopSocialInput & { id: string }, index: number) => (

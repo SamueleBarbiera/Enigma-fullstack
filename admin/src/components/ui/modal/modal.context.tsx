@@ -1,6 +1,6 @@
 import React, { createContext, Dispatch, ReactNode, useContext, useReducer } from 'react'
 
-type MODAL_VIEWS =
+export type MODAL_VIEWS =
     | 'DELETE_PRODUCT'
     | 'DELETE_TYPE'
     | 'DELETE_ATTRIBUTE'
@@ -24,7 +24,7 @@ interface State {
     data?: any
     isOpen: boolean
 }
-type Action = { type: 'open'; view?: MODAL_VIEWS; payload?: any } | { type: 'close' }
+type Action = { type: 'open'; view?: MODAL_VIEWS; payload?: unknown } | { type: 'close' }
 
 const initialState: State = {
     view: undefined,
@@ -72,10 +72,7 @@ export const ModalProvider = ({ children }: Prop) => {
 }
 
 export function useModalState() {
-    const context = useContext(ModalStateContext)
-    if (context === undefined) {
-        throw new Error(`useModalState must be used within a ModalProvider`)
-    }
+    const context = useContext<State>(ModalStateContext)
     return context
 }
 
@@ -88,7 +85,7 @@ export function useModalAction() {
         openModal(view?: MODAL_VIEWS, payload?: unknown) {
             dispatch({ type: 'open', view, payload })
         },
-        closeModal() {
+        closeModal: () => {
             dispatch({ type: 'close' })
         },
     }

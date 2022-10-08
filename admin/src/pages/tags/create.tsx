@@ -3,6 +3,7 @@ import Layout from '@components/layouts/admin'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import CreateOrUpdateTagForm from '@components/tag/tag-form'
 import { adminOnly } from '@utils/auth-utils'
+import { GetServerSideProps } from 'next'
 
 export default function CreateCategoriesPage() {
     const { t } = useTranslation()
@@ -20,8 +21,8 @@ CreateCategoriesPage.authenticate = {
 }
 CreateCategoriesPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common'])),
     },
 })

@@ -55,7 +55,7 @@ export const AppSettings: React.FC = (props) => {
     return <SettingsProvider initialValue={data?.settings?.options} {...props} />
 }
 
-const CustomApp: any = ({Component, pageProps}: AppPropsWithLayout) => {
+const CustomApp = ({Component, pageProps}: AppPropsWithLayout) => {
     // Use the layout defined at the page level, if available
     const getLayout = Component.getLayout ?? ((page) => page)
     const authProps = Component.authenticate

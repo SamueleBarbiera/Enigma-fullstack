@@ -12,6 +12,7 @@ import { useShopQuery } from '@data/shop/use-shop.query'
 import { useWithdrawsQuery } from '@data/withdraw/use-withdraws.query'
 import { useState } from 'react'
 import { SortOrder } from '@ts-types/generated'
+import { GetServerSideProps } from 'next'
 
 export default function WithdrawsPage() {
     const { t } = useTranslation()
@@ -73,8 +74,8 @@ WithdrawsPage.authenticate = {
 }
 WithdrawsPage.Layout = ShopLayout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })

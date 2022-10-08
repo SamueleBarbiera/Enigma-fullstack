@@ -6,6 +6,7 @@ import { useCouponQuery } from '@data/coupon/use-coupon.query'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetServerSideProps } from 'next'
 
 export default function UpdateCouponPage() {
     const { query } = useRouter()
@@ -22,10 +23,11 @@ export default function UpdateCouponPage() {
         </>
     )
 }
+
 UpdateCouponPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common'])),
     },
 })

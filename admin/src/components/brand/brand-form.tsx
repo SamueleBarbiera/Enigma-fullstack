@@ -18,10 +18,11 @@ import SelectInput from '@components/ui/select-input'
 import Alert from '@components/ui/alert'
 import FileInput from '@components/ui/file-input'
 import ValidationError from '@components/ui/form-validation-error'
+import { Iitem } from '@components/tag/tag-form'
 
-export const updatedIcons = typeIconList.map((item: any) => {
-    item.label = (
-        <div className="flex items-center space-s-5">
+export const updatedIcons: object[] = typeIconList.map((item: Iitem) => {
+    return (
+        <div className="flex items-center space-s-5" key={item.label}>
             <span className="flex h-5 w-5 items-center justify-center">
                 {getIcon({
                     iconList: typeIcons,
@@ -32,7 +33,6 @@ export const updatedIcons = typeIconList.map((item: any) => {
             <span>{item.label}</span>
         </div>
     )
-    return item
 })
 
 const keyBasedImages = [
@@ -92,7 +92,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
                 ...initialValues?.settings,
             },
             icon: initialValues?.icon ? typeIconList.find((singleIcon) => singleIcon.value === initialValues.icon) : '',
-            images: initialValues?.images?.map((item: any) => {
+            images: initialValues?.images?.map((item) => {
                 return {
                     key: keyBasedImages.find((key) => item?.key === key.value),
                     image: item?.image?.map((singleImage: Attachment) => ({
@@ -117,7 +117,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
     const { mutate: createType, isLoading: creating } = useCreateTypeMutation()
     const { mutate: updateType, isLoading: updating } = useUpdateTypeMutation()
 
-    const onSubmit = async (values: FormValues) => {
+    const onSubmit = (values: FormValues) => {
         const input = {
             name: values.name!,
             icon: values.icon?.value,
@@ -168,7 +168,9 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
                     <Input
                         label={t('form:input-label-name')}
                         {...register('name')}
-                        error={t(errors.name?.message!)}
+                        error={t(
+                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
@@ -205,7 +207,14 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
                                             options={updateImages}
                                             isClearable={false}
                                         />
-                                        <ValidationError message={t(errors.images?.[index]?.key?.message)} />
+                                        <ValidationError
+                                            message={t(
+                                                errors.images?.[index]?.key?.message as
+                                                    | string
+                                                    | TemplateStringsArray
+                                                    | (string | TemplateStringsArray)[]
+                                            )}
+                                        />
 
                                         <div>
                                             <FileInput

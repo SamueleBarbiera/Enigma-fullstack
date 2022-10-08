@@ -60,7 +60,7 @@ const RegistrationForm = () => {
                     if (data?.token) {
                         if (hasAccess(allowedRoles, data?.permissions)) {
                             setAuthCredentials(data?.token, data?.permissions)
-                            router.push(ROUTES.DASHBOARD)
+                            void router.push(ROUTES.DASHBOARD)
                             return
                         }
                         setErrorMessage('form:error-enough-permission')
@@ -68,8 +68,8 @@ const RegistrationForm = () => {
                         setErrorMessage('form:error-credential-wrong')
                     }
                 },
-                onError: (error: any) => {
-                    Object.keys(error?.response?.data).forEach((field: any) => {
+                onError: (error) => {
+                    Object.keys(error?.response?.data).forEach((field) => {
                         setError(field, {
                             type: 'manual',
                             message: error?.response?.data[field],
@@ -88,7 +88,7 @@ const RegistrationForm = () => {
                     {...register('name')}
                     variant="outline"
                     className="mb-4"
-                    error={t(errors.name?.message!)}
+                    error={t(errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[])}
                 />
                 <Input
                     label={t('form:input-label-email')}
@@ -96,12 +96,16 @@ const RegistrationForm = () => {
                     type="email"
                     variant="outline"
                     className="mb-4"
-                    error={t(errors.email?.message!)}
+                    error={t(
+                        errors.email?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                    )}
                 />
                 <PasswordInput
                     label={t('form:input-label-password')}
                     {...register('password')}
-                    error={t(errors.password?.message!)}
+                    error={t(
+                        errors.password?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                    )}
                     variant="outline"
                     className="mb-4"
                 />

@@ -7,6 +7,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import ShopLayout from '@components/layouts/shop'
 import { adminOwnerAndStaffOnly } from '@utils/auth-utils'
 import { useProductQuery } from '@data/product/product.query'
+import { GetServerSideProps } from 'next'
 
 export default function UpdateProductPage() {
     const { query } = useRouter()
@@ -29,8 +30,8 @@ UpdateProductPage.authenticate = {
 }
 UpdateProductPage.Layout = ShopLayout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common'])),
     },
 })

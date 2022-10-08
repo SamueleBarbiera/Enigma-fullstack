@@ -6,7 +6,13 @@ type ReadMoreProps = {
     hideButton?: boolean
 }
 
-const Truncate: React.FC<ReadMoreProps> = ({children, onClick, character = 200, buttonText = 'See More', hideButton = false}) => {
+const Truncate: React.FC<ReadMoreProps> = ({
+    children,
+    onClick,
+    character = 200,
+    buttonText = 'See More',
+    hideButton = false,
+}: ReadMoreProps) => {
     if (!children) return null
 
     return (
@@ -15,7 +21,10 @@ const Truncate: React.FC<ReadMoreProps> = ({children, onClick, character = 200, 
             {!hideButton && children.length > character && (
                 <>
                     ...
-                    <button className='ms-1 text-sm font-semibold text-accent hover:text-accent-hover outline-none focus:outline-none' onClick={onClick}>
+                    <button
+                        className="text-sm font-semibold text-accent outline-none ms-1 hover:text-accent-hover focus:outline-none"
+                        onClick={onClick}
+                    >
                         {buttonText}
                     </button>
                 </>

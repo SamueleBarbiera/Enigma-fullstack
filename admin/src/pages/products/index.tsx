@@ -15,6 +15,7 @@ import cn from 'classnames'
 import { ArrowDown } from '@components/icons/arrow-down'
 import { ArrowUp } from '@components/icons/arrow-up'
 import { adminOnly } from '@utils/auth-utils'
+import { GetServerSideProps } from 'next'
 
 export default function ProductsPage() {
     const [searchTerm, setSearchTerm] = useState('')
@@ -111,8 +112,8 @@ ProductsPage.authenticate = {
 }
 ProductsPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })

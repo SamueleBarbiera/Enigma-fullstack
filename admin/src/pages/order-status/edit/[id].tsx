@@ -6,6 +6,7 @@ import { useOrderStatusQuery } from '@data/order-status/use-order-status.query'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetServerSideProps } from 'next'
 
 export default function UpdateOrderStatusPage() {
     const { query } = useRouter()
@@ -25,8 +26,8 @@ export default function UpdateOrderStatusPage() {
 }
 UpdateOrderStatusPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common', 'table'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common', 'table'])),
     },
 })

@@ -30,7 +30,9 @@ export default function ProductSimpleForm({ initialValues }: IProps) {
                     label={`${t('form:input-label-price')}*`}
                     {...register('price')}
                     type="number"
-                    error={t(errors.price?.message!)}
+                    error={t(
+                        errors.price?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                    )}
                     variant="outline"
                     className="mb-5"
                 />
@@ -38,7 +40,9 @@ export default function ProductSimpleForm({ initialValues }: IProps) {
                     label={t('form:input-label-sale-price')}
                     type="number"
                     {...register('sale_price')}
-                    error={t(errors.sale_price?.message!)}
+                    error={t(
+                        errors.sale_price?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                    )}
                     variant="outline"
                     className="mb-5"
                 />
@@ -47,7 +51,9 @@ export default function ProductSimpleForm({ initialValues }: IProps) {
                     label={`${t('form:input-label-quantity')}*`}
                     type="number"
                     {...register('quantity')}
-                    error={t(errors.quantity?.message!)}
+                    error={t(
+                        errors.quantity?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                    )}
                     variant="outline"
                     className="mb-5"
                 />
@@ -55,7 +61,7 @@ export default function ProductSimpleForm({ initialValues }: IProps) {
                 <Input
                     label={`${t('form:input-label-sku')}*`}
                     {...register('sku')}
-                    error={t(errors.sku?.message!)}
+                    error={t(errors.sku?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[])}
                     variant="outline"
                     className="mb-5"
                 />
@@ -63,14 +69,18 @@ export default function ProductSimpleForm({ initialValues }: IProps) {
                 <Input
                     label={t('form:input-label-width')}
                     {...register('width')}
-                    error={t(errors.width?.message!)}
+                    error={t(
+                        errors.width?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                    )}
                     variant="outline"
                     className="mb-5"
                 />
                 <Input
                     label={t('form:input-label-height')}
                     {...register('height')}
-                    error={t(errors.height?.message!)}
+                    error={t(
+                        errors.height?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                    )}
                     variant="outline"
                     className="mb-5"
                 />

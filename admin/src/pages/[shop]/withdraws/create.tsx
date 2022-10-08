@@ -3,6 +3,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import CreateOrUpdateWithdrawForm from '@components/withdraw/withdraw-form'
 import ShopLayout from '@components/layouts/shop'
 import { adminAndOwnerOnly } from '@utils/auth-utils'
+import { GetServerSideProps } from 'next'
 
 export default function CreateWithdrawPage() {
     const { t } = useTranslation()
@@ -20,8 +21,8 @@ CreateWithdrawPage.authenticate = {
 }
 CreateWithdrawPage.Layout = ShopLayout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common'])),
     },
 })

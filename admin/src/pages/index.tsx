@@ -13,8 +13,8 @@ const OwnerDashboard = dynamic(() => import('@components/dashboard/owner'))
 
 export default function Dashboard() {
     const router = useRouter()
-    // Authentication
-    const { token, permissions } = getAuthCredentials()
+
+    const { token, permissions } = getAuthCredentials() // Authentication
     const [loggedIn, setLoggedIn] = useState(false)
 
     useEffect(() => {

@@ -21,7 +21,7 @@ type IProps = {
 const WithdrawTable = ({ withdraws, title }: IProps) => {
     const { data } = withdraws! ?? {}
     const { t } = useTranslation()
-    const { alignLeft } = useIsRTL()
+    
 
     const router = useRouter()
 
@@ -45,7 +45,7 @@ const WithdrawTable = ({ withdraws, title }: IProps) => {
             title: t('table:table-item-shop-name'),
             dataIndex: 'shop',
             key: 'shop',
-            align: alignLeft,
+            align'left',
             render: (shop: Shop) => shop.name,
         },
         {
@@ -97,7 +97,6 @@ const WithdrawTable = ({ withdraws, title }: IProps) => {
                 {title}
             </h3>
             <Table
-                //@ts-ignore
                 columns={columns}
                 emptyText={t('table:empty-table-data')}
                 data={data}

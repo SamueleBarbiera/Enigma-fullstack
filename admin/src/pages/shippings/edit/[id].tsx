@@ -6,6 +6,7 @@ import Loader from '@components/ui/loader/loader'
 import { useShippingQuery } from '@data/shipping/use-shipping.query'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetServerSideProps } from 'next'
 
 export default function UpdateShippingPage() {
     const { query } = useRouter()
@@ -27,8 +28,8 @@ export default function UpdateShippingPage() {
 }
 UpdateShippingPage.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })

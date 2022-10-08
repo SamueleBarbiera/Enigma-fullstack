@@ -26,20 +26,20 @@
                 "project": ["./tsconfig.json"]
             },
             "rules": {
-                "@typescript-eslint/no-unsafe-argument": "error",
+                "@typescript-eslint/no-unsafe-argument": "warn",
                 "@typescript-eslint/no-unnecessary-condition": 2,
                 "@typescript-eslint/no-non-null-assertion": "off",
                 "react/react-in-jsx-scope": 0,
                 "@typescript-eslint/no-misused-promises": [
-                    "error",
+                    "warn",
                     {
                         "checksVoidReturn": false
                     }
                 ],
-                //"@typescript-eslint/no-explicit-any": "warn",
+                "@typescript-eslint/no-explicit-any": "warn",
                 "@typescript-eslint/no-unused-vars": "warn",
-                "@typescript-eslint/explicit-member-accessibility": ["error"],
-                "react-hooks/rules-of-hooks": "error",
+                "@typescript-eslint/explicit-member-accessibility": ["warn"],
+                "react-hooks/rules-of-hooks": "warn",
                 "react-hooks/exhaustive-deps": "warn",
                 "require-await": "warn",
                 "@typescript-eslint/require-await": "warn"

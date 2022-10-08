@@ -6,11 +6,11 @@ import { getErrorMessage } from '@utils/form-error'
 const TagDeleteView = () => {
     const { mutate: deleteTagById, isLoading: loading } = useDeleteTagMutation()
 
-    const { data: modalData } = useModalState()
+    const data = useModalState()
     const { closeModal } = useModalAction()
     function handleDelete() {
         try {
-            deleteTagById(modalData as string)
+            deleteTagById(data.data as string)
             closeModal()
         } catch (error) {
             closeModal()

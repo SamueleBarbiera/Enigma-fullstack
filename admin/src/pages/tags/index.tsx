@@ -12,6 +12,7 @@ import { adminOnly } from '@utils/auth-utils'
 import { useTagsQuery } from '@data/tag/use-tags.query'
 import { SortOrder } from '@ts-types/generated'
 import { ROUTES } from '@utils/routes'
+import { GetServerSideProps } from 'next'
 
 export default function Tags() {
     const { t } = useTranslation()
@@ -37,7 +38,7 @@ export default function Tags() {
     function handleSearch({ searchText }: { searchText: string }) {
         setSearchTerm(searchText)
     }
-    function handlePagination(current: any) {
+    function handlePagination(current: number) {
         setPage(current)
     }
     return (
@@ -57,7 +58,7 @@ export default function Tags() {
                 </div>
             </Card>
 
-            <TagList tags={data?.tags} onPagination={handlePagination} onOrder={setOrder} onSort={setColumn} />
+            <TagList tags={data.tags} onPagination={handlePagination} onOrder={setOrder} onSort={setColumn} />
         </>
     )
 }
@@ -66,8 +67,8 @@ Tags.authenticate = {
 }
 Tags.Layout = Layout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['form', 'common', 'table'])),
+        ...(await serverSideTranslations(locale ?? '', ['form', 'common', 'table'])),
     },
 })

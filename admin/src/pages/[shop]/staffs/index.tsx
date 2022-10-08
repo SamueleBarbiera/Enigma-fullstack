@@ -13,6 +13,7 @@ import { useStaffsQuery } from '@data/shop/use-staffs.query'
 import { useState } from 'react'
 import { SortOrder } from '@ts-types/generated'
 import SortForm from '@components/common/sort-form'
+import { GetServerSideProps } from 'next'
 
 export default function StaffsPage() {
     const {
@@ -70,8 +71,8 @@ StaffsPage.authenticate = {
 }
 StaffsPage.Layout = ShopLayout
 
-export const getServerSideProps = async ({ locale }: any) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['table', 'common', 'form'])),
+        ...(await serverSideTranslations(locale ?? '', ['table', 'common', 'form'])),
     },
 })

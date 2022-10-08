@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import Input from '@components/ui/input'
 import { useForm } from 'react-hook-form'
 import Button from '@components/ui/button'
@@ -16,10 +18,16 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { tagValidationSchema } from './tag-validation-schema'
 import { useCreateTagMutation } from '@data/tag/use-tag-create.mutation'
 import { useUpdateTagMutation } from '@data/tag/use-tag-update.mutation'
+import { ConnectTypeBelongsTo, Maybe } from '@ts-types/generated'
 
-export const updatedIcons = tagIcons.map((item: any) => {
-    item.label = (
-        <div className="flex items-center space-s-5">
+export interface Iitem {
+    value: string
+    label: string
+}
+
+export const updatedIcons: object[] = tagIcons.map((item: Iitem) => {
+    return (
+        <div className="flex items-center space-s-5" key={item.label}>
             <span className="flex h-5 w-5 items-center justify-center">
                 {getIcon({
                     iconList: categoriesIcon,
@@ -30,29 +38,18 @@ export const updatedIcons = tagIcons.map((item: any) => {
             <span>{item.label}</span>
         </div>
     )
-    return item
 })
 
-type FormValues = {
+interface FormValues {
     name: string
-    type: any
     details: string
-    image: any
-    icon: any
+    image: { thumbnail: Maybe<string> | undefined; original: Maybe<string> | undefined; id: Maybe<string> | undefined }
+    icon: { value: Maybe<string> | undefined }
+    type: { id: Maybe<ConnectTypeBelongsTo> | undefined }
+    id: string
 }
 
-const defaultValues = {
-    image: '',
-    name: '',
-    details: '',
-    icon: '',
-    type: '',
-}
-
-type IProps = {
-    initialValues?: any
-}
-export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
+export default function CreateOrUpdateTagForm(initialValues: { icon: unknown; id: string }) {
     const router = useRouter()
     const { t } = useTranslation()
     const {
@@ -61,15 +58,12 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
         control,
         formState: { errors },
     } = useForm<FormValues>({
-        //@ts-ignore
-        defaultValues: initialValues
-            ? {
-                  ...initialValues,
-                  icon: initialValues?.icon
-                      ? tagIcons.find((singleIcon) => singleIcon.value === initialValues?.icon!)
-                      : '',
-              }
-            : defaultValues,
+        defaultValues: {
+            ...initialValues,
+            icon: {
+                value: initialValues.icon ? tagIcons.find((singleIcon) => singleIcon.value === initialValues.icon) : '',
+            },
+        },
 
         resolver: yupResolver(tagValidationSchema),
     })
@@ -77,32 +71,40 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
     const { mutate: createTag, isLoading: creating } = useCreateTagMutation()
     const { mutate: updateTag, isLoading: updating } = useUpdateTagMutation()
 
-    const onSubmit = async (values: FormValues) => {
-        const input = {
-            name: values.name,
-            details: values.details,
-            image: {
-                thumbnail: values?.image?.thumbnail,
-                original: values?.image?.original,
-                id: values?.image?.id,
-            },
-            icon: values.icon?.value ?? '',
-            type_id: values.type?.id,
-        }
+    const onSubmit = (values: FormValues) => {
         try {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (initialValues) {
                 updateTag({
                     variables: {
-                        id: initialValues?.id!,
+                        id: initialValues.id,
                         input: {
-                            ...input,
+                            name: values.name,
+                            details: values.details,
+                            image: {
+                                thumbnail: values.image.thumbnail,
+                                original: values.image.original,
+                                id: values.image.id,
+                            },
+                            icon: values.icon.value,
+                            type: values.type.id,
+                            id: '',
                         },
                     },
                 })
             } else {
                 createTag({
                     variables: {
-                        input,
+                        name: values.name,
+                        details: values.details,
+                        image: {
+                            thumbnail: values.image.thumbnail,
+                            original: values.image.original,
+                            id: values.image.id,
+                        },
+                        icon: values.icon.value,
+                        type: values.type.id,
+                        id: '',
                     },
                 })
             }
@@ -125,15 +127,17 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
                 <Card className="w-full sm:w-8/12 md:w-2/3">
                     <Input
                         label={t('form:input-label-name')}
-                        {...register('name')}
-                        error={t(errors.name?.message!)}
+                        {...register('icon.value')}
+                        error={t(
+                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
 
                     <TextArea
                         label={t('form:input-label-details')}
-                        {...register('details')}
+                        {...register('icon.value')}
                         variant="outline"
                         className="mb-5"
                     />

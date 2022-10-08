@@ -1,8 +1,8 @@
-import {CreateWithdrawInput} from '@ts-types/generated'
+import { CreateWithdrawInput } from '@ts-types/generated'
 import Withdraw from '@repositories/withdraw'
-import {useRouter} from 'next/router'
-import {useMutation, useQueryClient} from 'react-query'
-import {API_ENDPOINTS} from '@utils/api/endpoints'
+import { useRouter } from 'next/router'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { API_ENDPOINTS } from '@utils/api/endpoints'
 
 export interface IWithdrawCreateVariables {
     variables: {
@@ -14,13 +14,16 @@ export const useCreateWithdrawMutation = () => {
     const queryClient = useQueryClient()
     const router = useRouter()
 
-    return useMutation(({variables: {input}}: IWithdrawCreateVariables) => Withdraw.create(API_ENDPOINTS.WITHDRAWS, input), {
-        onSuccess: () => {
-            router.push(`/${router.query.shop}/withdraws`)
-        },
-        // Always refetch after error or success:
-        onSettled: () => {
-            queryClient.invalidateQueries(API_ENDPOINTS.WITHDRAWS)
-        },
-    })
+    return useMutation(
+        ({ variables: { input } }: IWithdrawCreateVariables) => Withdraw.create(API_ENDPOINTS.WITHDRAWS, input),
+        {
+            onSuccess: async () => {
+                await router.push(`/${router.query.shop as string}/withdraws`)
+            },
+            // Always refetch after error or success:
+            onSettled: async () => {
+                await queryClient.invalidateQueries([API_ENDPOINTS.WITHDRAWS])
+            },
+        }
+    )
 }
