@@ -102,11 +102,6 @@ export const siteSettings = {
                 icon: 'ShippingsIcon',
             },
             {
-                href: ROUTES.WITHDRAWS,
-                label: 'sidebar-nav-item-withdraws',
-                icon: 'WithdrawIcon',
-            },
-            {
                 href: ROUTES.SETTINGS,
                 label: 'sidebar-nav-item-settings',
                 icon: 'SettingsIcon',
@@ -141,12 +136,6 @@ export const siteSettings = {
                 href: (shop: string) => `/${shop}${ROUTES.STAFFS}`,
                 label: 'sidebar-nav-item-staffs',
                 icon: 'UsersIcon',
-                permissions: adminAndOwnerOnly,
-            },
-            {
-                href: (shop: string) => `/${shop}${ROUTES.WITHDRAWS}`,
-                label: 'sidebar-nav-item-withdraws',
-                icon: 'AttributeIcon',
                 permissions: adminAndOwnerOnly,
             },
         ],

@@ -3,8 +3,8 @@
  * @param a array - check the sample input below
  * @returns array of arrays - check the sample out put below
  */
-export const cartesian = (...a: any) =>
-    a.reduce((a: any, b: any) => a.flatMap((d: any) => b.map((e: any) => [d, e].flat())))
+export const cartesian = (...a: unknown[]) =>
+    a.reduce((a: unknown, b: unknown) => a.flatMap((d: unknown) => b.map((e: unknown) => [d, e].flat())))
 
 // Cartesian Example
 // ==========================================

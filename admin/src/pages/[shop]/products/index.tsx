@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import Card from '@components/common/card'
 import Search from '@components/common/search'
 import ProductList from '@components/product/product-list'
@@ -27,7 +28,7 @@ export default function ProductsPage() {
         query: { shop },
     } = useRouter()
     const { data: shopData, isLoading: fetchingShop } = useShopQuery(shop as string)
-    const shopId = shopData?.shop?.id!
+    const shopId = shopData?.shop.id
     const { t } = useTranslation()
     const [searchTerm, setSearchTerm] = useState('')
     const [type, setType] = useState('')
@@ -66,14 +67,18 @@ export default function ProductsPage() {
         openModal('EXPORT_IMPORT_PRODUCT', shopId)
     }
 
-    if (loading || fetchingShop) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
-
     function handleSearch({ searchText }: { searchText: string }) {
         setSearchTerm(searchText)
     }
-    function handlePagination(current: any) {
+    function handlePagination(current: number) {
         setPage(current)
+    }
+
+    if (loading || fetchingShop) return <Loader text={t('common:text-loading')} />
+    if (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        return <ErrorMessage message={errorMessage} />
     }
     return (
         <>
@@ -87,9 +92,11 @@ export default function ProductsPage() {
                         <div className="flex w-full items-center">
                             <Search onSearch={handleSearch} />
 
-                            <LinkButton href={`/${shop}/products/create`} className="h-12 ms-4 md:ms-6">
-                                <span className="hidden md:block">+ {t('form:button-label-add-product')}</span>
-                                <span className="md:hidden">+ {t('form:button-label-add')}</span>
+                            <LinkButton href={`/${shop as string}/products/create`} className="h-12 ms-4 md:ms-6">
+                                <>
+                                    <span className="hidden md:block">+ {t('form:button-label-add-product')}</span>
+                                    <span className="md:hidden">+ {t('form:button-label-add')}</span>
+                                </>
                             </LinkButton>
                         </div>
 
@@ -133,12 +140,7 @@ export default function ProductsPage() {
                     </div>
                 </div>
             </Card>
-            <ProductList
-                products={data?.products}
-                onPagination={handlePagination}
-                onOrder={setOrder}
-                onSort={setColumn}
-            />
+            <ProductList products={data} onPagination={handlePagination} onOrder={setOrder} onSort={setColumn} />
         </>
     )
 }

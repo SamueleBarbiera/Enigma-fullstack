@@ -7,17 +7,14 @@ import { useTranslation } from 'next-i18next'
 import TitleWithSort from '@components/ui/title-with-sort'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
-export interface IProps {
-    attributes: Attribute[] | undefined
-    onSort: (current: unknown) => void
+export type IProps = {
+    attributes: Attribute | undefined
+    onSort: (current: any) => void
     onOrder: (current: string) => void
 }
 const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
     const { t } = useTranslation()
     const router = useRouter()
-
-    const alignLeft = router.locale === 'ar' || router.locale === 'he' ? 'right' : 'left'
-    const alignRight = router.locale === 'ar' || router.locale === 'he' ? 'left' : 'right'
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -61,9 +58,9 @@ const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align'left',
+            align: 'left',
             onHeaderCell: () => onHeaderClick('name'),
-            render: (name) => <span className="whitespace-nowrap">{name}</span>,
+            render: (name: any) => <span className="whitespace-nowrap">{name}</span>,
         },
         {
             title: t('table:table-item-shop'),
@@ -78,7 +75,7 @@ const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
             title: t('table:table-item-values'),
             dataIndex: 'values',
             key: 'values',
-            align'left',
+            align: 'left',
             render: (values: AttributeValue[]) => {
                 return (
                     <span className="block truncate">
@@ -93,7 +90,7 @@ const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
             title: t('table:table-item-actions'),
             dataIndex: 'id',
             key: 'actions',
-            align'right',
+            align: 'right',
             render: (id: string) => (
                 <ActionButtons id={id} editUrl={`${router.asPath}/${id}/edit`} deleteModalView="DELETE_ATTRIBUTE" />
             ),
@@ -103,12 +100,13 @@ const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
     if (router.query.shop) {
         columns = columns.filter((column) => column.key !== 'shop')
     }
+
     return (
         <div className="mb-8 overflow-hidden rounded shadow">
             <Table
                 columns={columns}
                 emptyText={t('table:empty-table-data')}
-                data={attributes}
+                data={attributes as Attribute[] | undefined}
                 rowKey="id"
                 scroll={{ x: 380 }}
             />

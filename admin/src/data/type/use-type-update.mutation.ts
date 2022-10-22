@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import Type from '@repositories/type'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 import { useTranslation } from 'next-i18next'
+import { AxiosError } from 'axios'
 export interface ITypeUpdateVariables {
     variables: {
         id: string
@@ -23,6 +24,12 @@ export const useUpdateTypeMutation = () => {
             // Always refetch after error or success:
             onSettled: async () => {
                 await queryClient.invalidateQueries([API_ENDPOINTS.TYPES])
+            },
+            onError: (error: AxiosError) => {
+                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
+                toast.error(JSON.stringify(error))
+                return errorMessage
             },
         }
     )

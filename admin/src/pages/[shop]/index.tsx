@@ -59,7 +59,11 @@ export default function ShopPage() {
     } = data?.shop ?? {}
 
     if (loading) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
+    if (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        return <ErrorMessage message={errorMessage} />
+    }
     return (
         <div className="grid grid-cols-12 gap-6">
             {!is_active && (

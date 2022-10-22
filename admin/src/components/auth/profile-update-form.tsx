@@ -23,7 +23,7 @@ interface FormValues {
     }
 }
 
-export default function ProfileUpdate(me: { id: number; profile: { id: string } }) {
+export default function ProfileUpdate(me) {
     const { t } = useTranslation()
     const { mutate: updateUser, isLoading: loading } = useUpdateUserMutation()
     const {

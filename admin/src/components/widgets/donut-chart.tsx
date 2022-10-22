@@ -1,6 +1,34 @@
 import Chart from '@components/ui/chart'
+import { ReactElement, JSXElementConstructor, ReactFragment, ReactPortal } from 'react'
+import { ReactI18NextChild } from 'react-i18next'
 
-const DonutChart = ({ series, icon, labels, prefix, colors }: any) => {
+const DonutChart = (
+    series: number[],
+    icon: (
+        | string
+        | number
+        | boolean
+        | ReactElement
+        | ReactFragment
+        | ReactPortal
+        | Iterable<ReactI18NextChild>
+        | null
+        | undefined
+    )[],
+    labels: (
+        | string
+        | number
+        | boolean
+        | ReactElement
+        | ReactFragment
+        | ReactPortal
+        | Iterable<ReactI18NextChild>
+        | null
+        | undefined
+    )[],
+    prefix: string | number | boolean | ReactElement | ReactFragment | null | undefined,
+    colors: any[]
+) => {
     const options = {
         options: {
             colors: colors,

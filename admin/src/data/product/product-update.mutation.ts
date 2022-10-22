@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import Product from '@repositories/product'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 import { useTranslation } from 'next-i18next'
+import { AxiosError, ResponseType } from 'axios'
 
 export interface IProductUpdateVariables {
     variables: { id: string; input: UpdateProduct }
@@ -22,6 +23,12 @@ export const useUpdateProductMutation = () => {
             // Always refetch after error or success:
             onSettled: async () => {
                 await queryClient.invalidateQueries([API_ENDPOINTS.PRODUCTS])
+            },
+            onError: (error: AxiosError<ResponseType>) => {
+                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
+                toast.error(JSON.stringify(error))
+                return errorMessage
             },
         }
     )

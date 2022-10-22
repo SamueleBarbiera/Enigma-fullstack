@@ -38,7 +38,7 @@ export declare interface UserAddress {
 export declare interface User {
     id: Scalars['ID']
     name: Scalars['String']
-    shops: [Shop]
+    shops: Shop[]
     managed_shop: Shop
     is_active: boolean
     email: Scalars['String']
@@ -115,19 +115,30 @@ export declare interface OrderStatus {
     updated_at: Scalars['DateTime']
 }
 export declare interface Coupon {
+    image: Image
+    deleted_at: any
+    is_valid: boolean
     id: Scalars['ID']
     code: Scalars['String']
     description: Scalars['String']
     orders: Order[]
     type: Scalars['String']
-    image: Scalars['String']
     amount: Scalars['Float']
     active_from: Scalars['DateTime']
     expire_at: Scalars['DateTime']
     created_at: Scalars['DateTime']
     updated_at: Scalars['DateTime']
 }
+
+export interface Image {
+    id: number
+    original: string
+    thumbnail: string
+}
+
 export declare interface Product {
+    tags: Tag[]
+    productTypeValue: any
     id: Scalars['ID']
     shop_id: Scalars['ID']
     name: Scalars['String']
@@ -267,7 +278,7 @@ export declare interface Category {
     parent?: Maybe<Scalars['Int']>
     children: Category[]
     details?: Maybe<Scalars['String']>
-    image?: Maybe<Attachment>
+    image?: Maybe<Attachment[]>
     icon?: Maybe<Scalars['String']>
     type: Type
     products: Product[]
@@ -360,7 +371,13 @@ export declare interface ConnectBelongsTo {
     connect?: Maybe<Scalars['ID']>
 }
 export declare interface AttributeValueInput {
-    map(arg0: ({ id, value, meta }: any) => { id: number; value: any; meta: any }): AttributeValueInput
+    map(
+        arg0: ({ id, value, meta }: AttributeValueInput) => {
+            id: Maybe<number> | undefined
+            value: string
+            meta: Maybe<string> | undefined
+        }
+    ): AttributeValueInput
     id?: Maybe<Scalars['Int']>
     value: Scalars['String']
     meta?: Maybe<Scalars['String']>
@@ -531,6 +548,7 @@ export declare interface OrderStatusInput {
     name: Scalars['String']
     color: Scalars['String']
     serial: Scalars['Int']
+    data: Order[]
 }
 
 export declare interface OrderStatusUpdateInput {
@@ -545,10 +563,10 @@ export declare interface CreateProduct {
     type_id: Scalars['String']
     price: Scalars['Float']
     sale_price?: Maybe<Scalars['Float']>
-    quantity: Scalars['Int']
-    unit: Scalars['String']
+    quantity: Maybe<number> | undefined
+    unit: Maybe<string> | undefined
     description?: Maybe<Scalars['String']>
-    categories?: Maybe<Scalars['ID'][]>
+    categories?: Category[]
     variations?: Maybe<AttributeProductPivot[]>
     in_stock?: Maybe<Scalars['Boolean']>
     is_taxable?: Maybe<Scalars['Boolean']>
@@ -559,6 +577,7 @@ export declare interface CreateProduct {
     height?: Maybe<Scalars['String']>
     length?: Maybe<Scalars['String']>
     width?: Maybe<Scalars['String']>
+    data: Product
 }
 export declare interface AttributeProductPivot {
     id: Scalars['ID']
@@ -713,6 +732,7 @@ export interface CreateUser {
     password: Scalars['String']
     profile?: Maybe<UserProfileInput>
     address?: Maybe<Maybe<UserAddressUpsertInput>[]>
+    data: User[]
 }
 
 export interface SocialInput {
@@ -753,6 +773,7 @@ export interface CreateTypeInput {
     gallery?: Maybe<AttachmentInput[]>
     icon?: Maybe<Scalars['String']>
     banner_text?: Maybe<Scalars['String']>
+    data: Order[] | undefined
 }
 
 export enum ProductType {
@@ -766,28 +787,6 @@ export declare interface ApproveShopInput {
     id: Scalars['ID']
     admin_commission_rate: Scalars['Float']
 }
-export declare interface ApproveWithdrawInput {
-    id: Scalars['ID']
-    status: WithdrawStatus
-}
-
-export declare enum WithdrawStatus {
-    /** Approved */
-    Approved = 'APPROVED',
-
-    /** Pending */
-    Pending = 'PENDING',
-
-    /** On hold */
-    OnHold = 'ON_HOLD',
-
-    /** Rejected */
-    Rejected = 'REJECTED',
-
-    /** Processing */
-    Processing = 'PROCESSING',
-}
-
 export declare interface Shop {
     id?: Maybe<Scalars['ID']>
     owner_id?: Maybe<Scalars['Int']>
@@ -826,7 +825,6 @@ export declare interface Balance {
     admin_commission_rate?: Maybe<Scalars['Float']>
     shop?: Maybe<Shop>
     total_earnings?: Maybe<Scalars['Float']>
-    withdrawn_amount?: Maybe<Scalars['Float']>
     current_balance?: Maybe<Scalars['Float']>
     payment_info?: Maybe<PaymentInfo>
 }
@@ -887,6 +885,18 @@ export declare interface CreateTagInput {
     icon?: Maybe<Scalars['String']>
 }
 
+export interface Root {
+    id: number
+    name: string
+    slug: string
+    icon: string
+    image: Maybe<AttachmentInput>
+    details: string
+    created_at: string
+    updated_at: string
+    deleted_at: any
+}
+
 export declare interface UpdateTagInput {
     id: Scalars['ID']
     name?: Maybe<Scalars['String']>
@@ -894,39 +904,6 @@ export declare interface UpdateTagInput {
     details?: Maybe<Scalars['String']>
     image?: Maybe<AttachmentInput>
     icon?: Maybe<Scalars['String']>
-}
-
-export declare interface Withdraw {
-    __typename?: 'Withdraw'
-    id?: Maybe<Scalars['ID']>
-    amount?: Maybe<Scalars['Float']>
-    status?: Maybe<WithdrawStatus>
-    shop_id?: Maybe<Scalars['Int']>
-    shop?: Maybe<Shop>
-    payment_method?: Maybe<Scalars['String']>
-    details?: Maybe<Scalars['String']>
-    note?: Maybe<Scalars['String']>
-    created_at?: Maybe<Scalars['DateTime']>
-    updated_at?: Maybe<Scalars['DateTime']>
-}
-/** A paginated list of Withdraw items. */
-
-export declare interface WithdrawPaginator {
-    __typename?: 'WithdrawPaginator'
-    /** Pagination information about the list of items. */
-
-    paginatorInfo: PaginatorInfo
-    /** A list of Withdraw items. */
-
-    data: Withdraw[]
-}
-
-export declare interface CreateWithdrawInput {
-    amount: Scalars['Float']
-    shop_id: Scalars['Int']
-    payment_method?: Maybe<Scalars['String']>
-    details?: Maybe<Scalars['String']>
-    note?: Maybe<Scalars['String']>
 }
 
 export declare interface AddStaffInput {

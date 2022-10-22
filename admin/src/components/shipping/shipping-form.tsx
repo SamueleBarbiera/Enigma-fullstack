@@ -25,6 +25,7 @@ interface IProps {
 }
 
 export default function CreateOrUpdateShippingForm({ initialValues }: IProps) {
+    console.log('🚀 - file: shipping-form.tsx - line 28 - CreateOrUpdateShippingForm - initialValues', initialValues)
     const router = useRouter()
     const { t } = useTranslation()
     const {
@@ -39,7 +40,7 @@ export default function CreateOrUpdateShippingForm({ initialValues }: IProps) {
     })
     const { mutate: createShippingClass, isLoading: creating } = useCreateShippingClassMutation()
     const { mutate: updateShippingClass, isLoading: updating } = useUpdateShippingClassMutation()
-    const onSubmit = async (values: ShippingInput) => {
+    const onSubmit = (values: ShippingInput) => {
         const processedValues = {
             ...values,
             amount: values.type === ShippingType.Free ? 0 : values.amount,

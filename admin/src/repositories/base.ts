@@ -3,26 +3,27 @@ import http from '@utils/api/http'
 import { AxiosResponse } from 'axios'
 
 export default class Base<C, U> {
-    public http = <T>(url: string, type: string, variables: T | null = null, options?: unknown) => {
-        return http[type](url, variables, options) as AxiosResponse
-    }
-    public all = (url: string) => {
-        return this.http(url, 'get')
+    public http = async <T>(url: string, type: string, variables: T | null = null, options?: unknown) => {
+        return (await http[type](url, variables, options)) as AxiosResponse<C, U>
     }
 
-    public find = (url: string) => {
-        return this.http(url, 'get')
+    public all = async (url: string) => {
+        return await this.http(url, 'get')
     }
 
-    public create = (url: string, variables: C) => {
-        return this.http<C>(url, 'post', variables)
+    public find = async (url: string) => {
+        return await this.http<C>(url, 'get')
     }
 
-    public update = (url: string, variables: U) => {
-        return this.http<U>(url, 'put', variables)
+    public create = async (url: string, variables: C) => {
+        return await this.http<C>(url, 'post', variables)
     }
 
-    public erase = (url: string) => {
-        return this.http(url, 'delete')
+    public update = async (url: string, variables: U) => {
+        return await this.http<U>(url, 'put', variables)
+    }
+
+    public erase = async (url: string) => {
+        return await this.http(url, 'delete')
     }
 }

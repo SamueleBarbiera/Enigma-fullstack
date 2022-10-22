@@ -1,10 +1,10 @@
-import Product from '@repositories/product'
+import GetProduct from '@repositories/getProduct'
 import { useQuery } from '@tanstack/react-query'
-import { Product as TProduct } from '@ts-types/generated'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
+import { Product as TProduct } from '@ts-types/generated'
 
 export const fetchProduct = async (slug: string) => {
-    const { data } = await Product.find(`${API_ENDPOINTS.PRODUCTS}/${slug}`)
+    const { data } = await GetProduct.find(`${API_ENDPOINTS.PRODUCTS}/${slug}`)
     return data
 }
 

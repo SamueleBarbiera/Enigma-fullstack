@@ -5,42 +5,40 @@ import Description from '@components/ui/description'
 import Card from '@components/common/card'
 import Label from '@components/ui/label'
 import Title from '@components/ui/title'
-
 import Checkbox from '@components/ui/checkbox/checkbox'
 import SelectInput from '@components/ui/select-input'
 import { cartesian } from '@utils/cartesian'
 import isEmpty from 'lodash/isEmpty'
-import { useMemo } from 'react'
-import { Product } from '@ts-types/generated'
+import { useEffect } from 'react'
+import { Attribute, Maybe, Product } from '@ts-types/generated'
 import { useTranslation } from 'next-i18next'
 import { useAttributesQuery } from '@data/attributes/use-attributes.query'
 
 interface IProps {
     initialValues?: Product | null
-    shopId: string | undefined
+    shopId: Maybe<string> | undefined
 }
 
-function filteredAttributes(attributes: any, variations: any) {
-    let res = []
-    res = attributes?.filter((el: any) => {
-        return !variations.find((element: any) => {
-            return element?.attribute?.slug === el?.slug
+function filteredAttributes(attributes: Maybe<Attribute> | undefined, variations: unknown[]) {
+    const res = attributes?.filter((el: { slug: string }) => {
+        return !variations.find((element) => {
+            return element?.attribute?.slug === el.slug
         })
     })
     return res
 }
 
-function getCartesianProduct(values: any) {
+function getCartesianProduct(values) {
     const formattedValues = values
-        ?.map((v: any) => v.value?.map((a: any) => ({ name: v.attribute.name, value: a.value })))
-        .filter((i: any) => i !== undefined)
+        ?.map((v: unknown) => v.value?.map((a: unknown) => ({ name: v.attribute.name, value: a.value })))
+        .filter((i: unknown) => i !== undefined)
     if (isEmpty(formattedValues)) return []
     return cartesian(...formattedValues)
 }
 
 export default function ProductVariableForm({ shopId, initialValues }: IProps) {
     const { t } = useTranslation()
-    const { data, isLoading } = useAttributesQuery({
+    const data = useAttributesQuery({
         shop_id: initialValues ? Number(initialValues.shop_id) : Number(shopId),
     })
     const {
@@ -59,8 +57,8 @@ export default function ProductVariableForm({ shopId, initialValues }: IProps) {
     })
     const cartesianProduct = getCartesianProduct(getValues('variations'))
     const variations = watch('variations')
+    const attributes = data.data?.values
 
-    const attributes = data?.attributes
     return (
         <div className="my-5 flex flex-wrap sm:my-8">
             <Description
@@ -76,7 +74,7 @@ export default function ProductVariableForm({ shopId, initialValues }: IProps) {
                         {t('form:form-title-options')}
                     </Title>
                     <div>
-                        {fields.map((field: any, index: number) => {
+                        {fields.map((field, index) => {
                             return (
                                 <div
                                     key={field.id}
@@ -102,10 +100,12 @@ export default function ProductVariableForm({ shopId, initialValues }: IProps) {
                                                 name={`variations[${index}].attribute`}
                                                 control={control}
                                                 defaultValue={field.attribute}
-                                                getOptionLabel={(option: any) => option.name}
-                                                getOptionValue={(option: any) => option.id}
+                                                getOptionLabel={(option: { name: string }) => option.name}
+                                                getOptionValue={(option: { id: string }) => option.id}
                                                 options={filteredAttributes(attributes, variations)!}
-                                                isLoading={isLoading}
+                                                isLoading={data.isLoading}
+                                                isMulti={undefined}
+                                                isClearable={undefined}
                                             />
                                         </div>
 
@@ -116,9 +116,11 @@ export default function ProductVariableForm({ shopId, initialValues }: IProps) {
                                                 name={`variations[${index}].value`}
                                                 control={control}
                                                 defaultValue={field.value}
-                                                getOptionLabel={(option: any) => option.value}
-                                                getOptionValue={(option: any) => option.id}
+                                                getOptionLabel={(option: { value: string }) => option.value}
+                                                getOptionValue={(option: { id: string }) => option.id}
                                                 options={watch(`variations[${index}].attribute`)?.values}
+                                                isClearable={undefined}
+                                                isLoading={false}
                                             />
                                         </div>
                                     </div>
@@ -130,7 +132,7 @@ export default function ProductVariableForm({ shopId, initialValues }: IProps) {
                     <div className="px-5 md:px-8">
                         <Button
                             disabled={fields.length === attributes?.length}
-                            onClick={(e: any) => {
+                            onClick={(e) => {
                                 e.preventDefault()
                                 append({ attribute: '', value: [] })
                             }}
@@ -144,9 +146,9 @@ export default function ProductVariableForm({ shopId, initialValues }: IProps) {
                     {!!cartesianProduct?.length && (
                         <div className="mt-5 border-t border-dashed border-border-200 pt-5 md:mt-8 md:pt-8">
                             <Title className="mb-0 px-5 text-center text-lg uppercase md:px-8">
-                                {cartesianProduct?.length} {t('form:total-variation-added')}
+                                {cartesianProduct.length} {t('form:total-variation-added')}
                             </Title>
-                            {cartesianProduct.map((fieldAttributeValue: any, index: number) => {
+                            {cartesianProduct.map((fieldAttributeValue: unknown, index: number) => {
                                 return (
                                     <div
                                         key={`fieldAttributeValues-${index}`}
@@ -189,7 +191,7 @@ export default function ProductVariableForm({ shopId, initialValues }: IProps) {
                                             <Input
                                                 label={`${t('form:input-label-sku')}*`}
                                                 {...register(`variation_options.${index}.sku`)}
-                                                error={t(errors.variation_options?.message)}
+                                                error={t(errors.variation_options?.[index]?.sku?.message)}
                                                 variant="outline"
                                                 className="mb-5"
                                             />
@@ -220,21 +222,17 @@ export default function ProductVariableForm({ shopId, initialValues }: IProps) {
     )
 }
 
-export const TitleAndOptionsInput = (fieldAttributeValue, index: number, setValue, register) => {
-    useMemo(() => {
-        setValue(
-            `variation_options.${index}.title`,
-            Array.isArray(fieldAttributeValue)
-                ? fieldAttributeValue.map((a) => a.value).join('/')
-                : fieldAttributeValue.value
-        )
-        setValue(
-            `variation_options.${index}.options`,
-            Array.isArray(fieldAttributeValue)
-                ? JSON.stringify(fieldAttributeValue)
-                : JSON.stringify([fieldAttributeValue])
-        )
-    }, [fieldAttributeValue, index, options, setValue, title])
+export const TitleAndOptionsInput = ({ fieldAttributeValue, index, setValue, register }: unknown) => {
+    const title = Array.isArray(fieldAttributeValue)
+        ? fieldAttributeValue.map((a) => a.value).join('/')
+        : fieldAttributeValue.value
+    const options = Array.isArray(fieldAttributeValue)
+        ? JSON.stringify(fieldAttributeValue)
+        : JSON.stringify([fieldAttributeValue])
+    useEffect(() => {
+        setValue(`variation_options.${index}.title`, title)
+        setValue(`variation_options.${index}.options`, options)
+    }, [fieldAttributeValue])
     return (
         <>
             <input {...register(`variation_options.${index}.title`)} type="hidden" />

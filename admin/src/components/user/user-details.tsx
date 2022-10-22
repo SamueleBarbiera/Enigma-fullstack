@@ -17,7 +17,7 @@ const UserDetails = () => {
     return (
         <div className="flex h-full flex-col items-center p-5">
             <div className="relative flex h-32 w-32 items-center justify-center overflow-hidden rounded-full border border-gray-200">
-                <Image src={profile?.avatar?.thumbnail ?? '/avatar-placeholder.svg'} layout="fill" />
+                <Image src={profile?.avatar?.thumbnail ?? '/avatar-placeholder.svg'} layout="fill" alt="" />
             </div>
             <h3 className="mt-4 text-lg font-semibold text-heading">{name}</h3>
             <p className="mt-1 text-sm text-muted">{email}</p>

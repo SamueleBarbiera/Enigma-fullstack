@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import { Shipping as TShipping } from '@ts-types/generated'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 
-export const fetchShipping = async (id: string) => {
-    const { data } = await Shipping.find(`${API_ENDPOINTS.SHIPPINGS}/${id}`)
+export const fetchShipping = (id: string) => {
+    const { data } = Shipping.find(`${API_ENDPOINTS.SHIPPINGS}/${id}`)
     return data
 }
 

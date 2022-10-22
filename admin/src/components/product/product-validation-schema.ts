@@ -6,12 +6,12 @@ export const productValidationSchema = yup.object().shape({
     productTypeValue: yup.object().required('form:error-product-type-required'),
     sku: yup.mixed().when('productTypeValue', {
         is: (productType: { name: string; value: string; [key: string]: unknown }) =>
-            productType?.value === ProductType.Simple,
+            productType.value === ProductType.Simple,
         then: yup.string().nullable().required('form:error-sku-required'),
     }),
     price: yup.mixed().when('productTypeValue', {
         is: (productType: { name: string; value: string; [key: string]: unknown }) =>
-            productType?.value === ProductType.Simple,
+            productType.value === ProductType.Simple,
         then: yup
             .number()
             .typeError('form:error-price-must-number')
@@ -25,7 +25,7 @@ export const productValidationSchema = yup.object().shape({
         .positive('form:error-sale-price-must-positive'),
     quantity: yup.mixed().when('productTypeValue', {
         is: (productType: { name: string; value: string; [key: string]: unknown }) =>
-            productType?.value === ProductType.Simple,
+            productType.value === ProductType.Simple,
         then: yup
             .number()
             .typeError('form:error-quantity-must-number')

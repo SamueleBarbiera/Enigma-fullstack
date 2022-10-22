@@ -20,13 +20,17 @@ export type MODAL_VIEWS =
     | 'EXPORT_IMPORT_ATTRIBUTE'
 
 interface State {
+    type: string
+    id: number
     view?: MODAL_VIEWS
-    data?: any
+    data?: unknown
     isOpen: boolean
 }
 type Action = { type: 'open'; view?: MODAL_VIEWS; payload?: unknown } | { type: 'close' }
 
 const initialState: State = {
+    id: 0,
+    type: '',
     view: undefined,
     isOpen: false,
     data: null,
@@ -85,7 +89,7 @@ export function useModalAction() {
         openModal(view?: MODAL_VIEWS, payload?: unknown) {
             dispatch({ type: 'open', view, payload })
         },
-        closeModal: () => {
+        closeModal() {
             dispatch({ type: 'close' })
         },
     }

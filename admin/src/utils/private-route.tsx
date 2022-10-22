@@ -1,11 +1,16 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { getAuthCredentials, hasAccess } from './auth-utils'
 import Loader from '@components/ui/loader/loader'
 import AccessDeniedPage from '@components/common/access-denied'
 import { ROUTES } from './routes'
 
-const PrivateRoute: React.FC<{ children: any; authProps: any }> = ({ children, authProps }) => {
+interface IPrivateRoute {
+    children: unknown
+    authProps: unknown
+}
+
+const PrivateRoute = ({ children, authProps }: IPrivateRoute) => {
     const router = useRouter()
     const { token, permissions } = getAuthCredentials()
     const isUser = !!token

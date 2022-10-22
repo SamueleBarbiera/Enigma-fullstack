@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import User from '@repositories/user'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 import { useTranslation } from 'next-i18next'
+import { AxiosError } from 'axios'
 
 export interface IUserUpdateVariables {
     variables: { id: number; input: UpdateUser }
@@ -19,8 +20,8 @@ export const useUpdateUserMutation = () => {
                 toast.success(t('common:successfully-updated'))
             },
             // Always refetch after error or success:
-            onSettled: async () => {
-                await queryClient.invalidateQueries([API_ENDPOINTS.ME])
+            onSettled: () => {
+                queryClient.invalidateQueries([API_ENDPOINTS.ME])
             },
         }
     )

@@ -6,13 +6,14 @@ import { getErrorMessage } from '@utils/form-error'
 const StaffDeleteView = () => {
     const { mutate: removeStaffByID, isLoading: loading } = useRemoveStaffMutation()
 
-    const { data } = useModalState()
+    const data = useModalState()
     const { closeModal } = useModalAction()
-    async function handleDelete() {
+    function handleDelete() {
         try {
-            removeStaffByID(data)
+            removeStaffByID(data.data as string)
             closeModal()
         } catch (error) {
+            console.log('🚀 - file: staff-delete-view.tsx - line 16 - handleDelete - error', error)
             closeModal()
             getErrorMessage(error)
         }

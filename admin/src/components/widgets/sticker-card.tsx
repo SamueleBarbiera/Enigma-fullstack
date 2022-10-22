@@ -3,7 +3,20 @@ import { IosArrowDown } from '@components/icons/ios-arrow-down'
 import { IosArrowUp } from '@components/icons/ios-arrow-up'
 import { useTranslation } from 'next-i18next'
 
-const StickerCard = ({
+interface Props {
+    titleTransKey: string
+    subtitleTransKey: string
+    icon: any
+    iconBgStyle: React.CSSProperties | undefined
+    price: unknown
+    indicator: string
+    indicatorText: string | undefined
+    note: string | undefined
+    link: string | undefined
+    linkText: string | undefined
+}
+
+const StickerCard: React.FC<Props> = ({
     titleTransKey,
     subtitleTransKey,
     icon,
@@ -14,7 +27,7 @@ const StickerCard = ({
     note,
     link,
     linkText,
-}: any) => {
+}: Props) => {
     const { t } = useTranslation('widgets')
     return (
         <div className="flex h-full w-full flex-col rounded bg-light p-7">
@@ -46,7 +59,12 @@ const StickerCard = ({
                 </span>
             )}
             {link && (
-                <a className="text-xs font-semibold text-purple-700 no-underline" href={link} target="_blank">
+                <a
+                    className="text-xs font-semibold text-purple-700 no-underline"
+                    href={link}
+                    target="_blank"
+                    rel="noreferrer"
+                >
                     {linkText}
                 </a>
             )}

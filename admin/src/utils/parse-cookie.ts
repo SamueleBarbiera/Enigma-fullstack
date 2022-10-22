@@ -4,8 +4,8 @@ function tryDecode(str: string, decode: (encodedURIComponent: string) => string)
         return decode(str)
     } catch (error: unknown) {
         console.log('🚀 - file: http.ts - line 27 - error', error)
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+        if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
         return str
     }
 }

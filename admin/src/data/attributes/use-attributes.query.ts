@@ -3,6 +3,7 @@ import { stringifySearchQuery } from '@utils/data-mappers'
 import { useQuery } from '@tanstack/react-query'
 import Attribute from '@repositories/attribute'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
+import { Attribute as TAttribute } from '@ts-types/generated'
 
 const fetchAttributes = async ({ queryKey }: QueryParamsType) => {
     const [_key, params] = queryKey
@@ -13,11 +14,11 @@ const fetchAttributes = async ({ queryKey }: QueryParamsType) => {
     })
     const url = `${API_ENDPOINTS.ATTRIBUTES}?search=${searchString}&orderBy=${orderBy}&sortedBy=${sortedBy}`
     const { data } = await Attribute.all(url)
-    return { attributes: data }
+    return data
 }
 
-const useAttributesQuery = (params: QueryOptionsType = {}, options: any = {}) => {
-    return useQuery<any, Error>([API_ENDPOINTS.ATTRIBUTES, params], fetchAttributes, {
+const useAttributesQuery = (params: QueryOptionsType = {}, options = {}) => {
+    return useQuery<TAttribute, Error>([API_ENDPOINTS.ATTRIBUTES, params], fetchAttributes, {
         ...options,
         keepPreviousData: true,
     })

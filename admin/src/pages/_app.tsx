@@ -11,7 +11,7 @@ import PageLoader from '@components/ui/page-loader/page-loader'
 import { ToastContainer } from 'react-toastify'
 import { DehydratedState, MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Hydrate } from '@tanstack/react-query'
-import { ComponentType, useMemo } from 'react'
+import { ComponentType, useState } from 'react'
 import { useSettingsQuery } from '@data/settings/use-settings.query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { appWithTranslation, UserConfig } from 'next-i18next'
@@ -21,24 +21,31 @@ import PrivateRoute from '@utils/private-route'
 import ManagedModal from '@components/ui/modal/managed-modal'
 import { NextPage } from 'next'
 
-const Noop = (children: React.ReactElement) => {
-    return <>{children}</>
+export interface Root {
+    _nextI18Next: SSRConfigi18n
+    children: React.ReactElement
+}
+
+const Noop = (children: Root) => {
+    console.log('🚀 - file: _app.tsx - line 25 - Noop - children', children)
+    return <>{children.children}</>
 }
 
 interface IProps {
-    children: React.ReactElement
+    children?: React.ReactNode
 }
 
 const AppSettings = (props: IProps) => {
     const { data, isLoading: loading, error } = useSettingsQuery()
     return loading ? (
         <PageLoader />
-    ) : error ? (
-        <ErrorMessage message={error} />
+    ) : error && error instanceof Error ? (
+        <ErrorMessage message={error.message} />
     ) : (
-        <SettingsProvider initialValue={data?.options} {...props} />
+        <SettingsProvider initialValue={data?.data} {...props} />
     )
 }
+
 interface SSRConfigi18n {
     initialI18nStore: unknown
     initialLocale: string
@@ -51,9 +58,6 @@ interface INextProps {
     dehydratedState: DehydratedState
 }
 
-const queryCache = new QueryCache()
-const mutationCache = new MutationCache()
-
 type NextPageWithLayout<T> = NextPage<T> &
     ComponentType & {
         Layout?: React.ElementType
@@ -65,8 +69,11 @@ type AppPropsWithLayout<T> = AppProps<T> & {
     pageProps: T
 }
 
+const queryCache = new QueryCache()
+const mutationCache = new MutationCache()
+
 const MyApp = ({ Component, pageProps }: AppPropsWithLayout<INextProps>) => {
-    const queryClient = useMemo(() => new QueryClient({ queryCache, mutationCache }), [])
+    const [queryClient] = useState(() => new QueryClient({ queryCache, mutationCache }))
     const Layout = Component.Layout ?? Noop
     const authProps: boolean | undefined = Component.authenticate
 

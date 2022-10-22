@@ -16,7 +16,7 @@ const fetchTaxes = async ({ queryKey }: QueryParamsType) => {
 }
 
 const useTaxesQuery = (options: QueryOptionsType = {}) => {
-    return useQuery<any, Error>([API_ENDPOINTS.TAXES, options], fetchTaxes, {
+    return useQuery([API_ENDPOINTS.TAXES, options], fetchTaxes, {
         keepPreviousData: true,
     })
 }

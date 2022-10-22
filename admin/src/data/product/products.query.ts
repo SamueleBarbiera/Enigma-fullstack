@@ -3,6 +3,7 @@ import { mapPaginatorData, stringifySearchQuery } from '@utils/data-mappers'
 import { useQuery } from '@tanstack/react-query'
 import Product from '@repositories/product'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
+import { ProductPaginator } from '@ts-types/generated'
 
 const fetchProducts = async ({ queryKey }: QueryParamsType) => {
     const [_key, params] = queryKey
@@ -24,15 +25,17 @@ const fetchProducts = async ({ queryKey }: QueryParamsType) => {
         status,
         shop_id,
     })
-    const url = `${API_ENDPOINTS.PRODUCTS}?search=${searchString}&searchJoin=and&limit=${limit}&page=${page}&orderBy=${orderBy}&sortedBy=${sortedBy}`
+    const url = `${API_ENDPOINTS.PRODUCTS}?search=${searchString}&searchJoin=and&limit=${limit}&page=${
+        page ?? 0
+    }&orderBy=${orderBy}&sortedBy=${sortedBy}`
     const {
         data: { data, ...rest },
     } = await Product.all(url)
-    return { products: { data, paginatorInfo: mapPaginatorData({ ...rest }) } }
+    return { data, paginatorInfo: mapPaginatorData({ ...rest }) }
 }
 
-const useProductsQuery = (params: ProductsQueryOptionsType, options: any = {}) => {
-    return useQuery<any, Error>([API_ENDPOINTS.PRODUCTS, params], fetchProducts, {
+const useProductsQuery = (params: ProductsQueryOptionsType, options = {}) => {
+    return useQuery([API_ENDPOINTS.PRODUCTS, params], fetchProducts, {
         ...options,
         keepPreviousData: true,
     })

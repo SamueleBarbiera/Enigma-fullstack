@@ -14,7 +14,11 @@ export default function UpdateTagPage() {
     const { query } = useRouter()
     const { data, isLoading: loading, error } = useTagQuery(query.tagId as string)
     if (loading) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
+    if (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        return <ErrorMessage message={errorMessage} />
+    }
 
     return (
         <>

@@ -28,7 +28,7 @@ export function getAuthCredentials(context?: unknown): {
     return { token: null, permissions: null }
 }
 
-export function parseSSRCookie(context: any) {
+export function parseSSRCookie(context: { req?: any }) {
     return SSRCookie.parse(context.req.headers.cookie ?? '')
 }
 

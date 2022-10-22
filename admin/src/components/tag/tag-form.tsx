@@ -18,11 +18,19 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { tagValidationSchema } from './tag-validation-schema'
 import { useCreateTagMutation } from '@data/tag/use-tag-create.mutation'
 import { useUpdateTagMutation } from '@data/tag/use-tag-update.mutation'
-import { ConnectTypeBelongsTo, Maybe } from '@ts-types/generated'
+import { ConnectTypeBelongsTo, CreateTagInput, Maybe } from '@ts-types/generated'
 
 export interface Iitem {
     value: string
     label: string
+}
+
+const defaultValues = {
+    image: '',
+    name: '',
+    details: '',
+    icon: '',
+    type: '',
 }
 
 export const updatedIcons: object[] = tagIcons.map((item: Iitem) => {
@@ -49,7 +57,8 @@ interface FormValues {
     id: string
 }
 
-export default function CreateOrUpdateTagForm(initialValues: { icon: unknown; id: string }) {
+export default function CreateOrUpdateTagForm(initialValues: CreateTagInput | undefined) {
+    console.log('🚀 - file: tag-form.tsx - line 53 - CreateOrUpdateTagForm - initialValues', initialValues)
     const router = useRouter()
     const { t } = useTranslation()
     const {
@@ -58,12 +67,14 @@ export default function CreateOrUpdateTagForm(initialValues: { icon: unknown; id
         control,
         formState: { errors },
     } = useForm<FormValues>({
-        defaultValues: {
-            ...initialValues,
-            icon: {
-                value: initialValues.icon ? tagIcons.find((singleIcon) => singleIcon.value === initialValues.icon) : '',
-            },
-        },
+        defaultValues: initialValues
+            ? {
+                  ...initialValues,
+                  icon: initialValues?.icon
+                      ? tagIcons.find((singleIcon) => singleIcon.value === initialValues?.icon)
+                      : '',
+              }
+            : defaultValues,
 
         resolver: yupResolver(tagValidationSchema),
     })
@@ -72,39 +83,31 @@ export default function CreateOrUpdateTagForm(initialValues: { icon: unknown; id
     const { mutate: updateTag, isLoading: updating } = useUpdateTagMutation()
 
     const onSubmit = (values: FormValues) => {
+        const input = {
+            name: values.name,
+            details: values.details,
+            image: {
+                thumbnail: values?.image?.thumbnail,
+                original: values?.image?.original,
+                id: values?.image?.id,
+            },
+            icon: values.icon?.value ?? '',
+            type_id: values.type?.id,
+        }
         try {
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (initialValues) {
                 updateTag({
                     variables: {
-                        id: initialValues.id,
+                        id: initialValues?.id!,
                         input: {
-                            name: values.name,
-                            details: values.details,
-                            image: {
-                                thumbnail: values.image.thumbnail,
-                                original: values.image.original,
-                                id: values.image.id,
-                            },
-                            icon: values.icon.value,
-                            type: values.type.id,
-                            id: '',
+                            ...input,
                         },
                     },
                 })
             } else {
                 createTag({
                     variables: {
-                        name: values.name,
-                        details: values.details,
-                        image: {
-                            thumbnail: values.image.thumbnail,
-                            original: values.image.original,
-                            id: values.image.id,
-                        },
-                        icon: values.icon.value,
-                        type: values.type.id,
-                        id: '',
+                        input,
                     },
                 })
             }
@@ -127,24 +130,31 @@ export default function CreateOrUpdateTagForm(initialValues: { icon: unknown; id
                 <Card className="w-full sm:w-8/12 md:w-2/3">
                     <Input
                         label={t('form:input-label-name')}
-                        {...register('icon.value')}
-                        error={t(
-                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
-                        )}
+                        {...register('name')}
+                        error={t(errors.name?.message ?? '')}
                         variant="outline"
                         className="mb-5"
                     />
 
                     <TextArea
                         label={t('form:input-label-details')}
-                        {...register('icon.value')}
+                        {...register('details')}
                         variant="outline"
                         className="mb-5"
                     />
 
                     <div className="mb-5">
                         <Label>{t('form:input-label-select-icon')}</Label>
-                        <SelectInput name="icon" control={control} options={updatedIcons} isClearable={true} />
+                        <SelectInput
+                            name="icon"
+                            control={control}
+                            options={updatedIcons}
+                            isClearable={true}
+                            getOptionLabel={undefined}
+                            getOptionValue={undefined}
+                            isMulti={undefined}
+                            isLoading={false}
+                        />
                     </div>
                 </Card>
             </div>

@@ -5,4 +5,7 @@ import { selectStyles } from './select.styles'
 export const Select = React.forwardRef<Props, any>((props, ref) => (
     <ReactSelect styles={selectStyles} {...props} innerRef={ref} />
 ))
+
+Select.displayName = 'Select'
+
 export default Select

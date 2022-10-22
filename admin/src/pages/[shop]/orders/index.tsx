@@ -23,7 +23,7 @@ export default function Orders() {
     const [orderBy, setOrder] = useState('created_at')
     const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc)
     const { data: shopData, isLoading: fetchingShop } = useShopQuery(shop as string)
-    const shopId = shopData?.shop?.id!
+    const shopId = shopData?.shop.id
     const [searchTerm, setSearchTerm] = useState('')
     const [page, setPage] = useState(1)
     const {
@@ -43,13 +43,17 @@ export default function Orders() {
             enabled: Boolean(shopId),
         }
     )
-    if (loading || fetchingShop) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
     function handleSearch({ searchText }: { searchText: string }) {
         setSearchTerm(searchText)
     }
-    function handlePagination(current: any) {
+    function handlePagination(current: number) {
         setPage(current)
+    }
+    if (loading || fetchingShop) return <Loader text={t('common:text-loading')} />
+    if (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        return <ErrorMessage message={errorMessage} />
     }
     return (
         <>
@@ -62,7 +66,6 @@ export default function Orders() {
                     <Search onSearch={handleSearch} />
                 </div>
             </Card>
-
             <OrderList orders={data?.orders} onPagination={handlePagination} onOrder={setOrder} onSort={setColumn} />
         </>
     )

@@ -2,22 +2,21 @@ import Pagination from '@components/ui/pagination'
 import dayjs from 'dayjs'
 import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
-import usePrice from '@utils/use-price'
 import { formatAddress } from '@utils/format-address'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-import { Order, OrderPaginator, OrderStatus, SortOrder, UserAddress } from '@ts-types/generated'
+import { Order, OrderStatus, PaginatorInfo, SortOrder, UserAddress } from '@ts-types/generated'
 import InvoicePdf from './invoice-pdf'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
-import { useIsRTL } from '@utils/locals'
 import { useState } from 'react'
 import TitleWithSort from '@components/ui/title-with-sort'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 interface IProps {
-    orders: OrderPaginator | null | undefined
+    orders: { data: Order[] | undefined; paginatorInfo: PaginatorInfo } | null | undefined
     onPagination: (current: number) => void
     onSort: (current: any) => void
     onOrder: (current: string) => void
@@ -26,9 +25,8 @@ interface IProps {
 const OrderList = ({ orders, onPagination, onSort, onOrder }: IProps) => {
     const { data, paginatorInfo } = orders!
     const { t } = useTranslation()
-    const rowExpandable = (record: any) => record.children?.length
+    //const rowExpandable = (record: any) => record.children?.length
     const router = useRouter()
-    
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -52,7 +50,7 @@ const OrderList = ({ orders, onPagination, onSort, onOrder }: IProps) => {
         },
     })
 
-    const columns = [
+    const columns: readonly (ColumnGroupType<Order> | ColumnType<Order>)[] = [
         {
             title: t('table:table-item-tracking-number'),
             dataIndex: 'tracking_number',
@@ -112,7 +110,7 @@ const OrderList = ({ orders, onPagination, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'status',
             key: 'status',
-            align'left',
+            align: 'left',
             onHeaderCell: () => onHeaderClick('status'),
             render: (status: OrderStatus) => (
                 <span className="whitespace-nowrap font-semibold" style={{ color: status.color }}>
@@ -124,7 +122,7 @@ const OrderList = ({ orders, onPagination, onSort, onOrder }: IProps) => {
             title: t('table:table-item-shipping-address'),
             dataIndex: 'shipping_address',
             key: 'shipping_address',
-            align'left',
+            align: 'left',
             render: (shipping_address: UserAddress) => <div>{formatAddress(shipping_address)}</div>,
         },
         {
@@ -166,7 +164,7 @@ const OrderList = ({ orders, onPagination, onSort, onOrder }: IProps) => {
                     scroll={{ x: 1000 }}
                     expandable={{
                         expandedRowRender: () => '',
-                        rowExpandable: rowExpandable,
+                        //rowExpandable: rowExpandable,
                     }}
                 />
             </div>

@@ -4,6 +4,9 @@ import AttributeValue from '@repositories/attribute-value'
 import { useRouter } from 'next/router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
+import { AxiosError } from 'axios'
+import { useTranslation } from 'next-i18next'
+import { toast } from 'react-toastify'
 
 export interface IAttributeValueCreateVariables {
     variables: {
@@ -14,6 +17,7 @@ export interface IAttributeValueCreateVariables {
 export const useCreateAttributeValueMutation = () => {
     const queryClient = useQueryClient()
     const router = useRouter()
+    const { t } = useTranslation()
 
     return useMutation(
         ({ variables: { input } }: IAttributeValueCreateVariables) =>
@@ -25,6 +29,12 @@ export const useCreateAttributeValueMutation = () => {
             // Always refetch after error or success:
             onSettled: async () => {
                 await queryClient.invalidateQueries([API_ENDPOINTS.ATTRIBUTE_VALUES])
+            },
+            onError: (error: AxiosError) => {
+                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
+                toast.error(JSON.stringify(error))
+                return errorMessage
             },
         }
     )

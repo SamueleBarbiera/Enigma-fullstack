@@ -27,15 +27,6 @@ export interface ShopsQueryOptionsType {
     orderBy?: string
     sortedBy?: SortOrder
 }
-export interface WithdrawsQueryOptionsType {
-    text?: string
-    shop_id?: number
-    page?: number
-    parent?: number | null
-    limit?: number
-    orderBy?: string
-    sortedBy?: SortOrder
-}
 export interface ProductsQueryOptionsType {
     page?: number
     shop_id?: number

@@ -10,12 +10,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useShopQuery } from '@data/shop/use-shop.query'
 import { useAddStaffMutation } from '@data/user/use-add-staff.mutation'
+import { AddStaffInput } from '@ts-types/generated'
 
-type FormValues = {
-    name: string
-    email: string
-    password: string
-}
 const staffFormSchema = yup.object().shape({
     name: yup.string().required('form:error-name-required'),
     email: yup.string().email('form:error-email-format').required('form:error-email-required'),
@@ -27,20 +23,19 @@ const AddStaffForm = () => {
         query: { shop },
     } = router
     const { data: shopData } = useShopQuery(shop as string)
-    const shopId = shopData?.shop?.id!
+    const shopId = shopData?.shop.id
     const {
         register,
         handleSubmit,
         setError,
-
         formState: { errors },
-    } = useForm<FormValues>({
+    } = useForm<AddStaffInput>({
         resolver: yupResolver(staffFormSchema),
     })
     const { mutate: addStaff, isLoading: loading } = useAddStaffMutation()
     const { t } = useTranslation()
 
-    function onSubmit({ name, email, password }: FormValues) {
+    function onSubmit({ name, email, password }: AddStaffInput) {
         addStaff(
             {
                 variables: {
@@ -51,12 +46,10 @@ const AddStaffForm = () => {
                 },
             },
             {
-                onError: (error: any) => {
-                    Object.keys(error?.response?.data).forEach((field: any) => {
-                        setError(field, {
-                            type: 'manual',
-                            message: error?.response?.data[field],
-                        })
+                onError: (error) => {
+                    setError(error as unknown as 'shop_id' | 'name' | 'email' | 'password', {
+                        type: 'manual',
+                        message: JSON.stringify(error.response?.data),
                     })
                 },
             }

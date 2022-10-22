@@ -1,13 +1,17 @@
 import Input from '@components/ui/input'
-import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import Button from '@components/ui/button'
 import {
+    Attachment,
+    AttachmentInput,
     ContactDetailsInput,
-    SettingsOptions,
+    Maybe,
     SettingsOptionsInput,
     Shipping,
+    ShippingInput,
     ShopSocialInput,
     Tax,
+    TaxInput,
 } from '@ts-types/generated'
 import Description from '@components/ui/description'
 import Card from '@components/common/card'
@@ -22,8 +26,7 @@ import { settingsValidationSchema } from './settings-validation-schema'
 import FileInput from '@components/ui/file-input'
 import SelectInput from '@components/ui/select-input'
 import TextArea from '@components/ui/text-area'
-import { getFormattedImage } from '@utils/get-formatted-image'
-import Alert from '@components/ui/alert'
+import { getFormattedImage, IImage } from '@utils/get-formatted-image'
 import { getIcon } from '@utils/get-icon'
 import * as socialIcons from '@components/icons/social'
 import omit from 'lodash/omit'
@@ -31,24 +34,20 @@ import omit from 'lodash/omit'
 interface FormValues {
     siteTitle: string
     siteSubtitle: string
-    currency: any
+    currency: string
     minimumOrderAmount: number
-    logo: any
+    logo: AttachmentInput
     taxClass: Tax
     shippingClass: Shipping
     signupPoints: number
     currencyToWalletRatio: number
     contactDetails: ContactDetailsInput
-    deliveryTime: {
-        title: string
-        description: string
-    }
     seo: {
         metaTitle: string
         metaDescription: string
         ogTitle: string
         ogDescription: string
-        ogImage: any
+        ogImage: IImage
         twitterHandle: string
         twitterCardType: string
         metaTags: string
@@ -84,9 +83,9 @@ const socialIcon = [
     },
 ]
 
-export const updatedIcons = socialIcon.map((item: any) => {
-    item.label = (
-        <div className="flex items-center text-body space-s-4">
+export const updatedIcons = socialIcon.map((item) => {
+    return (
+        <div className="flex items-center text-body space-s-4" key={item.label}>
             <span className="flex h-4 w-4 items-center justify-center">
                 {getIcon({
                     iconList: socialIcons,
@@ -97,13 +96,12 @@ export const updatedIcons = socialIcon.map((item: any) => {
             <span>{item.label}</span>
         </div>
     )
-    return item
 })
 
 interface IProps {
-    settings?: SettingsOptions | null
-    taxClasses: Tax[] | undefined | null
-    shippingClasses: Shipping[] | undefined | null
+    settings?: Maybe<SettingsOptionsInput> | null
+    taxClasses: TaxInput | undefined
+    shippingClasses: ShippingInput | undefined
 }
 
 export default function SettingsForm({ settings, taxClasses, shippingClasses }: IProps) {
@@ -113,7 +111,7 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
         register,
         handleSubmit,
         control,
-        getValues,
+
         formState: { errors },
     } = useForm({
         shouldUnregister: true,
@@ -123,20 +121,17 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
             contactDetails: {
                 ...settings?.contactDetails,
                 socials: settings?.contactDetails?.socials
-                    ? settings.contactDetails.socials.map((social: any) => ({
-                          icon: updatedIcons.find((icon) => icon?.value === social?.icon),
+                    ? settings.contactDetails.socials.map((social) => ({
+                          icon: updatedIcons.find((icon) => icon.props === social?.icon),
                           url: social?.url,
                           label: social?.label,
                       }))
                     : [],
             },
-            deliveryTime: settings?.deliveryTime ? settings.deliveryTime : [],
             logo: settings?.logo ?? '',
             currency: settings?.currency ? CURRENCY.find((item) => item.code == settings.currency) : '',
-            taxClass: taxClasses?.length ? taxClasses.find((tax: Tax) => tax.id == settings?.taxClass) : '',
-            shippingClass: shippingClasses?.length
-                ? shippingClasses.find((shipping: Shipping) => shipping.id == settings?.shippingClass)
-                : '',
+            taxClass: taxClasses?.name == settings?.taxClass,
+            shippingClass: shippingClasses?.name == settings?.shippingClass,
         },
     })
 
@@ -149,13 +144,13 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
         name: 'contactDetails.socials',
     })
 
-    async function onSubmit(values) {
+    function onSubmit(values: FormValues) {
         const contactDetails = {
             ...values.contactDetails,
             location: { ...omit(values.contactDetails.location, '__typename') },
             socials: values.contactDetails.socials
-                ? values.contactDetails.socials.map((social: any) => ({
-                      icon: social?.icon?.value,
+                ? values.contactDetails.socials.map((social) => ({
+                      icon: social?.icon,
                       url: social?.url,
                       label: social?.label,
                   }))
@@ -166,10 +161,10 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                 input: {
                     options: {
                         ...values,
-                        signupPoints: Number(values.signupPoints),
+                        signupPoints: values.signupPoints,
                         currencyToWalletRatio: Number(values.currencyToWalletRatio),
                         minimumOrderAmount: Number(values.minimumOrderAmount),
-                        currency: values.currency?.code,
+                        currency: values.currency,
                         taxClass: values.taxClass.id,
                         shippingClass: values.shippingClass.id,
                         logo: values.logo,
@@ -246,11 +241,21 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         <SelectInput
                             name="currency"
                             control={control}
-                            getOptionLabel={(option: any) => option.name}
-                            getOptionValue={(option: any) => option.code}
+                            getOptionLabel={(option: { name: string }) => option.name}
+                            getOptionValue={(option: { code: string }) => option.code}
                             options={CURRENCY}
+                            isMulti={undefined}
+                            isClearable={undefined}
+                            isLoading={false}
                         />
-                        <ValidationError message={t(errors.currency?.message)} />
+                        <ValidationError
+                            message={t(
+                                errors.currency?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
+                        />
                     </div>
 
                     <Input
@@ -272,9 +277,12 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         <SelectInput
                             name="taxClass"
                             control={control}
-                            getOptionLabel={(option: any) => option.name}
-                            getOptionValue={(option: any) => option.id}
+                            getOptionLabel={(option: { name: string }) => option.name}
+                            getOptionValue={(option: { id: string }) => option.id}
                             options={taxClasses!}
+                            isMulti={undefined}
+                            isClearable={undefined}
+                            isLoading={false}
                         />
                     </div>
 
@@ -283,9 +291,12 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         <SelectInput
                             name="shippingClass"
                             control={control}
-                            getOptionLabel={(option: any) => option.name}
-                            getOptionValue={(option: any) => option.id}
-                            options={shippingClasses!}
+                            getOptionLabel={(option: { name: string }) => option.name}
+                            getOptionValue={(option: { id: string }) => option.id}
+                            options={shippingClasses}
+                            isMulti={undefined}
+                            isClearable={undefined}
+                            isLoading={false}
                         />
                     </div>
                 </Card>
@@ -354,6 +365,7 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                     />
                 </Card>
             </div>
+
             <div className="my-5 flex flex-wrap border-b border-dashed border-gray-300 pb-8 sm:my-8">
                 <Description
                     title={t('form:shop-settings')}
@@ -420,6 +432,10 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                                             options={updatedIcons}
                                             isClearable={true}
                                             defaultValue={item.icon!}
+                                            getOptionLabel={undefined}
+                                            getOptionValue={undefined}
+                                            isMulti={undefined}
+                                            isLoading={false}
                                         />
                                     </div>
                                     <Input

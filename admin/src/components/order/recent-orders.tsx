@@ -1,23 +1,23 @@
 import dayjs from 'dayjs'
 import { Table } from '@components/ui/table'
-import usePrice from '@utils/use-price'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import { Order, OrderStatus } from '@ts-types/generated'
 import { useTranslation } from 'next-i18next'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 interface IProps {
-    orders: Order[]
+    orders: Order[] | undefined
     title?: string
 }
 
 const RecentOrders = ({ orders, title }: IProps) => {
+    console.log('🚀 - file: recent-orders.tsx - line 16 - RecentOrders - orders', orders)
     const { t } = useTranslation()
+    //const rowExpandable = (record: { children: string | unknown[] }) => record.children.length
 
-    const rowExpandable = (record: any) => record.children?.length
-
-    const columns = [
+    const columns: readonly (ColumnGroupType<Order> | ColumnType<Order>)[] = [
         {
             title: t('table:table-item-tracking-number'),
             dataIndex: 'tracking_number',
@@ -70,7 +70,7 @@ const RecentOrders = ({ orders, title }: IProps) => {
                     scroll={{ x: 200 }}
                     expandable={{
                         expandedRowRender: () => '',
-                        rowExpandable: rowExpandable,
+                        //rowExpandable: rowExpandable,
                     }}
                 />
             </div>

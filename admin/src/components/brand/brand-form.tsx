@@ -177,7 +177,16 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
 
                     <div className="mb-5">
                         <Label>{t('form:input-label-select-icon')}</Label>
-                        <SelectInput name="icon" control={control} options={updatedIcons} isClearable={true} />
+                        <SelectInput
+                            name="icon"
+                            control={control}
+                            options={updatedIcons}
+                            isClearable={true}
+                            getOptionLabel={undefined}
+                            getOptionValue={undefined}
+                            isMulti={undefined}
+                            isLoading={false}
+                        />
                     </div>
                 </Card>
             </div>
@@ -206,6 +215,10 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
                                             control={control}
                                             options={updateImages}
                                             isClearable={false}
+                                            getOptionLabel={undefined}
+                                            getOptionValue={undefined}
+                                            isMulti={undefined}
+                                            isLoading={false}
                                         />
                                         <ValidationError
                                             message={t(

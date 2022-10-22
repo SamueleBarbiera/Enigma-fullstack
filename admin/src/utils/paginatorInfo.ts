@@ -1,16 +1,17 @@
-import { PaginatorInfo } from '@ts-types/generated'
+import { OrderPaginator, PaginatorInfo } from '@ts-types/generated'
 
-export const getPaginatorInfo = (data: string | any[]): PaginatorInfo => {
-    if (data.length) {
-        const dataIndex = data.length - 1
-        const isEmpty = data[dataIndex]?.length === 0
-        const fetchedAllData = isEmpty || (data && data[dataIndex]?.current_page === data[dataIndex]?.last_page)
+export const getPaginatorInfo = (data: OrderPaginator): PaginatorInfo => {
+    if (data.data.length) {
+        const dataIndex = data.data.length - 1
+        const isEmpty = data.data[dataIndex]?.length === 0
+        const fetchedAllData =
+            isEmpty || (data.data && data.data[dataIndex]?.current_page === data.data[dataIndex]?.last_page)
 
-        const total = data[dataIndex]?.total
-        const perPage = data[dataIndex]?.per_page
-        const currentPage = data[dataIndex]?.current_page
-        const lastPage = data[dataIndex]?.last_page
-        const count = data[dataIndex]?.to + 1 - data[dataIndex]?.from
+        const total = data.data[dataIndex]?.total
+        const perPage = data.data[dataIndex]?.per_page
+        const currentPage = data.data[dataIndex]?.current_page
+        const lastPage = data.data[dataIndex]?.last_page
+        const count = data.data[dataIndex]?.to + 1 - data.data[dataIndex]?.from
 
         return {
             perPage,

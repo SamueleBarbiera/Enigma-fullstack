@@ -22,10 +22,11 @@ const ProductTagInput = ({ control }: Props) => {
                 name="tags"
                 isMulti
                 control={control}
-                getOptionLabel={(option: any) => option.name}
-                getOptionValue={(option: any) => option.id}
-                options={data?.tags?.data}
+                getOptionLabel={(option: { name: string }) => option.name}
+                getOptionValue={(option: { id: string }) => option.id}
+                options={data?.tags.data}
                 isLoading={loading}
+                isClearable={undefined}
             />
         </div>
     )

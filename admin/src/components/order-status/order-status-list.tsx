@@ -2,22 +2,22 @@ import Pagination from '@components/ui/pagination'
 import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
 import { ROUTES } from '@utils/routes'
-import { OrderStatus, OrderStatusPaginator, SortOrder } from '@ts-types/generated'
+import { Order, OrderStatus, OrderStatusPaginator, PaginatorInfo, SortOrder } from '@ts-types/generated'
 import { useTranslation } from 'next-i18next'
-import { useIsRTL } from '@utils/locals'
 import { useState } from 'react'
 import TitleWithSort from '@components/ui/title-with-sort'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export interface IProps {
-    order_statuses: OrderStatusPaginator | undefined | null
+    order_statuses: { data: Order; paginatorInfo: PaginatorInfo } | undefined
     onPagination: (key: number) => void
     onSort: (current: any) => void
     onOrder: (current: string) => void
 }
 const OrderStatusList = ({ order_statuses, onPagination, onSort, onOrder }: IProps) => {
+    console.log('🚀 - file: order-status-list.tsx - line 18 - OrderStatusList - order_statuses', order_statuses)
     const { data, paginatorInfo } = order_statuses!
     const { t } = useTranslation()
-    
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -40,7 +40,7 @@ const OrderStatusList = ({ order_statuses, onPagination, onSort, onOrder }: IPro
             })
         },
     })
-    const columns = [
+    const columns: readonly (ColumnGroupType<OrderStatus> | ColumnType<OrderStatus>)[] = [
         {
             title: t('table:table-item-id'),
             dataIndex: 'id',
@@ -59,7 +59,7 @@ const OrderStatusList = ({ order_statuses, onPagination, onSort, onOrder }: IPro
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align'left',
+            align: 'left',
             onHeaderCell: () => onHeaderClick('name'),
             render: (name: string, record: OrderStatus) => (
                 <span className="font-semibold" style={{ color: record.color }}>
@@ -85,7 +85,7 @@ const OrderStatusList = ({ order_statuses, onPagination, onSort, onOrder }: IPro
             title: t('table:table-item-actions'),
             dataIndex: 'id',
             key: 'actions',
-            align'right',
+            align: 'right',
             render: (id: string, record: OrderStatus) => (
                 <ActionButtons id={id} editUrl={`${ROUTES.ORDER_STATUS}/edit/${record.name}`} />
             ),

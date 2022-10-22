@@ -12,24 +12,24 @@ import usePrice from '@utils/use-price'
 import { formatAddress } from '@utils/format-address'
 import Loader from '@components/ui/loader/loader'
 import ValidationError from '@components/ui/form-validation-error'
-import { Attachment, Product } from '@ts-types/generated'
+import { Attachment, ConnectProductOrderPivot, OrderStatus, Product } from '@ts-types/generated'
 import { useOrderQuery } from '@data/order/use-order.query'
 import { useUpdateOrderMutation } from '@data/order/use-order-update.mutation'
 import { useOrderStatusesQuery } from '@data/order-status/use-order-statuses.query'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import SelectInput from '@components/ui/select-input'
-import { useIsRTL } from '@utils/locals'
+
 import { GetServerSideProps } from 'next'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 interface FormValues {
-    order_status: any
+    order_status: OrderStatus
 }
+
 export default function OrderDetailsPage() {
     const { t } = useTranslation()
     const { query } = useRouter()
-    
 
     const { mutate: updateOrder, isLoading: updating } = useUpdateOrderMutation()
     const { data: orderStatusData } = useOrderStatusesQuery({})
@@ -41,48 +41,21 @@ export default function OrderDetailsPage() {
 
         formState: { errors },
     } = useForm<FormValues>({
-        defaultValues: { order_status: data?.order.status.id ?? '' },
+        defaultValues: { order_status: data?.order.status },
     })
 
     const ChangeStatus = ({ order_status }: FormValues) => {
         updateOrder({
             variables: {
-                id: data?.order.id ?? '',
+                id: data?.order,
                 input: {
-                    status: order_status?.id as string,
+                    status: order_status,
                 },
             },
         })
     }
-    const { price: subtotal } = usePrice(
-        data && {
-            amount: data.order.amount,
-        }
-    )
-    const { price: total } = usePrice(
-        data && {
-            amount: data.order.paid_total,
-        }
-    )
-    const { price: discount } = usePrice(
-        data && {
-            amount: data.order.discount!,
-        }
-    )
-    const { price: delivery_fee } = usePrice(
-        data && {
-            amount: data.order.delivery_fee!,
-        }
-    )
-    const { price: sales_tax } = usePrice(
-        data && {
-            amount: data.order.sales_tax,
-        }
-    )
-    if (loading) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
 
-    const columns: readonly (ColumnGroupType<Product> | ColumnType<Product>)[] = [
+    const columns: readonly (ColumnGroupType<ConnectProductOrderPivot> | ColumnType<ConnectProductOrderPivot>)[] = [
         {
             dataIndex: 'image',
             key: 'image',
@@ -101,7 +74,7 @@ export default function OrderDetailsPage() {
             title: t('table:table-item-products'),
             dataIndex: 'name',
             key: 'name',
-            align'left',
+            align: 'left',
             render: (name: string, item: Product) => (
                 <div>
                     <span>{name}</span>
@@ -114,7 +87,7 @@ export default function OrderDetailsPage() {
             title: t('table:table-item-total'),
             dataIndex: 'price',
             key: 'price',
-            align'right',
+            align: 'right',
             // render: (_: any, item: any) => {
             //     const price = usePrice({
             //         amount: parseFloat(item.pivot.subtotal),
@@ -124,6 +97,12 @@ export default function OrderDetailsPage() {
         },
     ]
 
+    if (loading) return <Loader text={t('common:text-loading')} />
+    if (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        return <ErrorMessage message={errorMessage} />
+    }
     return (
         <Card>
             <div className="flex flex-col items-center lg:flex-row">
@@ -136,10 +115,13 @@ export default function OrderDetailsPage() {
                         <SelectInput
                             name="order_status"
                             control={control}
-                            getOptionLabel={(option: any) => option.name}
-                            getOptionValue={(option: any) => option.id}
-                            options={orderStatusData?.order_statuses?.data}
+                            getOptionLabel={(option: { name: string }) => option.name}
+                            getOptionValue={(option: { id: string }) => option.id}
+                            options={orderStatusData?.order_statuses.data}
                             placeholder={t('form:input-placeholder-order-status')}
+                            isMulti={undefined}
+                            isClearable={undefined}
+                            isLoading={false}
                         />
 
                         <ValidationError
@@ -159,7 +141,7 @@ export default function OrderDetailsPage() {
             </div>
 
             <div className="my-5 flex items-center justify-center lg:my-10">
-                <ProgressBox data={orderStatusData?.order_statuses?.data} status={data?.order.status.serial!} />
+                <ProgressBox data={orderStatusData?.order_statuses.data} status={data?.order.status.serial} />
             </div>
 
             <div className="mb-10">
@@ -178,23 +160,23 @@ export default function OrderDetailsPage() {
                 <div className="flex w-full flex-col space-y-2 border-t-4 border-double border-border-200 px-4 py-4 ms-auto sm:w-1/2 md:w-1/3">
                     <div className="flex items-center justify-between text-sm text-body">
                         <span>{t('common:order-sub-total')}</span>
-                        <span>{subtotal}</span>
+                        <span>{data?.order.amount}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm text-body">
                         <span>{t('common:order-tax')}</span>
-                        <span>{sales_tax}</span>
+                        <span>{data?.order.sales_tax}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm text-body">
                         <span>{t('common:order-delivery-fee')}</span>
-                        <span>{delivery_fee}</span>
+                        <span>{data?.order.delivery_fee}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm text-body">
                         <span>{t('common:order-discount')}</span>
-                        <span>{discount}</span>
+                        <span>{data?.order.discount}</span>
                     </div>
                     <div className="flex items-center justify-between text-base font-semibold text-heading">
                         <span>{t('common:order-total')}</span>
-                        <span>{total}</span>
+                        <span>{data?.order.paid_total}</span>
                     </div>
                 </div>
             </div>
@@ -206,9 +188,9 @@ export default function OrderDetailsPage() {
                     </h3>
 
                     <div className="flex flex-col items-start space-y-1 text-sm text-body">
-                        <span>{data?.order.customer?.name}</span>
+                        <span>{data?.order.status}</span>
                         {data?.order.billing_address && <span>{formatAddress(data.order.billing_address)}</span>}
-                        {data?.order.customer_contact && <span>{data.order.customer_contact}</span>}
+                        {data?.order.customer_id && <span>{data.order.tracking_number}</span>}
                     </div>
                 </div>
 
@@ -218,9 +200,9 @@ export default function OrderDetailsPage() {
                     </h3>
 
                     <div className="flex flex-col items-start space-y-1 text-start text-sm text-body sm:items-end sm:text-end">
-                        <span>{data?.order.customer?.name}</span>
+                        <span>{data?.order.customer_id}</span>
                         {data?.order.shipping_address && <span>{formatAddress(data.order.shipping_address)}</span>}
-                        {data?.order.customer_contact && <span>{data.order.customer_contact}</span>}
+                        {data?.order.customer_id && <span>{data.order.tracking_number}</span>}
                     </div>
                 </div>
             </div>

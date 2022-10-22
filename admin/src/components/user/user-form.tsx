@@ -8,17 +8,13 @@ import { useCreateUserMutation } from '@data/user/use-user-create.mutation'
 import { useTranslation } from 'next-i18next'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { customerValidationSchema } from './user-validation-schema'
+import { Permission } from '@ts-types/generated'
 
 type FormValues = {
     name: string
     email: string
     password: string
-    permission: any
-}
-
-const defaultValues = {
-    email: '',
-    password: '',
+    permission: Permission
 }
 
 const CustomerCreateForm = () => {
@@ -32,21 +28,21 @@ const CustomerCreateForm = () => {
 
         formState: { errors },
     } = useForm<FormValues>({
-        defaultValues,
+        defaultValues: undefined,
         resolver: yupResolver(customerValidationSchema),
     })
 
-    async function onSubmit({ name, email, password, permission }: FormValues) {
+    function onSubmit({ name, email, password, permission }: FormValues) {
         registerUser(
             {
                 variables: { permission, name, email, password },
             },
             {
-                onError: (error: any) => {
-                    Object.keys(error?.response?.data).forEach((field: any) => {
-                        setError(field, {
+                onError: (error) => {
+                    Object.keys(error).forEach((field) => {
+                        setError(field as 'name' | 'email' | 'password' | 'permission', {
                             type: 'manual',
-                            message: error?.response?.data[field][0],
+                            message: error.message,
                         })
                     })
                 },

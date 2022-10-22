@@ -13,7 +13,11 @@ export default function OwnerDashboard() {
     const { data, isLoading: loading, error } = useMeQuery()
 
     if (loading) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
+    if (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        return <ErrorMessage message={errorMessage} />
+    }
     return (
         <>
             <div className="mb-5 border-b border-dashed border-border-base pb-8 sm:mb-8">
@@ -21,12 +25,12 @@ export default function OwnerDashboard() {
             </div>
 
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 3xl:grid-cols-5">
-                {data.shops.map((myShop: Shop, idx: number) => (
+                {data?.shops.map((myShop: Shop, idx: number) => (
                     <ShopCard shop={myShop} key={idx} />
                 ))}
             </div>
 
-            {!data.managed_shop && !data.shops.length ? (
+            {!data?.managed_shop && !data?.shops.length ? (
                 <div className="flex w-full flex-col items-center p-10">
                     <div className="relative h-[180px] w-[300px] sm:h-[370px] sm:w-[490px]">
                         <Image alt={t('common:text-image')} src={NoShopSvg as string} layout="fill" objectFit="cover" />
@@ -36,7 +40,7 @@ export default function OwnerDashboard() {
                     </span>
                 </div>
             ) : null}
-            {data.managed_shop ? (
+            {data?.managed_shop ? (
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5">
                     <ShopCard shop={data.managed_shop} />
                 </div>

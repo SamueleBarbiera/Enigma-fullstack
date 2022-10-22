@@ -3,7 +3,6 @@ import { CoinIcon } from '@components/icons/coin-icon'
 import ColumnChart from '@components/widgets/column-chart'
 import StickerCard from '@components/widgets/sticker-card'
 import ErrorMessage from '@components/ui/error-message'
-import usePrice from '@utils/use-price'
 import Loader from '@components/ui/loader/loader'
 import RecentOrders from '@components/order/recent-orders'
 import PopularProductList from '@components/product/popular-product-list'
@@ -11,25 +10,21 @@ import { useOrdersQuery } from '@data/order/use-orders.query'
 import { usePopularProductsQuery } from '@data/analytics/use-popular-products.query'
 import { useAnalyticsQuery } from '@data/analytics/use-analytics.query'
 import { useTranslation } from 'next-i18next'
-import { useWithdrawsQuery } from '@data/withdraw/use-withdraws.query'
-import WithdrawTable from '@components/withdraw/withdraw-table'
 import { ShopIcon } from '@components/icons/sidebar'
 import { DollarIcon } from '@components/icons/shops/dollar'
+import { toast } from 'react-toastify'
+import { useEffect } from 'react'
 
 export default function Dashboard() {
     const { t } = useTranslation()
-    const { data, isLoading: loading } = useAnalyticsQuery()
+    const { data, isLoading: loading, error } = useAnalyticsQuery()
     console.log('🚀 - file: admin.tsx - line 22 - Dashboard - data', data)
-    const { price: total_revenue } = usePrice(
-        data && {
-            amount: data.totalRevenue!,
+
+    useEffect(() => {
+        if (error) {
+            error instanceof Error ? toast.error(`Something went wrong: ${error.message}`) : null
         }
-    )
-    const { price: todays_revenue } = usePrice(
-        data && {
-            amount: data.todaysRevenue!,
-        }
-    )
+    }, [error])
 
     const {
         data: orderData,
@@ -39,13 +34,12 @@ export default function Dashboard() {
         limit: 10,
         page: 1,
     })
+    console.log('🚀 - file: admin.tsx - line 51 - Dashboard - orderData', orderData)
     const {
         data: popularProductData,
         isLoading: popularProductLoading,
         error: popularProductError,
     } = usePopularProductsQuery({ limit: 10 })
-
-    const { data: withdrawsData, isLoading: withdrawLoading } = useWithdrawsQuery({ limit: 10 })
 
     let salesByYear: number[] = Array.from({ length: 12 }, () => 0)
     if (data?.totalYearSaleByMonth?.length) {
@@ -54,10 +48,11 @@ export default function Dashboard() {
 
     return (
         <>
-            {loading || orderLoading || popularProductLoading || withdrawLoading ? (
+            {loading || orderLoading || popularProductLoading ? (
                 <Loader text={t('common:text-loading')} />
-            ) : orderError || popularProductError ? (
-                <ErrorMessage message={orderError?.message ?? popularProductError?.message} />
+            ) : orderError instanceof Error && popularProductError instanceof Error ? (
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                <ErrorMessage message={orderError.message && popularProductError.message} />
             ) : (
                 <>
                     <div className="mb-6 grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -67,7 +62,12 @@ export default function Dashboard() {
                                 subtitleTransKey="sticker-card-subtitle-rev"
                                 icon={<DollarIcon className="h-7 w-7" color="#047857" />}
                                 iconBgStyle={{ backgroundColor: '#A7F3D0' }}
-                                price={total_revenue}
+                                price={data?.totalRevenue}
+                                indicator={''}
+                                indicatorText={undefined}
+                                note={undefined}
+                                link={undefined}
+                                linkText={undefined}
                             />
                         </div>
                         <div className="w-full ">
@@ -76,13 +76,26 @@ export default function Dashboard() {
                                 subtitleTransKey="sticker-card-subtitle-order"
                                 icon={<CartIconBig />}
                                 price={data?.totalOrders}
+                                iconBgStyle={undefined}
+                                indicator={''}
+                                indicatorText={undefined}
+                                note={undefined}
+                                link={undefined}
+                                linkText={undefined}
                             />
                         </div>
                         <div className="w-full ">
                             <StickerCard
                                 titleTransKey="sticker-card-title-today-rev"
                                 icon={<CoinIcon />}
-                                price={todays_revenue}
+                                price={data?.todaysRevenue}
+                                subtitleTransKey={''}
+                                iconBgStyle={undefined}
+                                indicator={''}
+                                indicatorText={undefined}
+                                note={undefined}
+                                link={undefined}
+                                linkText={undefined}
                             />
                         </div>
                         <div className="w-full ">
@@ -91,6 +104,12 @@ export default function Dashboard() {
                                 icon={<ShopIcon className="w-6" color="#1D4ED8" />}
                                 iconBgStyle={{ backgroundColor: '#93C5FD' }}
                                 price={data?.totalShops}
+                                subtitleTransKey={''}
+                                indicator={''}
+                                indicatorText={undefined}
+                                note={undefined}
+                                link={undefined}
+                                linkText={undefined}
                             />
                         </div>
                     </div>
@@ -119,21 +138,12 @@ export default function Dashboard() {
 
                     <div className="mb-6 flex w-full flex-wrap">
                         <div className="mb-6 w-full sm:w-1/2 sm:px-3 sm:pl-0 xl:mb-0 xl:w-1/2">
-                            <RecentOrders
-                                orders={orderData?.orders?.data}
-                                title={t('table:recent-order-table-title')}
-                            />
+                            <RecentOrders orders={orderData?.orders.data} title={t('table:recent-order-table-title')} />
                         </div>
-                        <div className="mb-6 w-full sm:w-1/2 sm:px-3 sm:pr-0 xl:mb-0 xl:w-1/2">
-                            <WithdrawTable
-                                withdraws={withdrawsData?.withdraws}
-                                title={t('table:withdraw-table-title')}
-                            />
-                        </div>{' '}
                     </div>
                     <div className="mb-6 w-full sm:pe-0 xl:mb-0">
                         <PopularProductList
-                            products={popularProductData}
+                            products={popularProductData?.data}
                             title={t('table:popular-products-table-title')}
                         />
                     </div>

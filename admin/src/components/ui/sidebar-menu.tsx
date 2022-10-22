@@ -9,7 +9,11 @@ import * as sidebarIcons from '@components/icons/sidebar'
 import { useUI } from '@contexts/ui.context'
 import { useTranslation } from 'next-i18next'
 
-function SidebarMenuItem({ className, item, depth = 0 }) {
+function SidebarMenuItem(
+    className: string | number | boolean | cn.ArgumentArray | cn.Mapping | null | undefined,
+    item: { href: string; labelTransKey?: any; items?: any; icon?: any },
+    depth = 0
+) {
     const router = useRouter()
     const { t } = useTranslation('common')
     const [isOpen, setOpen] = useState(() => router.pathname === item.href)
@@ -25,7 +29,7 @@ function SidebarMenuItem({ className, item, depth = 0 }) {
             toggleCollapse()
         } else {
             void router.push(href)
-            displaySidebar && closeSidebar()
+            displaySidebar && closeSidebar
         }
     }
 
@@ -73,7 +77,7 @@ function SidebarMenuItem({ className, item, depth = 0 }) {
                             transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
                             className="text-xs ms-4"
                         >
-                            {items?.map((currentItem) => {
+                            {items.map((currentItem) => {
                                 const childDepth = depth + 1
                                 return (
                                     <SidebarMenuItem

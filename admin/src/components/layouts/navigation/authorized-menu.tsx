@@ -15,7 +15,7 @@ export default function AuthorizedMenu() {
     return (
         <Menu as="div" className="relative inline-block text-left">
             <Menu.Button className="flex items-center focus:outline-none">
-                <Avatar src={data?.profile?.avatar?.thumbnail ?? siteSettings?.avatar?.placeholder} alt="avatar" />
+                <Avatar src={data?.profile?.avatar?.thumbnail ?? siteSettings.avatar.placeholder} alt="avatar" />
             </Menu.Button>
 
             <Transition

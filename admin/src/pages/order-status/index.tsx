@@ -32,7 +32,11 @@ export default function OrderStatusPage() {
         sortedBy,
     })
     if (loading) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
+    if (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        return <ErrorMessage message={errorMessage} />
+    }
 
     function handleSearch({ searchText }: { searchText: string }) {
         setSearchTerm(searchText)
@@ -57,14 +61,12 @@ export default function OrderStatusPage() {
                 </div>
             </Card>
 
-            {loading ? null : (
-                <OrderStatusList
-                    order_statuses={data?.order_statuses}
-                    onPagination={handlePagination}
-                    onOrder={setOrder}
-                    onSort={setColumn}
-                />
-            )}
+            <OrderStatusList
+                order_statuses={data?.order_statuses}
+                onPagination={handlePagination}
+                onOrder={setOrder}
+                onSort={setColumn}
+            />
         </>
     )
 }

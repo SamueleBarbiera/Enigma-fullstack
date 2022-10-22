@@ -20,7 +20,7 @@ const fetchOrderStatuses = async ({ queryKey }: QueryParamsType) => {
 }
 
 const useOrderStatusesQuery = (options: QueryOptionsType) => {
-    return useQuery<any, Error>([API_ENDPOINTS.ORDER_STATUS, options], fetchOrderStatuses, {
+    return useQuery([API_ENDPOINTS.ORDER_STATUS, options], fetchOrderStatuses, {
         keepPreviousData: true,
     })
 }

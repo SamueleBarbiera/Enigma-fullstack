@@ -1,8 +1,8 @@
 import Uploader from '@components/common/uploader'
-import { Control, Controller, FieldValues } from 'react-hook-form'
+import { Control, Controller } from 'react-hook-form'
 
 interface FileInputProps {
-    control: Control<FieldValues, unknown> | undefined
+    control: Control<any>
     name: string
     multiple?: boolean
 }

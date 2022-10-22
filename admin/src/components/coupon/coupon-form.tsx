@@ -16,6 +16,7 @@ import { useTranslation } from 'next-i18next'
 import FileInput from '@components/ui/file-input'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { couponValidationSchema } from './coupon-validation-schema'
+import { AxiosError } from 'axios'
 
 interface FormValues {
     code?: string | undefined
@@ -48,6 +49,7 @@ interface IProps {
 }
 
 export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
+    console.log('🚀 - file: coupon-form.tsx - line 52 - CreateOrUpdateCouponForm - initialValues', initialValues)
     const router = useRouter()
     const { t } = useTranslation()
     const {
@@ -56,13 +58,12 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
         control,
         watch,
         setError,
-
         formState: { errors },
     } = useForm({
         defaultValues: defaultValues,
         resolver: yupResolver(couponValidationSchema),
     })
-    const { currency } = useSettings()
+    const currency = useSettings()
     const { mutate: createCoupon, isLoading: creating } = useCreateCouponMutation()
     const { mutate: updateCoupon, isLoading: updating } = useUpdateCouponMutation()
     const [active_from, expire_at] = watch(['active_from', 'expire_at'])
@@ -91,12 +92,14 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
                 },
                 {
                     onError: (error) => {
-                        Object.keys(error?.response?.data).forEach((field) => {
-                            setError(field, {
+                        if (error instanceof AxiosError) {
+                            setError('description', {
                                 type: 'manual',
-                                message: error?.response?.data[field][0],
+                                message: error.message,
                             })
-                        })
+
+                            console.log(`❌ Error message: ${error.message}`)
+                        }
                     },
                 }
             )
@@ -109,12 +112,14 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
                 },
                 {
                     onError: (error) => {
-                        Object.keys(error.response?.data).forEach((field: any) => {
-                            setError(field, {
+                        if (error instanceof AxiosError) {
+                            setError('description', {
                                 type: 'manual',
-                                message: error?.response?.data[field][0],
+                                message: error.message,
                             })
-                        })
+
+                            console.log(`❌ Error message: ${error.message}`)
+                        }
                     },
                 }
             )
@@ -160,7 +165,8 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
                         className="mb-5"
                     />
                     <Input
-                        label={`${t('form:input-label-amount')}(${currency ?? ''})`}
+                        // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
+                        label={`${t('form:input-label-amount')}(${currency})`}
                         {...register('amount')}
                         type="number"
                         error={t(

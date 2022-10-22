@@ -5,7 +5,7 @@ import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
 import { siteSettings } from '@settings/site.settings'
 import { useTranslation } from 'next-i18next'
-import { useIsRTL } from '@utils/locals'
+
 import Badge from '@components/ui/badge/badge'
 import { ShopPaginator, SortOrder } from '@ts-types/generated'
 import TitleWithSort from '@components/ui/title-with-sort'
@@ -18,9 +18,8 @@ type IProps = {
 }
 
 const ShopList = ({ shops, onPagination, onSort, onOrder }: IProps) => {
-    const { data, paginatorInfo } = shops! ?? {}
+    const { data, paginatorInfo } = shops ?? {}
     const { t } = useTranslation()
-    
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -73,7 +72,7 @@ const ShopList = ({ shops, onPagination, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align'left',
+            align: 'left',
             onHeaderCell: () => onHeaderClick('name'),
             render: (name: any) => <span className="whitespace-nowrap">{name}</span>,
         },
@@ -136,7 +135,7 @@ const ShopList = ({ shops, onPagination, onSort, onOrder }: IProps) => {
             title: t('table:table-item-actions'),
             dataIndex: 'id',
             key: 'actions',
-            align'right',
+            align: 'right',
             render: (id: string, { slug, is_active }: any) => {
                 return <ActionButtons id={id} approveButton={true} detailsUrl={`/${slug}`} isShopActive={is_active} />
             },

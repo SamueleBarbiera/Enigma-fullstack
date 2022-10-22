@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import Select from '@components/ui/select/select'
 
 import React from 'react'
@@ -8,8 +9,8 @@ import { useTypesQuery } from '@data/type/use-types.query'
 import { useCategoriesQuery } from '@data/category/use-categories.query'
 
 interface Props {
-    onCategoryFilter: () => void
-    onTypeFilter: () => void
+    onCategoryFilter: Function
+    onTypeFilter: Function
     className?: string
 }
 

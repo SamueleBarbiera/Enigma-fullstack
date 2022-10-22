@@ -1,12 +1,12 @@
 import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
 import { useTranslation } from 'next-i18next'
-import { useIsRTL } from '@utils/locals'
+
 import Pagination from '@components/ui/pagination'
 import { UserPaginator, SortOrder, User } from '@ts-types/generated'
 import { useState } from 'react'
 import TitleWithSort from '@components/ui/title-with-sort'
-import { AlignType, ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 type IProps = {
     staffs: UserPaginator | null | undefined
@@ -17,7 +17,6 @@ type IProps = {
 
 const StaffList = ({ staffs, onPagination, onSort, onOrder }: IProps) => {
     const { t } = useTranslation()
-    
     const { data, paginatorInfo } = staffs!
 
     const [sortingObj, setSortingObj] = useState<{
@@ -54,14 +53,14 @@ const StaffList = ({ staffs, onPagination, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align'left' as AlignType,
+            align: 'left',
             onHeaderCell: () => onHeaderClick('name'),
         },
         {
             title: t('table:table-item-email'),
             dataIndex: 'email',
             key: 'email',
-            align'left' as AlignType,
+            align: 'left',
         },
         {
             title: t('table:table-item-status'),
@@ -74,7 +73,7 @@ const StaffList = ({ staffs, onPagination, onSort, onOrder }: IProps) => {
             title: t('table:table-item-actions'),
             dataIndex: 'id',
             key: 'actions',
-            align'right' as AlignType,
+            align: 'right',
             render: (id: string) => {
                 return <ActionButtons id={id} deleteModalView="DELETE_STAFF" />
             },
@@ -87,7 +86,7 @@ const StaffList = ({ staffs, onPagination, onSort, onOrder }: IProps) => {
                 <Table
                     columns={columns}
                     emptyText={t('table:empty-table-data')}
-                    data={data!}
+                    data={data}
                     rowKey="id"
                     scroll={{ x: 800 }}
                 />

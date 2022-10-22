@@ -4,6 +4,7 @@ import { useModalAction, useModalState } from '@components/ui/modal/modal.contex
 import Input from '@components/ui/input'
 import { useTranslation } from 'next-i18next'
 import { useAddWalletPointsMutation } from '@data/user/use-add-wallet-points.mutation'
+
 type FormValues = {
     points: number
 }
@@ -12,14 +13,14 @@ const UserWalletPointsAddView = () => {
     const { t } = useTranslation()
     const { mutate: addWalletPoints, isLoading: loading } = useAddWalletPointsMutation()
 
-    const { data: customerId } = useModalState()
+    const customerId = useModalState()
     const { closeModal } = useModalAction()
 
     function onSubmit({ points }: FormValues) {
         addWalletPoints({
             variables: {
                 input: {
-                    customer_id: customerId as string,
+                    customer_id: customerId.data as string,
                     points: points,
                 },
             },

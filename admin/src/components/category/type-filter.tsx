@@ -5,7 +5,7 @@ import cn from 'classnames'
 import { useTypesQuery } from '@data/type/use-types.query'
 
 interface Props {
-    onTypeFilter: any
+    onTypeFilter: { slug: string }
     className?: string
 }
 
@@ -22,8 +22,9 @@ export default function TypeFilter({ onTypeFilter, className }: Props) {
                 <Select
                     options={data?.types.data}
                     isLoading={loading}
-                    getOptionLabel={(option: any) => option.name}
-                    getOptionValue={(option: any) => option.slug}
+                    getOptionLabel={(option: { name: string }) => option.name}
+                    getOptionValue={(option: { slug: string }) => option.slug}
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     placeholder={t('common:filter-by-group-placeholder')}
                     onChange={onTypeFilter}
                 />

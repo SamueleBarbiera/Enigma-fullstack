@@ -1,9 +1,10 @@
+import { AxiosResponse } from 'axios'
 import Base from './base'
 
 class Upload extends Base<unknown, unknown> {
-    public upload = async (url: string, variables: any) => {
+    public upload = (url: string, variables: any[]) => {
         const formData = new FormData()
-        variables?.forEach((attachment: any) => {
+        variables.forEach((attachment: string | Blob) => {
             formData.append('attachment[]', attachment)
         })
         const options = {
@@ -11,7 +12,7 @@ class Upload extends Base<unknown, unknown> {
                 'Content-Type': 'multipart/form-data',
             },
         }
-        const response = await this.http(url, 'post', formData, options)
+        const response: AxiosResponse<unknown, unknown> = this.http(url, 'post', formData, options)
         return response.data
     }
 }

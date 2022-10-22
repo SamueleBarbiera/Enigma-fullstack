@@ -23,10 +23,11 @@ const ProductCategoryInput = ({ control }: Props) => {
                 name="categories"
                 isMulti
                 control={control}
-                getOptionLabel={(option: any) => option.name}
-                getOptionValue={(option: any) => option.id}
-                options={data?.categories?.data}
+                getOptionLabel={(option: { name: string }) => option.name}
+                getOptionValue={(option: { id: string }) => option.id}
+                options={data?.categories.data}
                 isLoading={loading}
+                isClearable={undefined}
             />
         </div>
     )

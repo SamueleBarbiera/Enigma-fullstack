@@ -22,18 +22,19 @@ export default function AttributePage() {
         query: { shop },
     } = useRouter()
     const { t } = useTranslation()
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     const { openModal } = useModalAction()
-
     const [orderBy, setOrder] = useState('updated_at')
     const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc)
     const { data: shopData, isLoading: fetchingShop } = useShopQuery(shop as string)
-    const shopId = shopData?.shop?.id!
+    console.log('🚀 - file: index.tsx - line 30 - AttributePage - shopData', shopData)
+    const shopId = shopData?.shop.id
     function handleImportModal() {
         openModal('EXPORT_IMPORT_ATTRIBUTE', shopId)
     }
     const {
         data,
-        isLoading: loading,
+        isLoading: loadingAttributes,
         error,
     } = useAttributesQuery(
         {
@@ -45,8 +46,11 @@ export default function AttributePage() {
             enabled: Boolean(shopId),
         }
     )
-    if (loading || fetchingShop) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
+    console.log('🚀 - file: index.tsx - line 41 - AttributePage - data', data)
+    if (loadingAttributes && fetchingShop) return <Loader text={t('common:text-loading')} />
+    if (error && error instanceof Error) {
+        return <ErrorMessage message={error.message} />
+    }
     return (
         <>
             <Card className="mb-8 flex flex-col items-center justify-between md:flex-row">
@@ -56,7 +60,7 @@ export default function AttributePage() {
 
                 <div className="flex w-full flex-col items-center ms-auto md:w-3/4 md:flex-row xl:w-2/4">
                     <LinkButton
-                        href={`/${shop}/attributes/create`}
+                        href={`/${shop as string}/attributes/create`}
                         className="mt-5 h-12 w-full md:mt-0 md:w-auto md:ms-auto"
                     >
                         <span>
@@ -75,7 +79,7 @@ export default function AttributePage() {
                     </button>
                 </div>
             </Card>
-            <AttributeList attributes={data?.attributes} onOrder={setOrder} onSort={setColumn} />
+            <AttributeList attributes={data} onOrder={setOrder} onSort={setColumn} />
         </>
     )
 }

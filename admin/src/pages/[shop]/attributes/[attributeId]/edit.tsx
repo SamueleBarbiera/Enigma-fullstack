@@ -13,13 +13,17 @@ export default function UpdateAttributePage() {
     const { query } = useRouter()
     const { data, isLoading: loading, error } = useAttributeQuery(query.attributeId as string)
     if (loading) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
+    if (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        return <ErrorMessage message={errorMessage} />
+    }
     return (
         <>
             <div className="flex border-b border-dashed border-border-base py-5 sm:py-8">
                 <h1 className="text-lg font-semibold text-heading">{t('form:edit-attribute')}</h1>
             </div>
-            <CreateOrUpdateAttributeForm initialValues={data?.attribute} />
+            <CreateOrUpdateAttributeForm initialValues={data.attribute} />
         </>
     )
 }

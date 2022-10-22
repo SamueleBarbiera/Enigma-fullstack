@@ -7,14 +7,14 @@ const CustomerBanView = () => {
     const { mutate: blockUser, isLoading: loading } = useBlockUserMutation()
     const { mutate: unblockUser, isLoading: activeLoading } = useUnblockUserMutation()
 
-    const { data } = useModalState()
+    const data = useModalState()
     const { closeModal } = useModalAction()
 
     async function handleDelete() {
-        if (data?.type === 'ban') {
-            blockUser(data?.id)
+        if (data.type === 'ban') {
+            blockUser(data.id)
         } else {
-            unblockUser(data?.id)
+            unblockUser(data.id)
         }
         closeModal()
     }
@@ -22,8 +22,8 @@ const CustomerBanView = () => {
         <ConfirmationCard
             onCancel={closeModal}
             onDelete={handleDelete}
-            deleteBtnText={data?.type === 'ban' ? 'Block' : 'Unblock'}
-            title={data?.type === 'ban' ? 'Block Customer' : 'Unblock Customer'}
+            deleteBtnText={data.type === 'ban' ? 'Block' : 'Unblock'}
+            title={data.type === 'ban' ? 'Block Customer' : 'Unblock Customer'}
             description="Are you sure you want to block this customer?"
             deleteBtnLoading={loading || activeLoading}
         />

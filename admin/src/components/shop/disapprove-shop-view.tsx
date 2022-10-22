@@ -6,15 +6,15 @@ import { useDisApproveShopMutation } from '@data/shop/use-disapprove-shop.mutati
 const ProductDeleteView = () => {
     const { mutate: disApproveShopById, isLoading: loading } = useDisApproveShopMutation()
 
-    const { data: modalData } = useModalState()
+    const modalData = useModalState()
     const { closeModal } = useModalAction()
-    async function handleDelete() {
+    function handleDelete() {
         disApproveShopById(
             {
-                variables: { id: modalData as string },
+                variables: { id: modalData.data as string },
             },
             {
-                onSettled: async () => {
+                onSettled: () => {
                     closeModal()
                 },
             }
@@ -25,7 +25,7 @@ const ProductDeleteView = () => {
             onCancel={closeModal}
             onDelete={handleDelete}
             deleteBtnLoading={loading}
-            deleteBtnText="text-shop-approve-button"
+            deleteBtnText="Elimina"
             icon={<CheckMarkCircle className="m-auto mt-4 h-10 w-10 text-accent" />}
             deleteBtnClassName="!bg-accent focus:outline-none hover:!bg-accent-hover focus:!bg-accent-hover"
             cancelBtnClassName="!bg-red-600 focus:outline-none hover:!bg-red-700 focus:!bg-red-700"

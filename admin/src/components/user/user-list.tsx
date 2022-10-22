@@ -1,51 +1,50 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Pagination from '@components/ui/pagination'
 import Image from 'next/image'
 import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
 import { siteSettings } from '@settings/site.settings'
-import { UserPaginator, User } from '@ts-types/generated'
+import { UserPaginator, User, SortOrder } from '@ts-types/generated'
 import { useMeQuery } from '@data/user/use-me.query'
 import { useTranslation } from 'next-i18next'
-import { useIsRTL } from '@utils/locals'
 import Badge from '@components/ui/badge/badge'
-import { AlignType, ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
+import { useState } from 'react'
 
 interface IProps {
     customers: UserPaginator | null | undefined
     onPagination: (current: number) => void
-    onSort: (current: any) => void
+    onSort: (current: unknown) => void
     onOrder: (current: string) => void
 }
-const CustomerList = ({ customers, onPagination /* onSort, onOrder*/ }: IProps) => {
+const CustomerList = ({ customers, onPagination, onSort, onOrder }: IProps) => {
     const { data, paginatorInfo } = customers!
     const { t } = useTranslation()
-    
 
     const { data: DataUser } = useMeQuery()
 
-    // const [sortingObj, setSortingObj] = useState<{
-    //     sort: SortOrder
-    //     column: any | null
-    // }>({
-    //     sort: SortOrder.Desc,
-    //     column: null,
-    // })
+    const [sortingObj, setSortingObj] = useState<{
+        sort: SortOrder
+        column: string | null
+    }>({
+        sort: SortOrder.Desc,
+        column: null,
+    })
 
-    // const onHeaderClick = (column: any | null) => ({
-    //     onClick: () => {
-    //         onSort((currentSortDirection: SortOrder) =>
-    //             currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
-    //         )
+    const onHeaderClick = (column: string | null) => ({
+        onClick: () => {
+            onSort((currentSortDirection: SortOrder) =>
+                currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
+            )
+            onOrder(column!)
 
-    //         onOrder(column)
-
-    //         setSortingObj({
-    //             sort: sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
-    //             column: column,
-    //         })
-    //     },
-    // })
-
+            setSortingObj({
+                sort: sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+                column: column,
+            })
+        },
+    })
     const columns: readonly (ColumnGroupType<User> | ColumnType<User>)[] = [
         {
             title: t('table:table-item-avatar'),
@@ -53,10 +52,10 @@ const CustomerList = ({ customers, onPagination /* onSort, onOrder*/ }: IProps) 
             key: 'profile',
             align: 'center',
             width: 74,
-            render: (profile: any, record: any) => (
+            render: (profile, record) => (
                 <Image
                     src={profile?.avatar?.thumbnail ?? siteSettings.avatar.placeholder}
-                    alt={record?.name}
+                    alt={record.name}
                     layout="fixed"
                     width={42}
                     height={42}
@@ -68,13 +67,15 @@ const CustomerList = ({ customers, onPagination /* onSort, onOrder*/ }: IProps) 
             title: t('table:table-item-title'),
             dataIndex: 'name',
             key: 'name',
-            align'left' as AlignType,
+            align: 'left',
+
+            onHeaderCell: () => onHeaderClick('name'),
         },
         {
             title: t('table:table-item-email'),
             dataIndex: 'email',
             key: 'email',
-            align'left' as AlignType,
+            align: 'left',
         },
         {
             title: t('table:table-item-status'),
@@ -93,7 +94,7 @@ const CustomerList = ({ customers, onPagination /* onSort, onOrder*/ }: IProps) 
             dataIndex: 'id',
             key: 'actions',
             align: 'center',
-            render: (id: string, { is_active }: any) => {
+            render: (id: string, { is_active }) => {
                 return (
                     <>
                         {DataUser?.id != id && (

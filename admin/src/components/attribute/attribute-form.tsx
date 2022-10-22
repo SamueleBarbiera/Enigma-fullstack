@@ -24,8 +24,9 @@ interface IProps {
     initialValues?: Attribute | null
 }
 export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
+    console.log('🚀 - file: attribute-form.tsx - line 27 - CreateOrUpdateAttributeForm - initialValues', initialValues)
     const router = useRouter()
-    const [errorMessage, setErrorMessage] = useState<string>('')
+    const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
     const {
         query: { shop },
@@ -42,12 +43,10 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
         defaultValues: initialValues ? initialValues : { name: '', values: [] },
         resolver: yupResolver(attributeValidationSchema),
     })
-
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'values' as never,
     })
-
     const { mutate: createAttribute, isLoading: creating } = useCreateAttributeMutation()
     const { mutate: updateAttribute, isLoading: updating } = useUpdateAttributeMutation()
     const onSubmit = (values: FormValues) => {
@@ -56,7 +55,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                 {
                     variables: {
                         input: {
-                            name: values.name ?? '',
+                            name: values.name!,
                             shop_id: Number(shopId),
                             values: values.values,
                         },
@@ -64,7 +63,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                 },
                 {
                     onError: (error) => {
-                        setErrorMessage(error?.toString() ?? '')
+                        setErrorMessage(error.message)
                         animateScroll.scrollToTop()
                     },
                 }
@@ -74,10 +73,10 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                 variables: {
                     id: initialValues.id,
                     input: {
-                        name: values.name ?? '',
+                        name: values.name!,
                         shop_id: Number(initialValues.shop_id),
                         values: values.values.map(({ id, value, meta }: AttributeValueInput) => ({
-                            id: Number(id),
+                            id: id,
                             value,
                             meta,
                         })),
@@ -94,7 +93,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                     variant="error"
                     closeable={true}
                     className="mt-5"
-                    onClose={() => setErrorMessage('')}
+                    onClose={() => setErrorMessage(null)}
                 />
             ) : null}
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -144,16 +143,16 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                                             className="sm:col-span-2"
                                             label={t('form:input-label-value-star')}
                                             variant="outline"
-                                            {...register(`values.value`)}
-                                            defaultValue={item.id} // make sure to set up defaultValue
-                                            error={t(errors.values?.value?.message ?? '')}
+                                            {...register(`values.${index}.value`)}
+                                            defaultValue={item.value} // make sure to set up defaultValue
+                                            error={t(errors.values?.[index]?.value?.message)}
                                         />
                                         <Input
                                             className="sm:col-span-2"
                                             label={t('form:input-label-meta')}
                                             variant="outline"
-                                            {...register(`values.meta`)}
-                                            defaultValue={item.id} // make sure to set up defaultValue
+                                            {...register(`values.${index}.meta` as const)}
+                                            defaultValue={item.meta} // make sure to set up defaultValue
                                         />
                                         <button
                                             onClick={() => remove(index)}
@@ -176,7 +175,16 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                         </Button>
 
                         {errors.values?.message ? (
-                            <Alert message={t(errors.values.message)} variant="error" className="mt-5" />
+                            <Alert
+                                message={t(
+                                    errors.values.message as
+                                        | string
+                                        | TemplateStringsArray
+                                        | (string | TemplateStringsArray)[]
+                                )}
+                                variant="error"
+                                className="mt-5"
+                            />
                         ) : null}
                     </Card>
                 </div>

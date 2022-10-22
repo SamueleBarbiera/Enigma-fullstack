@@ -32,8 +32,6 @@ export const API_ENDPOINTS = {
     DISAPPROVE_SHOP: 'disapprove-shop',
     SHOPS: 'shops',
     MY_SHOPS: 'my-shops',
-    WITHDRAWS: 'withdraws',
-    APPROVE_WITHDRAW: 'approve-withdraw',
     ADD_WALLET_POINTS: 'add-points',
     STAFFS: 'staffs',
     ADD_STAFF: 'staffs',

@@ -1,4 +1,5 @@
-import { SettingsOptions } from '@ts-types/generated'
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { SettingsInput } from '@ts-types/generated'
 import React, { createContext, useContext, useMemo, useState } from 'react'
 
 export interface Context {
@@ -53,33 +54,29 @@ export interface Social {
     label: string
 }
 
-const initialState: SettingsOptions = {
-    logo: {
-        id: '1',
-        original: 'http://localhost:8000/storage/326/1024.png',
-        thumbnail: 'http://localhost:8000/storage/326/conversions/1024-thumbnail.jpg',
-    },
-    currency: 'EUR',
-    taxClass: '1',
-    siteTitle: 'Enigma',
-    deliveryTime: [
-        {
-            title: '',
-            description: '',
+const initialState: SettingsInput = {
+    options: {
+        logo: {
+            id: '1',
+            original: 'http://localhost:8000/storage/326/1024.png',
+            thumbnail: 'http://localhost:8000/storage/326/conversions/1024-thumbnail.jpg',
         },
-    ],
-    signupPoints: 0,
-    siteSubtitle: 'Your next ecommerce',
-    shippingClass: '1',
+        currency: 'EUR',
+        taxClass: '1',
+        siteTitle: 'Enigma',
 
-    minimumOrderAmount: 1,
+        siteSubtitle: 'Your next ecommerce',
+        shippingClass: '1',
+
+        minimumOrderAmount: 1,
+    },
 }
 
-export const SettingsContext = createContext<Context | SettingsOptions>(initialState)
+export const SettingsContext = createContext<Context | SettingsInput>(initialState)
 
 SettingsContext.displayName = 'SettingsContext'
 
-export type SettingProvider = { initialValue?: SettingsOptions | undefined; props?: unknown }
+export type SettingProvider = { initialValue?: SettingsInput | undefined; props?: unknown }
 
 export const SettingsProvider = ({ initialValue, ...props }: SettingProvider) => {
     const [state, updateSettings] = useState(initialValue ?? initialState)
@@ -95,5 +92,6 @@ export const SettingsProvider = ({ initialValue, ...props }: SettingProvider) =>
 
 export const useSettings = () => {
     const context = useContext(SettingsContext)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return context
 }

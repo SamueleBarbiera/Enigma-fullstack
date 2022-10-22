@@ -1,5 +1,5 @@
 import Select from '@components/ui/select/select'
-import { Control, Controller, FieldPath, FieldPathValue, FieldValues, RegisterOptions } from 'react-hook-form'
+import { Control, Controller, FieldPath, FieldPathValue, FieldValues, RegisterOptions, useForm } from 'react-hook-form'
 
 export declare type ControllerProps<
     TFieldValues extends FieldValues = FieldValues,
@@ -9,10 +9,9 @@ export declare type ControllerProps<
     rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
     shouldUnregister?: boolean
     defaultValue?: FieldPathValue<TFieldValues, TName>
-    control?: Control<TFieldValues>
-    options: object[]
+    control?: Control<any>
+    options?: any
     [key: string]: unknown
-
     getOptionLabel: unknown
     getOptionValue: unknown
     isMulti: unknown
@@ -21,7 +20,6 @@ export declare type ControllerProps<
 }
 
 const SelectInput = ({
-    control,
     options,
     name,
     rules,
@@ -32,6 +30,7 @@ const SelectInput = ({
     isLoading,
     ...rest
 }: ControllerProps) => {
+    const { control } = useForm()
     return (
         <Controller
             control={control}

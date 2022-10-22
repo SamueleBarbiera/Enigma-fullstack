@@ -12,10 +12,15 @@ import { GetServerSideProps } from 'next'
 export default function UpdateProductPage() {
     const { query } = useRouter()
     const { t } = useTranslation()
-
+    console.log('🚀 - file: edit.tsx - line 16 - UpdateProductPage - query.productId', query.productId)
     const { data, isLoading: loading, error } = useProductQuery(query.productId as string)
+
     if (loading) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
+    if (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        return <ErrorMessage message={errorMessage} />
+    }
     return (
         <>
             <div className="flex border-b border-dashed border-border-base py-5 sm:py-8">
@@ -25,6 +30,7 @@ export default function UpdateProductPage() {
         </>
     )
 }
+
 UpdateProductPage.authenticate = {
     permissions: adminOwnerAndStaffOnly,
 }

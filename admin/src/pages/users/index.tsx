@@ -36,7 +36,7 @@ export default function Customers() {
         setSearchTerm(searchText)
         setPage(1)
     }
-    function handlePagination(current: any) {
+    function handlePagination(current: number) {
         setPage(current)
     }
 
@@ -45,7 +45,11 @@ export default function Customers() {
             {loading ? (
                 <Loader text={t('common:text-loading')} />
             ) : error ? (
-                <ErrorMessage message={error.message} />
+                error instanceof Error ? (
+                    <ErrorMessage message={error.message} />
+                ) : (
+                    'Unknown error'
+                )
             ) : (
                 <>
                     <Card className="mb-8 flex flex-col items-center md:flex-row">
@@ -62,7 +66,7 @@ export default function Customers() {
                     </Card>
 
                     <CustomerList
-                        customers={data?.users}
+                        customers={data}
                         onPagination={handlePagination}
                         onOrder={setOrder}
                         onSort={setColumn}

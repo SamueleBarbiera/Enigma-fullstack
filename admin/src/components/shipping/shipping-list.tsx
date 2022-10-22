@@ -1,20 +1,20 @@
 import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
 import { ROUTES } from '@utils/routes'
-import { Shipping, SortOrder } from '@ts-types/generated'
+import { ShippingInput, SortOrder } from '@ts-types/generated'
 import { useTranslation } from 'next-i18next'
-import { useIsRTL } from '@utils/locals'
+
 import { useState } from 'react'
 import TitleWithSort from '@components/ui/title-with-sort'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export interface IProps {
-    shippings: Shipping[] | undefined
+    shippings: ShippingInput[] | undefined
     onSort: (current: any) => void
     onOrder: (current: string) => void
 }
 const ShippingList = ({ shippings, onSort, onOrder }: IProps) => {
     const { t } = useTranslation()
-    
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -38,7 +38,7 @@ const ShippingList = ({ shippings, onSort, onOrder }: IProps) => {
         },
     })
 
-    const columns = [
+    const columns: readonly (ColumnGroupType<ShippingInput> | ColumnType<ShippingInput>)[] = [
         {
             title: t('table:table-item-id'),
             dataIndex: 'id',
@@ -57,7 +57,7 @@ const ShippingList = ({ shippings, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align'left',
+            align: 'left',
             width: 150,
             onHeaderCell: () => onHeaderClick('name'),
         },
@@ -101,9 +101,16 @@ const ShippingList = ({ shippings, onSort, onOrder }: IProps) => {
             dataIndex: 'id',
             key: 'actions',
             align: 'center',
-            render: (id: string) => (
-                <ActionButtons id={id} editUrl={`${ROUTES.SHIPPINGS}/edit/${id}`} deleteModalView="DELETE_SHIPPING" />
-            ),
+            render: (id: string) => {
+                console.log('🚀 - file: shipping-list.tsx - line 105 - ShippingList - id', id)
+                return (
+                    <ActionButtons
+                        id={id}
+                        editUrl={`${ROUTES.SHIPPINGS}/edit/${id}`}
+                        deleteModalView="DELETE_SHIPPING"
+                    />
+                )
+            },
             width: 200,
         },
     ]

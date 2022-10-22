@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { getAuthCredentials } from '@utils/auth-utils'
 import { ROUTES } from '@utils/routes'
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
@@ -23,7 +24,7 @@ http.interceptors.request.use(
         config.headers.Authorization = `Bearer ${token ?? ''}`
         return config
     },
-    (error: AxiosError) => {
+    (error) => {
         console.log('🚀 - file: http.ts - line 27 - error', error)
         const errorMessage = error instanceof AxiosError ? error.message : 'Unknown error'
         if (error instanceof AxiosError) console.log(`❌ Error message: ${errorMessage}`)
@@ -36,19 +37,20 @@ http.interceptors.response.use(
     (response) => {
         return response
     },
-    (error: AxiosError) => {
-        console.log('🚀 - file: http.ts - line 37 - error', error)
-        if (
-            (error.response && error.response.status === 401) ||
-            (error.response && error.response.status === 403) ||
-            (error.response && error.message === 'Enigma_ERROR.NOT_AUTHORIZED')
-        ) {
-            Cookies.remove('AUTH_CRED')
-            void Router.push(ROUTES.LOGIN)
+    (error) => {
+        if (error) {
+            if (
+                (error.response && error.response.status === 401) ||
+                (error.response && error.response.status === 403) ||
+                (error.response && error.message === 'Enigma_ERROR.NOT_AUTHORIZED')
+            ) {
+                Cookies.remove('AUTH_CRED')
+                void Router.push(ROUTES.LOGIN)
+            }
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            console.log(`❌ Error message: ${error.message}`)
+            return Promise.reject(error.message)
         }
-        const errorMessage = error instanceof AxiosError ? error.message : 'Unknown error'
-        if (error instanceof AxiosError) console.log(`❌ Error message: ${errorMessage}`)
-        return Promise.reject(errorMessage)
     }
 )
 

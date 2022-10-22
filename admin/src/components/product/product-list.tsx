@@ -3,20 +3,18 @@ import Image from 'next/image'
 import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
 import { siteSettings } from '@settings/site.settings'
-import usePrice from '@utils/use-price'
 import Badge from '@components/ui/badge/badge'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
-import { Product, ProductPaginator, ProductType, Shop, SortOrder } from '@ts-types/generated'
-import { useIsRTL } from '@utils/locals'
-import { useState } from 'react'
+import { Product, ProductPaginator, Shop, SortOrder } from '@ts-types/generated'
+import { Dispatch, SetStateAction, useState } from 'react'
 import TitleWithSort from '@components/ui/title-with-sort'
-import { AlignType, ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export interface IProps {
-    products?: ProductPaginator
+    products?: ProductPaginator | undefined
     onPagination: (current: number) => void
-    onSort: (current: any) => void
+    onSort: Dispatch<SetStateAction<SortOrder>>
     onOrder: (current: string) => void
 }
 
@@ -26,9 +24,14 @@ interface SortingObjType {
 }
 
 const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
-    const { data, paginatorInfo } = products!
+    console.log('🚀 - file: product-list.tsx - line 27 - ProductList - products', products)
     const router = useRouter()
     const { t } = useTranslation()
+    console.log(
+        '🚀 - file: product-list.tsx - line 159 - ProductList - `${router.asPath}/${slug}/edit`',
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        `${router.asPath}/${products?.data.map((data: Product) => data.slug)}/edit`
+    )
 
     const [sortingObj, setSortingObj] = useState<SortingObjType>({
         sort: SortOrder.Desc,
@@ -49,17 +52,17 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
         },
     })
 
-    let columns: readonly (ColumnGroupType<Product> | ColumnType<Product>)[] = [
+    let columns: (ColumnGroupType<Product> | ColumnType<Product>)[] = [
         {
             title: t('table:table-item-image'),
             dataIndex: 'image',
             key: 'image',
             align: 'left',
             width: 74,
-            render: (value: any, record: Product, index: number) => (
+            render: (record: Product) => (
                 <Image
-                    src={record?.image?.thumbnail ?? siteSettings.product.placeholder}
-                    alt={record?.name}
+                    src={record.image?.thumbnail ?? siteSettings.product.placeholder}
+                    alt={record.name}
                     layout="fixed"
                     width={42}
                     height={42}
@@ -90,7 +93,6 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
             width: 120,
             align: 'center',
             ellipsis: true,
-            render: (type: any) => <span className="truncate whitespace-nowrap">{type?.name}</span>,
         },
         {
             title: t('table:table-item-shop'),
@@ -175,18 +177,18 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
                 <Table
                     columns={columns}
                     emptyText={t('table:empty-table-data')}
-                    data={data}
+                    data={products?.data}
                     rowKey="id"
                     scroll={{ x: 900 }}
                 />
             </div>
 
-            {!!paginatorInfo.total && (
+            {!!products?.paginatorInfo.total && (
                 <div className="flex items-center justify-end">
                     <Pagination
-                        total={paginatorInfo.total}
-                        current={paginatorInfo.currentPage}
-                        pageSize={paginatorInfo.perPage}
+                        total={products.paginatorInfo.total}
+                        current={products.paginatorInfo.currentPage}
+                        pageSize={products.paginatorInfo.perPage}
                         onChange={onPagination}
                         showLessItems
                     />

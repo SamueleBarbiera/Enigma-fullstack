@@ -16,7 +16,7 @@ const fetchShippingClasses = async ({ queryKey }: QueryParamsType) => {
 }
 
 const useShippingClassesQuery = (options: QueryOptionsType = {}) => {
-    return useQuery<any, Error>([API_ENDPOINTS.SHIPPINGS, options], fetchShippingClasses, {
+    return useQuery([API_ENDPOINTS.SHIPPINGS, options], fetchShippingClasses, {
         keepPreviousData: true,
     })
 }

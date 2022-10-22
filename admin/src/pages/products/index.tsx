@@ -9,7 +9,6 @@ import { useState } from 'react'
 import { useProductsQuery } from '@data/product/products.query'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import SortForm from '@components/common/sort-form'
 import CategoryTypeFilter from '@components/product/category-type-filter'
 import cn from 'classnames'
 import { ArrowDown } from '@components/icons/arrow-down'
@@ -48,13 +47,17 @@ export default function ProductsPage() {
     })
 
     if (loading) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
+    if (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        return <ErrorMessage message={errorMessage} />
+    }
 
     function handleSearch({ searchText }: { searchText: string }) {
         setSearchTerm(searchText)
         setPage(1)
     }
-    function handlePagination(current: any) {
+    function handlePagination(current: number) {
         setPage(current)
     }
     return (
@@ -87,22 +90,17 @@ export default function ProductsPage() {
                     <div className="mt-5 flex w-full flex-col border-t border-gray-200 pt-5 md:mt-8 md:flex-row md:items-center md:pt-8">
                         <CategoryTypeFilter
                             className="w-full"
-                            onCategoryFilter={({ slug }: { slug: string }) => {
+                            onCategoryFilter={(slug: string) => {
                                 setCategory(slug)
                             }}
-                            onTypeFilter={({ slug }: { slug: string }) => {
+                            onTypeFilter={(slug: string) => {
                                 setType(slug)
                             }}
                         />
                     </div>
                 </div>
             </Card>
-            <ProductList
-                products={data?.products}
-                onPagination={handlePagination}
-                onOrder={setOrder}
-                onSort={setColumn}
-            />
+            <ProductList products={data} onPagination={handlePagination} onOrder={setOrder} onSort={setColumn} />
         </>
     )
 }

@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Table } from '@components/ui/table'
-import { Product, Shop } from '@ts-types/generated'
+import { CreateProduct, Shop } from '@ts-types/generated'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export interface IProps {
-    products?: Product[]
+    products?: CreateProduct | undefined
     title?: string
 }
 
@@ -15,7 +15,7 @@ const PopularProductList = ({ products, title }: IProps) => {
     const router = useRouter()
     const { t } = useTranslation()
 
-    let columns: readonly (ColumnGroupType<Product> | ColumnType<Product>)[] = [
+    let columns: readonly (ColumnGroupType<CreateProduct> | ColumnType<CreateProduct>)[] = [
         {
             title: t('table:table-item-id'),
             dataIndex: 'id',

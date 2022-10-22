@@ -7,18 +7,18 @@ class Shop extends Base<ShopInput, ShopInput> {
         return this.http(url, 'get')
     }
 
-    public approve = async (url: string, variables: ApproveShopInput) => {
+    public approve = (url: string, variables: ApproveShopInput) => {
         return this.http<ApproveShopInput>(url, 'post', variables)
     }
 
-    public disapprove = async (url: string, variables: { id: string }) => {
+    public disapprove = (url: string, variables: { id: string }) => {
         return this.http<{ id: string }>(url, 'post', variables)
     }
 
-    public addStaff = async (url: string, variables: AddStaffInput) => {
+    public addStaff = (url: string, variables: AddStaffInput) => {
         return this.http<AddStaffInput>(url, 'post', variables)
     }
-    public removeStaff = async (url: string, id: string) => {
+    public removeStaff = (url: string, id: string) => {
         return this.http<{ id: string }>(url, 'delete', { id })
     }
 }

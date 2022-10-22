@@ -2,12 +2,12 @@ import Pagination from '@components/ui/pagination'
 import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
 import { ROUTES } from '@utils/routes'
-import { Attachment, CategoryPaginator, SortOrder } from '@ts-types/generated'
+import { Attachment, Category, CategoryPaginator, SortOrder } from '@ts-types/generated'
 import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
-import { useIsRTL } from '@utils/locals'
 import { useState } from 'react'
 import TitleWithSort from '@components/ui/title-with-sort'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export interface IProps {
     categories: CategoryPaginator | undefined | null
@@ -18,9 +18,7 @@ export interface IProps {
 const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => {
     const { t } = useTranslation()
     const { data, paginatorInfo } = categories!
-    const rowExpandable = (record: any) => record.children?.length
-
-    
+    //const rowExpandable = (record: { children: string | any[] }) => record.children.length
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -44,7 +42,7 @@ const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => 
         },
     })
 
-    const columns = [
+    const columns: readonly (ColumnGroupType<Category> | ColumnType<Category>)[] = [
         {
             title: t('table:table-item-id'),
             dataIndex: 'id',
@@ -63,7 +61,7 @@ const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => 
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align'left',
+            align: 'left',
             width: 150,
             onHeaderCell: () => onHeaderClick('name'),
         },
@@ -71,7 +69,7 @@ const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => 
             title: t('table:table-item-details'),
             dataIndex: 'details',
             key: 'details',
-            align'left',
+            align: 'left',
             width: 350,
             render: (details: string) => {
                 if (!details) return null
@@ -92,7 +90,7 @@ const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => 
                         {images.map((image: Attachment, index) => (
                             <Image
                                 src={image.original ?? '/'}
-                                alt={`brand-image-${image.id}`}
+                                alt={`brand-image-${image.id ?? ''}`}
                                 layout="fixed"
                                 width={40}
                                 height={40}
@@ -112,7 +110,7 @@ const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => 
             align: 'center',
             ellipsis: true,
             width: 150,
-            render: (slug: any) => (
+            render: (slug: string) => (
                 <div className="overflow-hidden truncate whitespace-nowrap" title={slug}>
                     {slug}
                 </div>
@@ -141,7 +139,7 @@ const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => 
                     scroll={{ x: 1000 }}
                     expandable={{
                         expandedRowRender: () => '',
-                        rowExpandable: rowExpandable,
+                        //rowExpandable: rowExpandable,
                     }}
                 />
             </div>

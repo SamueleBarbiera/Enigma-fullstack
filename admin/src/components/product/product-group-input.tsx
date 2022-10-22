@@ -22,10 +22,12 @@ const ProductGroupInput = ({ control, error }: Props) => {
             <SelectInput
                 name="type"
                 control={control}
-                getOptionLabel={(option: any) => option.name}
-                getOptionValue={(option: any) => option.id}
-                options={data?.types?.data!}
+                getOptionLabel={(option: { name: string }) => option.name}
+                getOptionValue={(option: { id: string }) => option.id}
+                options={data?.types.data}
                 isLoading={loading}
+                isMulti={undefined}
+                isClearable={undefined}
             />
             <ValidationError message={t(error!)} />
         </div>

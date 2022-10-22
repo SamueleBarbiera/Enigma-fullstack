@@ -394,6 +394,10 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
                                                 options={updatedIcons}
                                                 isClearable={true}
                                                 defaultValue={item.icon!}
+                                                getOptionLabel={undefined}
+                                                getOptionValue={undefined}
+                                                isMulti={undefined}
+                                                isLoading={false}
                                             />
                                         </div>
                                         {/* <Input

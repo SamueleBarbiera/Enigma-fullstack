@@ -1,6 +1,6 @@
-import { useMemo } from 'react'
 import { siteSettings } from '@settings/site.settings'
 import { useSettings } from '@contexts/settings.context'
+
 export function formatPrice({
     amount,
     currencyCode,
@@ -38,11 +38,13 @@ export function formatVariantPrice({
 
     return { price, basePrice, discount }
 }
+
 type PriceProps = {
     amount: number
     baseAmount?: number
     currencyCode?: string
 }
+
 export default function usePrice(data?: PriceProps | null) {
     const { currency } = useSettings()
     const { amount, baseAmount, currencyCode = currency } = data ?? {}

@@ -1,21 +1,20 @@
 import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
-import { SortOrder, Tax } from '@ts-types/generated'
+import { SortOrder, Tax, TaxInput } from '@ts-types/generated'
 import { ROUTES } from '@utils/routes'
 import { useTranslation } from 'next-i18next'
-import { useIsRTL } from '@utils/locals'
+
 import { useState } from 'react'
 import TitleWithSort from '@components/ui/title-with-sort'
-import { AlignType, ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export type IProps = {
-    taxes: Tax[] | undefined
+    taxes: TaxInput | undefined
     onSort: (current: any) => void
     onOrder: (current: string) => void
 }
 const TaxList = ({ taxes, onSort, onOrder }: IProps) => {
     const { t } = useTranslation()
-    
 
     const [sortingObj, setSortingObj] = useState<{
         sort: SortOrder
@@ -39,7 +38,7 @@ const TaxList = ({ taxes, onSort, onOrder }: IProps) => {
         },
     })
 
-    const columns: readonly (ColumnGroupType<Tax> | ColumnType<Tax>)[] = [
+    const columns: readonly (ColumnGroupType<TaxInput> | ColumnType<TaxInput>)[] = [
         {
             title: t('table:table-item-id'),
             dataIndex: 'id',
@@ -58,7 +57,7 @@ const TaxList = ({ taxes, onSort, onOrder }: IProps) => {
             className: 'cursor-pointer',
             dataIndex: 'name',
             key: 'name',
-            align'left' as AlignType,
+            align: 'left',
             width: 150,
             onHeaderCell: () => onHeaderClick('name'),
         },
@@ -121,7 +120,6 @@ const TaxList = ({ taxes, onSort, onOrder }: IProps) => {
     ]
     return (
         <div className="mb-8 overflow-hidden rounded shadow">
-            {/* @ts-ignore */}
             <Table
                 columns={columns}
                 emptyText={t('table:empty-table-data')}

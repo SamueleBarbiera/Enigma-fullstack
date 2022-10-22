@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import Tax from '@repositories/tax'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 import { useTranslation } from 'next-i18next'
+import { AxiosError } from 'axios'
 export interface ITaxUpdateVariables {
     variables: {
         id: number | string
@@ -23,6 +24,12 @@ export const useUpdateTaxClassMutation = () => {
             // Always refetch after error or success:
             onSettled: async () => {
                 await queryClient.invalidateQueries([API_ENDPOINTS.TAXES])
+            },
+            onError: (error: AxiosError) => {
+                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
+                toast.error(JSON.stringify(error))
+                return errorMessage
             },
         }
     )

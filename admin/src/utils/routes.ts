@@ -19,7 +19,6 @@ export const ROUTES = {
     ATTRIBUTE_VALUES: '/attribute-values',
     BRANDS: '/brands',
     TAGS: '/tags',
-    WITHDRAWS: '/withdraws',
     PROFILE_UPDATE: '/profile-update',
     LOGOUT: '/logout',
     STAFFS: '/staffs',

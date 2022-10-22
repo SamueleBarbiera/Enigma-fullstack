@@ -3,11 +3,13 @@ import Import from '@repositories/import'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'next-i18next'
+import { AxiosError } from 'axios'
 
 type Input = {
     shop_id: string
     csv: any
 }
+
 export const useImportProductsMutation = () => {
     const queryClient = useQueryClient()
     const { t } = useTranslation('common')
@@ -20,8 +22,11 @@ export const useImportProductsMutation = () => {
             onSuccess: () => {
                 toast.success(t('common:product-imported-successfully'))
             },
-            onError: (error: Error) => {
-                toast.error(t(`common:${error.message}`))
+            onError: (error: AxiosError) => {
+                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
+                toast.error(JSON.stringify(error))
+                return errorMessage
             },
             onSettled: async () => {
                 await queryClient.invalidateQueries([API_ENDPOINTS.PRODUCTS])

@@ -6,22 +6,25 @@ import { CloseIcon } from '@components/icons/close-icon'
 import Loader from '@components/ui/loader/loader'
 import { useTranslation } from 'next-i18next'
 import { useUploadMutation } from '@data/upload/use-upload.mutation'
+import Image from 'next/image'
 
-const getPreviewImage = (value: any) => {
-    let images: any[] = []
-    if (value) {
-        images = Array.isArray(value) ? value : [{ ...value }]
-    }
+const getPreviewImage = (value: Attachment[]) => {
+    let images: Attachment[] = []
+
+    images = Array.isArray(value) ? value : []
+
     return images
 }
-export default function Uploader({ onChange, value, multiple }: any) {
+export default function Uploader(onChange: (arg0: Attachment[]) => void, value: Attachment[], multiple: boolean) {
     const { t } = useTranslation()
     const [files, setFiles] = useState<Attachment[]>(getPreviewImage(value))
     const { mutate: upload, isLoading: loading } = useUploadMutation()
     const { getRootProps, getInputProps } = useDropzone({
-        accept: 'image/*',
+        accept: {
+            'image/*': ['.jpeg', '.jpg', '.png'],
+        },
         multiple,
-        onDrop: async (acceptedFiles) => {
+        onDrop: (acceptedFiles) => {
             if (acceptedFiles.length) {
                 upload(
                     acceptedFiles, // it will be an array of uploaded attachments
@@ -47,13 +50,10 @@ export default function Uploader({ onChange, value, multiple }: any) {
 
     const handleDelete = (image: string) => {
         const images = files.filter((file) => file.thumbnail !== image)
-
         setFiles(images)
-        if (onChange) {
-            onChange(images)
-        }
+        onChange(images)
     }
-    const thumbs = files?.map((file: any, idx) => {
+    const thumbs = files.map((file, idx) => {
         if (file.id) {
             return (
                 <div
@@ -61,12 +61,12 @@ export default function Uploader({ onChange, value, multiple }: any) {
                     key={idx}
                 >
                     <div className="flex h-16 w-16 min-w-0 items-center justify-center overflow-hidden bg-gray-300">
-                        <img src={file.original} />
+                        <Image layout="fill" src={file.original ?? ''} alt={''} />
                     </div>
                     {multiple ? (
                         <button
                             className="absolute top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs text-light shadow-xl outline-none end-1"
-                            onClick={() => handleDelete(file.thumbnail)}
+                            onClick={() => handleDelete(file.thumbnail!)}
                         >
                             <CloseIcon width={10} height={10} />
                         </button>
@@ -79,7 +79,7 @@ export default function Uploader({ onChange, value, multiple }: any) {
     useEffect(
         () => () => {
             // Make sure to revoke the data uris to avoid memory leaks
-            files.forEach((file: any) => URL.revokeObjectURL(file.thumbnail))
+            files.forEach((file) => URL.revokeObjectURL(file.thumbnail!))
         },
         [files]
     )

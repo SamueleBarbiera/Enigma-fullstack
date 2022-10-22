@@ -14,13 +14,17 @@ export default function UpdateProductPage() {
     const { data, isLoading: loading, error } = useProductQuery(query.productId as string)
 
     if (loading) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error?.message as string} />
+    if (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        return <ErrorMessage message={errorMessage} />
+    }
     return (
         <>
             <div className="flex border-b border-dashed border-border-base py-5 sm:py-8">
                 <h1 className="text-lg font-semibold text-heading">Edit Product</h1>
             </div>
-            <CreateOrUpdateProductForm initialValues={data} />
+            <CreateOrUpdateProductForm initialValues={data?.data} />
         </>
     )
 }

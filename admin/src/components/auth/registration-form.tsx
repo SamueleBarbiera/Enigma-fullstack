@@ -44,7 +44,7 @@ const RegistrationForm = () => {
     const router = useRouter()
     const { t } = useTranslation()
 
-    async function onSubmit({ name, email, password, permission }: FormValues) {
+    function onSubmit({ name, email, password, permission }: FormValues) {
         registerUser(
             {
                 variables: {

@@ -3,9 +3,10 @@ import { mapPaginatorData, stringifySearchQuery } from '@utils/data-mappers'
 import { useQuery } from '@tanstack/react-query'
 import Orders from '@repositories/type'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
-import { Order, OrderPaginator, PaginatorInfo } from '@ts-types/generated'
 
 const fetchOrders = async ({ queryKey }: QueryParamsType) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+    const [_key, params] = queryKey
     const {
         text,
         shop_id,
@@ -13,7 +14,7 @@ const fetchOrders = async ({ queryKey }: QueryParamsType) => {
         limit = 20,
         orderBy = 'updated_at',
         sortedBy = 'DESC',
-    } = queryKey as QueryOptionsType
+    } = params as QueryOptionsType
     const searchString = stringifySearchQuery({
         tracking_number: text,
     })
@@ -27,7 +28,7 @@ const fetchOrders = async ({ queryKey }: QueryParamsType) => {
 }
 
 const useOrdersQuery = (params: QueryOptionsType = {}, options = {}) => {
-    return useQuery<any, Error>([API_ENDPOINTS.ORDERS, params], fetchOrders, {
+    return useQuery([API_ENDPOINTS.ORDERS, params], fetchOrders, {
         ...options,
         keepPreviousData: true,
     })

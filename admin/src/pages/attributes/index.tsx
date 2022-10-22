@@ -14,12 +14,15 @@ import { GetServerSideProps } from 'next'
 export default function AttributePage() {
     const { t } = useTranslation()
     const [orderBy, setOrder] = useState('created_at')
-    const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc)
+    const [sortedBy, setColumn] = useState<SortOrder | undefined>(SortOrder.Desc)
 
     const { data, isLoading: loading, error } = useAttributesQuery({ orderBy, sortedBy })
-
     if (loading) return <Loader text={t('common:text-loading')} />
-    if (error) return <ErrorMessage message={error.message} />
+    if (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
+        return <ErrorMessage message={errorMessage} />
+    }
     return (
         <>
             <Card className="mb-8 flex flex-col items-center justify-between md:flex-row">
@@ -27,7 +30,7 @@ export default function AttributePage() {
                     <h1 className="text-xl font-semibold text-heading">{t('common:sidebar-nav-item-attributes')}</h1>
                 </div>
             </Card>
-            <AttributeList attributes={data?.attributes as any} onOrder={setOrder} onSort={setColumn} />
+            <AttributeList attributes={data} onOrder={setOrder} onSort={setColumn} />
         </>
     )
 }
