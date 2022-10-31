@@ -33,7 +33,6 @@ export default function ProfileUpdate(me) {
         formState: { errors },
     } = useForm<FormValues>({
         defaultValues: {
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             ...(me && pick(me, ['name', 'profile.bio', 'profile.contact', 'profile.avatar'])),
         },
     })

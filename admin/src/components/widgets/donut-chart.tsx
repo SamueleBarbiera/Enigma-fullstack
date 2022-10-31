@@ -73,7 +73,7 @@ const DonutChart = (
                     <div className="flex flex-col">
                         <span className="text-lg font-semibold text-heading" style={{ color: colors[0] }}>
                             {prefix}
-                            {numberWithCommas(series[0])}
+                            {numberWithCommas(series[0]!)}
                         </span>
                         <span className="mt-1 text-xs text-body">{labels[0]}</span>
                     </div>
@@ -91,7 +91,7 @@ const DonutChart = (
                     <div className="flex flex-col items-end">
                         <span className="text-lg font-semibold text-heading" style={{ color: colors[1] }}>
                             {prefix}
-                            {numberWithCommas(series[1])}
+                            {numberWithCommas(series[1]!)}
                         </span>
                         <span className="mt-1 text-xs text-body">{labels[1]}</span>
                     </div>

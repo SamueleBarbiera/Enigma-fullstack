@@ -6,7 +6,7 @@ import { useModalState } from '@components/ui/modal/modal.context'
 
 const AttributeExportImport = () => {
     const { t } = useTranslation()
-    const data = useModalState()
+    const { data } = useModalState()
 
     return (
         <Card className="flex min-h-screen w-screen flex-col md:min-h-0 md:w-auto lg:min-w-[900px]">
@@ -17,7 +17,7 @@ const AttributeExportImport = () => {
             <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
                 <ImportAttributes />
                 <a
-                    href={`${process.env.NEXT_PUBLIC_REST_API_ENDPOINT ?? ''}export-attributes/${data.data as string}`}
+                    href={`${process.env.NEXT_PUBLIC_REST_API_ENDPOINT ?? ''}export-attributes/${data as string}`}
                     target="_blank"
                     className="flex h-36 cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-border-base p-5 focus:border-accent-400 focus:outline-none"
                     rel="noreferrer"

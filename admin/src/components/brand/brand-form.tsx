@@ -235,7 +235,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
                                                 control={control}
                                                 multiple={true}
                                             />
-                                            <ValidationError message={t(errors.images?.[index]?.image?.message)} />
+                                            <ValidationError message={t(errors.images?.[index]?.image?.message!)} />
                                         </div>
                                     </div>
 

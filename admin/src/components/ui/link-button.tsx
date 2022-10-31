@@ -48,10 +48,8 @@ const LinkButton: React.FC<NextLinkProps & ButtonProps> = ({
     )
 
     return (
-        <NextLink href={href}>
-            <a {...props} className={cn(rootClassName, className)}>
-                {children}
-            </a>
+        <NextLink href={href} {...props} className={cn(rootClassName, className)}>
+            {children}
         </NextLink>
     )
 }

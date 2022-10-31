@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { QueryParamsType, QueryOptionsType } from '@ts-types/custom.types'
 import { mapPaginatorData, stringifySearchQuery } from '@utils/data-mappers'
 import { useQuery } from '@tanstack/react-query'
 import Orders from '@repositories/type'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
-
 const fetchOrders = async ({ queryKey }: QueryParamsType) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     const [_key, params] = queryKey
     const {
         text,
@@ -18,9 +19,7 @@ const fetchOrders = async ({ queryKey }: QueryParamsType) => {
     const searchString = stringifySearchQuery({
         tracking_number: text,
     })
-    const url = `${API_ENDPOINTS.ORDERS}?search=${searchString}&shop_id=${
-        shop_id ?? 0
-    }&page=${page}&limit=${limit}&orderBy=${orderBy}&sortedBy=${sortedBy}`
+    const url = `${API_ENDPOINTS.ORDERS}?search=${searchString}&shop_id=${shop_id}&page=${page}&limit=${limit}&orderBy=${orderBy}&sortedBy=${sortedBy}`
     const {
         data: { data, ...rest },
     } = await Orders.all(url)

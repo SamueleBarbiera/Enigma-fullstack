@@ -1,15 +1,11 @@
-import NextLink, { LinkProps as NextLinkProps } from "next/link";
+import NextLink, { LinkProps as NextLinkProps } from 'next/link'
 
-const Link: React.FC<NextLinkProps & { className?: string }> = ({
-  href,
-  children,
-  ...props
-}) => {
-  return (
-    <NextLink href={href}>
-      <a {...props}>{children}</a>
-    </NextLink>
-  );
-};
+const Link: React.FC<NextLinkProps & { className?: string }> = ({ href, children, ...props }) => {
+    return (
+        <NextLink href={href} {...props}>
+            {children}
+        </NextLink>
+    )
+}
 
-export default Link;
+export default Link

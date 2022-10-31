@@ -91,7 +91,6 @@ const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => 
                             <Image
                                 src={image.original ?? '/'}
                                 alt={`brand-image-${image.id ?? ''}`}
-                                layout="fixed"
                                 width={40}
                                 height={40}
                                 className="overflow-hidden rounded-lg object-contain"

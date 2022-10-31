@@ -1,1 +1,1 @@
-export { default as useWindowSize } from "react-use/lib/useWindowSize";
+export { default as useWindowSize } from 'react-use/lib/useWindowSize'

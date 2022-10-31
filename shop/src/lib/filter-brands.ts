@@ -1,4 +1,4 @@
-import { KeyBasedImage, Type } from "@framework/types";
+import { KeyBasedImage, Type } from '@framework/types'
 
 /**
  * Helper methods to filter brands
@@ -7,23 +7,23 @@ import { KeyBasedImage, Type } from "@framework/types";
  * @param layout
  */
 export const filterBrands = (brands: Type[] | undefined, layout: string) => {
-  if (!brands) {
-    return [];
-  }
+    if (!brands) {
+        return []
+    }
 
-  const filterBrands: Type[] = [];
-  brands?.map((brand: Type) => {
-    brand?.images?.map((image: KeyBasedImage) => {
-      if (image.key === layout) {
-        filterBrands.push(brand);
-        return false;
-      }
-    });
-  })
+    const filterBrands: Type[] = []
+    brands?.map((brand: Type) => {
+        brand?.images?.map((image: KeyBasedImage) => {
+            if (image.key === layout) {
+                filterBrands.push(brand)
+                return false
+            }
+        })
+    })
 
-  return filterBrands;
+    return filterBrands
 }
 
 export const filterBrandImages = (images: KeyBasedImage[], layout: string) => {
-  return images?.find((image: KeyBasedImage) => image.key === layout);
+    return images?.find((image: KeyBasedImage) => image.key === layout)
 }

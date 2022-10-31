@@ -7,7 +7,6 @@ import { API_ENDPOINTS } from '@utils/api/endpoints'
 import { adminOnly, getAuthCredentials, hasAccess } from '@utils/auth-utils'
 import { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
-import { useTranslation } from 'next-i18next'
 
 export interface IShopCreateVariables {
     variables: {
@@ -19,7 +18,6 @@ export const useCreateShopMutation = () => {
     const queryClient = useQueryClient()
     const router = useRouter()
 
-    const { t } = useTranslation()
     return useMutation(({ variables: { input } }: IShopCreateVariables) => Shop.create(API_ENDPOINTS.SHOPS, input), {
         onSuccess: async () => {
             const { permissions } = getAuthCredentials()

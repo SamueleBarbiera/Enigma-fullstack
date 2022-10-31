@@ -7,10 +7,11 @@ import { siteSettings } from '@settings/site.settings'
 import { useTranslation } from 'next-i18next'
 
 import Badge from '@components/ui/badge/badge'
-import { ShopPaginator, SortOrder } from '@ts-types/generated'
+import { Shop, ShopPaginator, SortOrder } from '@ts-types/generated'
 import TitleWithSort from '@components/ui/title-with-sort'
+import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
-type IProps = {
+interface IProps {
     shops: ShopPaginator | null | undefined
     onPagination: (current: number) => void
     onSort: (current: any) => void
@@ -43,18 +44,18 @@ const ShopList = ({ shops, onPagination, onSort, onOrder }: IProps) => {
         },
     })
 
-    const columns = [
+    const columns: readonly (ColumnGroupType<Shop> | ColumnType<Shop>)[] = [
         {
             title: t('table:table-item-logo'),
             dataIndex: 'logo',
             key: 'logo',
             align: 'center',
             width: 74,
-            render: (logo: any, record: any) => (
+            render: (logo: { thumbnail: string }, record) => (
                 <Image
-                    src={logo?.thumbnail ?? siteSettings.product.placeholder}
-                    alt={record?.name}
-                    layout="fixed"
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                    src={logo.thumbnail ?? siteSettings.product.placeholder}
+                    alt={record.name!}
                     width={42}
                     height={42}
                     className="overflow-hidden rounded"
@@ -74,14 +75,14 @@ const ShopList = ({ shops, onPagination, onSort, onOrder }: IProps) => {
             key: 'name',
             align: 'left',
             onHeaderCell: () => onHeaderClick('name'),
-            render: (name: any) => <span className="whitespace-nowrap">{name}</span>,
+            render: (name: string) => <span className="whitespace-nowrap">{name}</span>,
         },
         {
             title: t('table:table-item-owner-name'),
             dataIndex: 'owner',
             key: 'owner',
             align: 'center',
-            render: (owner: any) => owner.name,
+            render: (owner: { name: string }) => owner.name,
         },
         {
             title: (
@@ -136,8 +137,15 @@ const ShopList = ({ shops, onPagination, onSort, onOrder }: IProps) => {
             dataIndex: 'id',
             key: 'actions',
             align: 'right',
-            render: (id: string, { slug, is_active }: any) => {
-                return <ActionButtons id={id} approveButton={true} detailsUrl={`/${slug}`} isShopActive={is_active} />
+            render: (id: string, { slug, is_active }) => {
+                return (
+                    <ActionButtons
+                        id={id}
+                        approveButton={true}
+                        detailsUrl={`/${slug ?? ''}`}
+                        isShopActive={is_active ?? true}
+                    />
+                )
             },
         },
     ]
@@ -154,7 +162,7 @@ const ShopList = ({ shops, onPagination, onSort, onOrder }: IProps) => {
                 />
             </div>
 
-            {!!paginatorInfo.total && (
+            {!!paginatorInfo?.total && (
                 <div className="flex items-center justify-end">
                     <Pagination
                         total={paginatorInfo.total}

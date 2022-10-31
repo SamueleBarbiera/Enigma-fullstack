@@ -15,7 +15,7 @@ import { useState } from 'react'
 interface IProps {
     customers: UserPaginator | null | undefined
     onPagination: (current: number) => void
-    onSort: (current: unknown) => void
+    onSort: (current: any) => void
     onOrder: (current: string) => void
 }
 const CustomerList = ({ customers, onPagination, onSort, onOrder }: IProps) => {
@@ -56,7 +56,6 @@ const CustomerList = ({ customers, onPagination, onSort, onOrder }: IProps) => {
                 <Image
                     src={profile?.avatar?.thumbnail ?? siteSettings.avatar.placeholder}
                     alt={record.name}
-                    layout="fixed"
                     width={42}
                     height={42}
                     className="overflow-hidden rounded"

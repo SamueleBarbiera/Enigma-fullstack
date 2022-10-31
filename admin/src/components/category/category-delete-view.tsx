@@ -5,10 +5,10 @@ import { useDeleteCategoryMutation } from '@data/category/use-category-delete.mu
 const CategoryDeleteView = () => {
     const { mutate: deleteCategory, isLoading: loading } = useDeleteCategoryMutation()
 
-    const data = useModalState()
+    const { data } = useModalState()
     const { closeModal } = useModalAction()
     function handleDelete() {
-        deleteCategory(data.data as string)
+        deleteCategory(data as string)
         closeModal()
     }
     return <ConfirmationCard onCancel={closeModal} onDelete={handleDelete} deleteBtnLoading={loading} />

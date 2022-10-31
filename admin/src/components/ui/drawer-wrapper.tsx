@@ -3,11 +3,12 @@ import { CloseIcon } from '@components/icons/close-icon'
 import Scrollbar from './scrollbar'
 
 type DrawerWrapperProps = {
-    children: any
+    children: React.ReactElement
     onClose: () => void
 }
 
-const DrawerWrapper: React.FunctionComponent<DrawerWrapperProps> = ({ children, onClose }: DrawerWrapperProps) => {
+const DrawerWrapper = ({ children, onClose }: DrawerWrapperProps) => {
+    //console.log('🚀 - file: drawer-wrapper.tsx - line 11 - DrawerWrapper - children', children)
     return (
         <div className="relative flex h-full flex-col">
             <div className="absolute top-0 z-30 mb-4 flex h-16 w-full items-center justify-between border-b border-border-200 border-opacity-75 px-5 start-0 md:mb-6 md:py-5 md:px-8">

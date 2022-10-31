@@ -7,14 +7,15 @@ import { useTranslation } from 'next-i18next'
 import { AxiosError } from 'axios'
 
 export interface IOrderUpdateVariables {
-    variables: { id: string; input: UpdateOrder }
+    variables: { id: string | undefined; input: UpdateOrder }
 }
 
 export const useUpdateOrderMutation = () => {
     const queryClient = useQueryClient()
     const { t } = useTranslation()
     return useMutation(
-        ({ variables: { id, input } }: IOrderUpdateVariables) => Order.update(`${API_ENDPOINTS.ORDERS}/${id}`, input),
+        ({ variables: { id, input } }: IOrderUpdateVariables) =>
+            Order.update(`${API_ENDPOINTS.ORDERS}/${id ?? ''}`, input),
         {
             onSuccess: () => {
                 toast.success(t('common:update-success'))

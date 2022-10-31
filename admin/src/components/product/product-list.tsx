@@ -62,8 +62,7 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
             render: (record: Product) => (
                 <Image
                     src={record.image?.thumbnail ?? siteSettings.product.placeholder}
-                    alt={record.name}
-                    layout="fixed"
+                    alt={''}
                     width={42}
                     height={42}
                     className="overflow-hidden rounded object-cover"

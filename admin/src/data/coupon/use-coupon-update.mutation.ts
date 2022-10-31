@@ -8,7 +8,6 @@ import { AxiosError } from 'axios'
 export interface ICouponUpdateVariables {
     variables: { id: number | string; input: CouponUpdateInput }
 }
-
 export const useUpdateCouponMutation = () => {
     const { t } = useTranslation()
     const queryClient = useQueryClient()
@@ -20,13 +19,13 @@ export const useUpdateCouponMutation = () => {
                 toast.success(t('common:successfully-updated'))
             },
             // Always refetch after error or success:
-            onSettled: async () => {
-                await queryClient.invalidateQueries([API_ENDPOINTS.COUPONS])
+            onSettled: () => {
+                void queryClient.invalidateQueries([API_ENDPOINTS.COUPONS])
             },
             onError: (error: AxiosError) => {
                 const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
                 if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
-                toast.error(JSON.stringify(error))
+                toast.error(t(`common:${error.message}`))
                 return errorMessage
             },
         }

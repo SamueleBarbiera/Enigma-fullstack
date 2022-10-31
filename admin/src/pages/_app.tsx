@@ -42,7 +42,7 @@ const AppSettings = (props: IProps) => {
     ) : error && error instanceof Error ? (
         <ErrorMessage message={error.message} />
     ) : (
-        <SettingsProvider initialValue={data?.data} {...props} />
+        <SettingsProvider initialValue={data} {...props} />
     )
 }
 

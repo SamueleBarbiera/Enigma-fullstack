@@ -22,7 +22,7 @@ dayjs.extend(timezone)
 interface IProps {
     coupons: CouponPaginator | null | undefined
     onPagination: (current: number) => void
-    onSort: (current: any) => void
+    onSort: (current: unknown) => void
     onOrder: (current: string) => void
 }
 const CouponList = ({ coupons, onPagination, onSort, onOrder }: IProps) => {
@@ -67,7 +67,6 @@ const CouponList = ({ coupons, onPagination, onSort, onOrder }: IProps) => {
                 <Image
                     src={image.thumbnail ?? siteSettings.product.placeholder}
                     alt="coupon banner"
-                    layout="fixed"
                     width={42}
                     height={42}
                     className="overflow-hidden rounded"

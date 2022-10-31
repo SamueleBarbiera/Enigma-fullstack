@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, ReactNode } from 'react'
 import { useRouter } from 'next/router'
 import Navbar from '@components/layouts/navigation/top-navbar'
 import { getAuthCredentials, hasAccess } from '@utils/auth-utils'
@@ -7,7 +7,11 @@ import { siteSettings } from '@settings/site.settings'
 import { useTranslation } from 'next-i18next'
 import MobileNavigation from '@components/layouts/navigation/mobile-navigation'
 
-const ShopLayout = ({ children }) => {
+interface Prop {
+    children: React.ReactElement
+}
+
+const ShopLayout = ({ children }: Prop) => {
     const { t } = useTranslation()
     const {
         query: { shop },

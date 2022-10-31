@@ -61,7 +61,7 @@ export default function Uploader(onChange: (arg0: Attachment[]) => void, value: 
                     key={idx}
                 >
                     <div className="flex h-16 w-16 min-w-0 items-center justify-center overflow-hidden bg-gray-300">
-                        <Image layout="fill" src={file.original ?? ''} alt={''} />
+                        <Image width={40} height={40} src={file.original ?? ''} alt={''} />
                     </div>
                     {multiple ? (
                         <button

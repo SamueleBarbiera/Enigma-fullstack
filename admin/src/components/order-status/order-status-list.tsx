@@ -9,7 +9,7 @@ import TitleWithSort from '@components/ui/title-with-sort'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export interface IProps {
-    order_statuses: { data: Order; paginatorInfo: PaginatorInfo } | undefined
+    order_statuses: { data: OrderStatus[]; paginatorInfo: PaginatorInfo } | undefined
     onPagination: (key: number) => void
     onSort: (current: any) => void
     onOrder: (current: string) => void

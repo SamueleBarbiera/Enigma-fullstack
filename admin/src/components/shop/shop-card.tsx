@@ -23,8 +23,8 @@ const ShopCard: React.FC<ShopCardProps> = ({ shop }: ShopCardProps) => {
                     <Image
                         alt={t('common:text-logo')}
                         src={shop.logo?.thumbnail ?? '/product-placeholder-borderless.svg'}
-                        layout="fill"
-                        objectFit="cover"
+                        width={100}
+                        height={100}
                     />
                 </div>
 

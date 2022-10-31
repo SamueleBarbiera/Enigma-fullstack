@@ -1,21 +1,21 @@
-import NewOrder from "@components/orders/new-order";
-import { getLayout } from "@components/layout/layout";
-import { useRouter } from "next/router";
-import PageLoader from "@components/ui/page-loader/page-loader";
+import NewOrder from '@components/orders/new-order'
+import { getLayout } from '@components/layout/layout'
+import { useRouter } from 'next/router'
+import PageLoader from '@components/ui/page-loader/page-loader'
 
-export { getStaticPaths, getStaticProps } from "@framework/ssr/order";
+export { getStaticPaths, getStaticProps } from '@framework/ssr/order'
 
 export default function OrderPage() {
-  const router = useRouter();
+    const router = useRouter()
 
-  // If the page is not yet generated, this will be displayed
-  // initially until getStaticProps() finishes running
-  if (router.isFallback) {
-    return <PageLoader />;
-  }
+    // If the page is not yet generated, this will be displayed
+    // initially until getStaticProps() finishes running
+    if (router.isFallback) {
+        return <PageLoader />
+    }
 
-  return <NewOrder />;
+    return <NewOrder />
 }
 
-OrderPage.authenticate = true;
-OrderPage.getLayout = getLayout;
+OrderPage.authenticate = true
+OrderPage.getLayout = getLayout

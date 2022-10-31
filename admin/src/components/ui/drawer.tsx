@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import Portal from '@reach/portal'
 import { motion, AnimatePresence } from 'framer-motion'
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
@@ -8,7 +8,7 @@ import { fadeInLeft } from '@utils/motion/fade-in-left'
 import { fadeInOut } from '@utils/motion/fade-in-out'
 
 interface SidebarProps {
-    children: any
+    children: React.ReactElement
     open: boolean
     variant?: 'left' | 'right'
     useBlurBackdrop?: boolean
@@ -16,15 +16,10 @@ interface SidebarProps {
 }
 type DivElementRef = React.MutableRefObject<HTMLDivElement>
 
-const Drawer: React.FC<SidebarProps> = ({
-    children,
-    open = false,
-    variant = 'right',
-    useBlurBackdrop,
-    onClose,
-}: SidebarProps) => {
+const Drawer = ({ children, open = false, variant = 'right', useBlurBackdrop, onClose }: SidebarProps) => {
+    //console.log('🚀 - file: drawer.tsx - line 20 - Drawer - children', children)
     const ref = useRef() as DivElementRef
-    useMemo(() => {
+    useEffect(() => {
         if (open) {
             disableBodyScroll(ref.current)
         } else {

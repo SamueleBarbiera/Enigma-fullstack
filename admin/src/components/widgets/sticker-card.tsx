@@ -60,6 +60,7 @@ const StickerCard: React.FC<Props> = ({
             )}
             {link && (
                 <a
+                
                     className="text-xs font-semibold text-purple-700 no-underline"
                     href={link}
                     target="_blank"

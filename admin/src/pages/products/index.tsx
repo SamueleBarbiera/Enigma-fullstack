@@ -26,8 +26,6 @@ export default function ProductsPage() {
     const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc)
     const [visible, setVisible] = useState(false)
 
-    console.log(sortedBy)
-
     const toggleVisible = () => {
         setVisible((v) => !v)
     }
@@ -46,19 +44,19 @@ export default function ProductsPage() {
         sortedBy,
     })
 
+    function handleSearch({ searchText }: { searchText: string }) {
+        setSearchTerm(searchText)
+        setPage(1)
+    }
+    function handlePagination(current: any) {
+        setPage(current)
+    }
+
     if (loading) return <Loader text={t('common:text-loading')} />
     if (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error'
         if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
         return <ErrorMessage message={errorMessage} />
-    }
-
-    function handleSearch({ searchText }: { searchText: string }) {
-        setSearchTerm(searchText)
-        setPage(1)
-    }
-    function handlePagination(current: number) {
-        setPage(current)
     }
     return (
         <>

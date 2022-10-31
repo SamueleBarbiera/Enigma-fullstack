@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import Card from '@components/common/card'
 import Layout from '@components/layouts/admin'
 import Image from 'next/image'
@@ -8,11 +9,10 @@ import { useForm } from 'react-hook-form'
 import Button from '@components/ui/button'
 import ErrorMessage from '@components/ui/error-message'
 import { siteSettings } from '@settings/site.settings'
-import usePrice from '@utils/use-price'
 import { formatAddress } from '@utils/format-address'
 import Loader from '@components/ui/loader/loader'
 import ValidationError from '@components/ui/form-validation-error'
-import { Attachment, ConnectProductOrderPivot, OrderStatus, Product } from '@ts-types/generated'
+import { Attachment, OrderStatus, Product } from '@ts-types/generated'
 import { useOrderQuery } from '@data/order/use-order.query'
 import { useUpdateOrderMutation } from '@data/order/use-order-update.mutation'
 import { useOrderStatusesQuery } from '@data/order-status/use-order-statuses.query'
@@ -34,6 +34,7 @@ export default function OrderDetailsPage() {
     const { mutate: updateOrder, isLoading: updating } = useUpdateOrderMutation()
     const { data: orderStatusData } = useOrderStatusesQuery({})
     const { data, isLoading: loading, error } = useOrderQuery(query.orderId as string)
+    console.log('🚀 - file: index.tsx - line 37 - OrderDetailsPage - data', data)
 
     const {
         handleSubmit,
@@ -41,21 +42,21 @@ export default function OrderDetailsPage() {
 
         formState: { errors },
     } = useForm<FormValues>({
-        defaultValues: { order_status: data?.order.status },
+        defaultValues: { order_status: data?.status },
     })
 
     const ChangeStatus = ({ order_status }: FormValues) => {
         updateOrder({
             variables: {
-                id: data?.order,
+                id: data?.id,
                 input: {
-                    status: order_status,
+                    status: order_status.id,
                 },
             },
         })
     }
 
-    const columns: readonly (ColumnGroupType<ConnectProductOrderPivot> | ColumnType<ConnectProductOrderPivot>)[] = [
+    const columns: readonly (ColumnGroupType<Product> | ColumnType<Product>)[] = [
         {
             dataIndex: 'image',
             key: 'image',
@@ -64,7 +65,6 @@ export default function OrderDetailsPage() {
                 <Image
                     src={image.thumbnail ?? siteSettings.product.placeholder}
                     alt="alt text"
-                    layout="fixed"
                     width={50}
                     height={50}
                 />
@@ -107,7 +107,7 @@ export default function OrderDetailsPage() {
         <Card>
             <div className="flex flex-col items-center lg:flex-row">
                 <h3 className="mb-8 w-full whitespace-nowrap text-center text-2xl font-semibold text-heading lg:mb-0 lg:w-1/3 lg:text-start">
-                    {t('form:input-label-order-id')} - {data?.order.tracking_number}
+                    {t('form:input-label-order-id')} - {data.tracking_number}
                 </h3>
 
                 <form onSubmit={handleSubmit(ChangeStatus)} className="flex w-full items-start ms-auto lg:w-2/4">
@@ -141,15 +141,15 @@ export default function OrderDetailsPage() {
             </div>
 
             <div className="my-5 flex items-center justify-center lg:my-10">
-                <ProgressBox data={orderStatusData?.order_statuses.data} status={data?.order.status.serial} />
+                <ProgressBox data={orderStatusData?.order_statuses.data} status={data.status.serial} />
             </div>
 
             <div className="mb-10">
-                {data?.order ? (
+                {data ? (
                     <Table
                         columns={columns}
                         emptyText={t('table:empty-table-data')}
-                        data={data.order.products}
+                        data={data.products}
                         rowKey="id"
                         scroll={{ x: 300 }}
                     />
@@ -160,23 +160,23 @@ export default function OrderDetailsPage() {
                 <div className="flex w-full flex-col space-y-2 border-t-4 border-double border-border-200 px-4 py-4 ms-auto sm:w-1/2 md:w-1/3">
                     <div className="flex items-center justify-between text-sm text-body">
                         <span>{t('common:order-sub-total')}</span>
-                        <span>{data?.order.amount}</span>
+                        <span>{data.amount}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm text-body">
                         <span>{t('common:order-tax')}</span>
-                        <span>{data?.order.sales_tax}</span>
+                        <span>{data.sales_tax}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm text-body">
                         <span>{t('common:order-delivery-fee')}</span>
-                        <span>{data?.order.delivery_fee}</span>
+                        <span>{data.delivery_fee}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm text-body">
                         <span>{t('common:order-discount')}</span>
-                        <span>{data?.order.discount}</span>
+                        <span>{data.discount}</span>
                     </div>
                     <div className="flex items-center justify-between text-base font-semibold text-heading">
                         <span>{t('common:order-total')}</span>
-                        <span>{data?.order.paid_total}</span>
+                        <span>{data.paid_total}</span>
                     </div>
                 </div>
             </div>
@@ -188,9 +188,9 @@ export default function OrderDetailsPage() {
                     </h3>
 
                     <div className="flex flex-col items-start space-y-1 text-sm text-body">
-                        <span>{data?.order.status}</span>
-                        {data?.order.billing_address && <span>{formatAddress(data.order.billing_address)}</span>}
-                        {data?.order.customer_id && <span>{data.order.tracking_number}</span>}
+                        <span>{data.status.name}</span>
+                        {data.billing_address && <span>{formatAddress(data.billing_address)}</span>}
+                        {data.customer_id && <span>{data.tracking_number}</span>}
                     </div>
                 </div>
 
@@ -200,9 +200,9 @@ export default function OrderDetailsPage() {
                     </h3>
 
                     <div className="flex flex-col items-start space-y-1 text-start text-sm text-body sm:items-end sm:text-end">
-                        <span>{data?.order.customer_id}</span>
-                        {data?.order.shipping_address && <span>{formatAddress(data.order.shipping_address)}</span>}
-                        {data?.order.customer_id && <span>{data.order.tracking_number}</span>}
+                        <span>{data.customer_id}</span>
+                        {data.shipping_address && <span>{formatAddress(data.shipping_address)}</span>}
+                        {data.customer_id && <span>{data.tracking_number}</span>}
                     </div>
                 </div>
             </div>

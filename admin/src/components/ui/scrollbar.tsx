@@ -4,12 +4,13 @@ import 'overlayscrollbars/css/OverlayScrollbars.css'
 
 type ScrollbarProps = {
     options?: unknown
-    children: unknown
+    children: React.ReactNode
     style?: React.CSSProperties
     className?: string
 }
 
-const Scrollbar: React.FC<ScrollbarProps> = ({ options, children, style, className, ...props }: ScrollbarProps) => {
+const Scrollbar = ({ options, children, style, className, ...props }: ScrollbarProps) => {
+    console.log('🚀 - file: scrollbar.tsx - line 13 - Scrollbar - options', options)
     return (
         <OverlayScrollbarsComponent
             options={{
@@ -17,7 +18,6 @@ const Scrollbar: React.FC<ScrollbarProps> = ({ options, children, style, classNa
                 scrollbars: {
                     autoHide: 'scroll',
                 },
-                ...options,
             }}
             style={style}
             {...props}

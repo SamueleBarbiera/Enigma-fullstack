@@ -2,7 +2,11 @@ import { useUI } from '@contexts/ui.context'
 import DrawerWrapper from '@components/ui/drawer-wrapper'
 import Drawer from '@components/ui/drawer'
 
-const MobileNavigation = ({ children }) => {
+interface Prop {
+    children: React.ReactElement
+}
+
+const MobileNavigation = ({ children }: Prop) => {
     const { displaySidebar, closeSidebar } = useUI()
 
     return (

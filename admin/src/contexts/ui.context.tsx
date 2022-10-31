@@ -3,15 +3,41 @@ import React, { ReactNode, useContext, useMemo, useReducer } from 'react'
 export interface State {
     displaySidebar: boolean
     displayModal: boolean
-    modalData: any
+    modalData: MODAL_DATA
     modalView: string
+    openSidebar: () => void
+    closeSidebar: () => void
+    openModal: () => void
+    closeModal: () => void
+    setModalView: (view: MODAL_VIEWS) => void
+    setModalData: (data: MODAL_DATA) => void
+    toggleSidebar?: () => void
+    closeSidebarIfPresent?: () => void
 }
 
-const initialState = {
+const initialState: State = {
     displaySidebar: false,
     displayModal: false,
     modalView: 'LOGIN_VIEW',
     modalData: null,
+    openSidebar: function (): void {
+        return
+    },
+    closeSidebar: function (): void {
+        return
+    },
+    openModal: function (): void {
+        return
+    },
+    closeModal: function (): void {
+        return
+    },
+    setModalView: function (view: MODAL_VIEWS): void {
+        console.log('🚀 - file: ui.context.tsx - line 37 - view', view)
+    },
+    setModalData: function (data: unknown): void {
+        console.log('🚀 - file: ui.context.tsx - line 41 - data', data)
+    },
 }
 
 type Action =
@@ -37,9 +63,9 @@ type Action =
       }
 
 type MODAL_VIEWS = 'SIGNUP_VIEW' | 'LOGIN_VIEW' | 'FORGOT_VIEW' | 'DELETE_PRODUCT' | 'BAN_CUSTOMER'
-type MODAL_DATA = any
+type MODAL_DATA = unknown
 
-export const UIContext = React.createContext<State | any>(initialState)
+export const UIContext = React.createContext<State>(initialState)
 
 UIContext.displayName = 'UIContext'
 
@@ -108,8 +134,5 @@ export const UIProvider = (props: { children?: ReactNode }) => {
 
 export const useUI = () => {
     const context = useContext(UIContext)
-    if (context === undefined) {
-        throw new Error(`useUI must be used within a UIProvider`)
-    }
     return context
 }

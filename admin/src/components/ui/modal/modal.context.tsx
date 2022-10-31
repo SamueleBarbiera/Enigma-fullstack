@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
 import React, { createContext, Dispatch, ReactNode, useContext, useReducer } from 'react'
 
 export type MODAL_VIEWS =
@@ -19,13 +20,14 @@ export type MODAL_VIEWS =
     | 'EXPORT_IMPORT_PRODUCT'
     | 'EXPORT_IMPORT_ATTRIBUTE'
 
-interface State {
+type State = {
     type: string
     id: number
     view?: MODAL_VIEWS
-    data?: unknown
+    data: unknown
     isOpen: boolean
 }
+
 type Action = { type: 'open'; view?: MODAL_VIEWS; payload?: unknown } | { type: 'close' }
 
 const initialState: State = {

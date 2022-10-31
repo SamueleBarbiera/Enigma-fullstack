@@ -5,12 +5,12 @@ interface AvatarProps {
     className?: string
     src: string
     alt?: string
-    width?: number
-    height?: number
+    width: number
+    height: number
     onClick?: () => void
 }
 
-const Avatar: React.FC<AvatarProps> = ({ src, className, alt = 'Avatar', ...rest }: AvatarProps) => {
+const Avatar: React.FC<AvatarProps> = ({ src, className, alt = 'Avatar', height, width, ...rest }: AvatarProps) => {
     return (
         <div
             className={cn(
@@ -19,7 +19,7 @@ const Avatar: React.FC<AvatarProps> = ({ src, className, alt = 'Avatar', ...rest
             )}
             {...rest}
         >
-            <Image alt={alt} src={src} layout="fill" priority={true} />
+            <Image alt={alt} src={src} width={width} height={height} priority={true} />
         </div>
     )
 }

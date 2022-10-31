@@ -8,8 +8,7 @@ import Card from '@components/common/card'
 import Label from '@components/ui/label'
 import { useRouter } from 'next/router'
 import ValidationError from '@components/ui/form-validation-error'
-import { useSettings } from '@contexts/settings.context'
-import { Coupon, CouponType, Maybe } from '@ts-types/generated'
+import { Coupon, CouponType, CouponInput, Image, Scalars } from '@ts-types/generated'
 import { useCreateCouponMutation } from '@data/coupon/use-coupon-create.mutation'
 import { useUpdateCouponMutation } from '@data/coupon/use-coupon-update.mutation'
 import { useTranslation } from 'next-i18next'
@@ -19,29 +18,38 @@ import { couponValidationSchema } from './coupon-validation-schema'
 import { AxiosError } from 'axios'
 
 interface FormValues {
-    code?: string | undefined
-    type?: CouponType | undefined
-    description?: string | undefined
-    amount?: number | undefined
-    image?:
-        | {
-              thumbnail?: string
-              original?: string
-              id?: string
-          }
-        | undefined
-    active_from?: string | undefined
-    expire_at?: string | undefined
+    image: Image
+    deleted_at: Date
+    is_valid: boolean
+    id: string
+    code: string
+    description: string
+    type: string
+    amount: number
+    active_from: Date
+    expire_at: Date
+    created_at: Date
+    updated_at: Date
 }
 
-const defaultValues: FormValues = {
-    image: undefined,
-    amount: 0,
-    active_from: '',
-    expire_at: '',
+const defaultValues: Coupon = {
+    image: {
+        thumbnail: '',
+        original: '',
+        id: 0,
+    },
+    deleted_at: '',
+    is_valid: true,
+    id: '',
+
     code: '',
     description: '',
-    type: undefined,
+    type: '',
+    amount: 0,
+    created_at: new Date(),
+    updated_at: new Date(),
+    active_from: new Date(),
+    expire_at: new Date(),
 }
 
 interface IProps {
@@ -49,7 +57,6 @@ interface IProps {
 }
 
 export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
-    console.log('🚀 - file: coupon-form.tsx - line 52 - CreateOrUpdateCouponForm - initialValues', initialValues)
     const router = useRouter()
     const { t } = useTranslation()
     const {
@@ -58,28 +65,38 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
         control,
         watch,
         setError,
+
         formState: { errors },
-    } = useForm({
-        defaultValues: defaultValues,
+    } = useForm<FormValues>({
+        defaultValues: initialValues
+            ? {
+                  ...initialValues,
+                  active_from: new Date(initialValues.active_from as string | number | Date),
+                  expire_at: new Date(initialValues.expire_at as string | number | Date),
+              }
+            : defaultValues,
         resolver: yupResolver(couponValidationSchema),
     })
-    const currency = useSettings()
+
     const { mutate: createCoupon, isLoading: creating } = useCreateCouponMutation()
     const { mutate: updateCoupon, isLoading: updating } = useUpdateCouponMutation()
+
     const [active_from, expire_at] = watch(['active_from', 'expire_at'])
+    const couponType = watch('type')
 
     const onSubmit = (values: FormValues) => {
-        const input = {
+        console.log('🚀 - file: coupon-form.tsx - line 82 - onSubmit - values', values)
+        const input: CouponInput = {
             code: values.code,
             type: CouponType.FixedCoupon,
             description: values.description,
             amount: values.amount,
-            active_from: values.active_from,
-            expire_at: values.expire_at,
+            active_from: new Date(values.active_from).toISOString(),
+            expire_at: new Date(values.expire_at).toISOString(),
             image: {
-                thumbnail: values.image?.thumbnail,
-                original: values.image?.original,
-                id: values.image?.id,
+                thumbnail: values.image.thumbnail,
+                original: values.image.original,
+                id: values.image.id.toString(),
             },
         }
         if (initialValues) {
@@ -90,6 +107,16 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
                         input,
                     },
                 },
+                // {
+                //     onError: (error: any) => {
+                //         Object.keys(error?.response?.data).forEach((field: any) => {
+                //             setError(field, {
+                //                 type: 'manual',
+                //                 message: error?.response?.data[field][0],
+                //             })
+                //         })
+                //     },
+                // }
                 {
                     onError: (error) => {
                         if (error instanceof AxiosError) {
@@ -110,6 +137,16 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
                         input,
                     },
                 },
+                // {
+                //     onError: (error: any) => {
+                //         Object.keys(error?.response?.data).forEach((field: any) => {
+                //             setError(field, {
+                //                 type: 'manual',
+                //                 message: error?.response?.data[field][0],
+                //             })
+                //         })
+                //     },
+                // }
                 {
                     onError: (error) => {
                         if (error instanceof AxiosError) {
@@ -152,8 +189,10 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
                 <Card className="w-full sm:w-8/12 md:w-2/3">
                     <Input
                         label={t('form:input-label-code')}
-                        {...register('image')}
-                        error={t(errors.image?.message ?? 'error')}
+                        {...register('code')}
+                        error={t(
+                            errors.code?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                        )}
                         variant="outline"
                         className="mb-5"
                     />
@@ -164,21 +203,21 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
                         variant="outline"
                         className="mb-5"
                     />
-                    <Input
-                        // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
-                        label={`${t('form:input-label-amount')}(${currency})`}
-                        {...register('amount')}
-                        type="number"
-                        error={t(
-                            errors.description?.message as
-                                | string
-                                | TemplateStringsArray
-                                | (string | TemplateStringsArray)[]
-                        )}
-                        variant="outline"
-                        className="mb-5"
-                    />
-
+                    {couponType !== CouponType.FreeShippingCoupon && (
+                        <Input
+                            label={`${t('form:input-label-amount')}`}
+                            {...register('amount')}
+                            type="number"
+                            error={t(
+                                errors.amount?.message as
+                                    | string
+                                    | TemplateStringsArray
+                                    | (string | TemplateStringsArray)[]
+                            )}
+                            variant="outline"
+                            className="mb-5"
+                        />
+                    )}
                     <div className="flex flex-col sm:flex-row">
                         <div className="mb-5 w-full p-0 sm:mb-0 sm:w-1/2 sm:pe-2">
                             <Label>{t('form:coupon-active-from')}</Label>
@@ -191,17 +230,24 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
                                         dateFormat="dd/MM/yyyy"
                                         onChange={onChange}
                                         onBlur={onBlur}
-                                        selected={value}
+                                        selected={new Date(value)}
                                         selectsStart
                                         minDate={new Date()}
-                                        maxDate={expire_at}
-                                        startDate={active_from}
-                                        endDate={expire_at}
+                                        maxDate={new Date(expire_at)}
+                                        startDate={new Date(active_from)}
+                                        endDate={new Date(expire_at)}
                                         className="border border-border-base"
                                     />
                                 )}
                             />
-                            <ValidationError message={t(errors.active_from?.message ?? 'error')} />
+                            <ValidationError
+                                message={t(
+                                    errors.active_from?.message as
+                                        | string
+                                        | TemplateStringsArray
+                                        | (string | TemplateStringsArray)[]
+                                )}
+                            />
                         </div>
                         <div className="w-full p-0 sm:w-1/2 sm:ps-2">
                             <Label>{t('form:coupon-expire-at')}</Label>
@@ -214,16 +260,23 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
                                         dateFormat="dd/MM/yyyy"
                                         onChange={onChange}
                                         onBlur={onBlur}
-                                        selected={value}
+                                        selected={new Date(value)}
                                         selectsEnd
-                                        startDate={active_from}
-                                        endDate={expire_at}
-                                        minDate={active_from}
+                                        startDate={new Date(active_from)}
+                                        endDate={new Date(expire_at)}
+                                        minDate={new Date(active_from)}
                                         className="border border-border-base"
                                     />
                                 )}
                             />
-                            <ValidationError message={t(errors.expire_at?.message ?? 'error')} />
+                            <ValidationError
+                                message={t(
+                                    errors.expire_at?.message as
+                                        | string
+                                        | TemplateStringsArray
+                                        | (string | TemplateStringsArray)[]
+                                )}
+                            />
                         </div>
                     </div>
                 </Card>

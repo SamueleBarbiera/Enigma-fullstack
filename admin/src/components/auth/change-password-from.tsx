@@ -49,7 +49,7 @@ const ChangePasswordForm = () => {
                 },
             },
             {
-                onError: (error: any) => {
+                onError: (error) => {
                     Object.keys(error?.response?.data).forEach((field: any) => {
                         setError(field, {
                             type: 'manual',
@@ -58,15 +58,9 @@ const ChangePasswordForm = () => {
                     })
                 },
                 onSuccess: ({ data }) => {
-                    if (!data?.success) {
-                        setError('oldPassword', {
-                            type: 'manual',
-                            message: data?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[],
-                        })
-                    } else if (data?.success) {
-                        toast.success(t('common:password-changed-successfully'))
-                        reset()
-                    }
+                    console.log('🚀 - file: change-password-from.tsx - line 61 - onSubmit - data', data)
+                    toast.success(t('common:password-changed-successfully'))
+                    reset()
                 },
             }
         )

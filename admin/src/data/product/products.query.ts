@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import Product from '@repositories/product'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 import { ProductPaginator } from '@ts-types/generated'
+import GetProductPagination from '@repositories/GetProductPagination'
 
 const fetchProducts = async ({ queryKey }: QueryParamsType) => {
     const [_key, params] = queryKey
@@ -30,12 +31,12 @@ const fetchProducts = async ({ queryKey }: QueryParamsType) => {
     }&orderBy=${orderBy}&sortedBy=${sortedBy}`
     const {
         data: { data, ...rest },
-    } = await Product.all(url)
+    } = await GetProductPagination.all(url)
     return { data, paginatorInfo: mapPaginatorData({ ...rest }) }
 }
 
 const useProductsQuery = (params: ProductsQueryOptionsType, options = {}) => {
-    return useQuery([API_ENDPOINTS.PRODUCTS, params], fetchProducts, {
+    return useQuery<ProductPaginator, Error>([API_ENDPOINTS.PRODUCTS, params], fetchProducts, {
         ...options,
         keepPreviousData: true,
     })

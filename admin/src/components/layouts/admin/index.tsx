@@ -5,7 +5,11 @@ import { siteSettings } from '@settings/site.settings'
 import { useTranslation } from 'next-i18next'
 import SidebarItem from '@components/layouts/navigation/sidebar-item'
 
-const AdminLayout = ({ children }) => {
+interface Prop {
+    children: React.ReactElement
+}
+
+const AdminLayout = ({ children }: Prop) => {
     const { t } = useTranslation()
 
     const SidebarItemMap = () => (

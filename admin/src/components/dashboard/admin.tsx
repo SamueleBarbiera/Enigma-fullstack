@@ -137,7 +137,7 @@ export default function Dashboard() {
                     </div>
 
                     <div className="mb-6 flex w-full flex-wrap">
-                        <div className="mb-6 w-full sm:w-1/2 sm:px-3 sm:pl-0 xl:mb-0 xl:w-1/2">
+                        <div className="mb-6 w-full sm:px-3 sm:pl-0 xl:mb-0 ">
                             <RecentOrders orders={orderData?.orders.data} title={t('table:recent-order-table-title')} />
                         </div>
                     </div>

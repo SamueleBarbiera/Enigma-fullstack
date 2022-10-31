@@ -12,7 +12,8 @@ const NotificationCard: React.FC<NotificationCardType> = ({ src, text, time }: N
             <Image
                 className="h-8 w-8 rounded-full object-cover me-3"
                 src={src ?? ''}
-                layout={'responsive'}
+                width={40}
+                height={40}
                 alt="avatar"
             />
 

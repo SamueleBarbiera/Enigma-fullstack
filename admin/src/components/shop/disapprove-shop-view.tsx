@@ -6,12 +6,12 @@ import { useDisApproveShopMutation } from '@data/shop/use-disapprove-shop.mutati
 const ProductDeleteView = () => {
     const { mutate: disApproveShopById, isLoading: loading } = useDisApproveShopMutation()
 
-    const modalData = useModalState()
+    const { data } = useModalState()
     const { closeModal } = useModalAction()
     function handleDelete() {
         disApproveShopById(
             {
-                variables: { id: modalData.data as string },
+                variables: { id: data as string },
             },
             {
                 onSettled: () => {

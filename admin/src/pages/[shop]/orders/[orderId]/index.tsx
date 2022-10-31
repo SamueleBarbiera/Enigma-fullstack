@@ -66,7 +66,6 @@ export default function OrderDetailsPage() {
                 <Image
                     src={image.thumbnail ?? siteSettings.product.placeholder}
                     alt="alt text"
-                    layout="fixed"
                     width={50}
                     height={50}
                 />

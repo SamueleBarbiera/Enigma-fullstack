@@ -6,11 +6,11 @@ import { getErrorMessage } from '@utils/form-error'
 const TagDeleteView = () => {
     const { mutate: deleteTagById, isLoading: loading } = useDeleteTagMutation()
 
-    const data = useModalState()
+    const { data } = useModalState()
     const { closeModal } = useModalAction()
     function handleDelete() {
         try {
-            deleteTagById(data.data as string)
+            deleteTagById(data as string)
             closeModal()
         } catch (error) {
             console.log('🚀 - file: tag-delete-view.tsx - line 16 - handleDelete - error', error)

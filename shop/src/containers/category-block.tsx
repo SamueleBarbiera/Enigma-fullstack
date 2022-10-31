@@ -4,15 +4,15 @@ import Carousel from '@components/ui/carousel/carousel'
 import CardLoader from '@components/ui/loaders/card-loader'
 import CardRoundedLoader from '@components/ui/loaders/card-rounded-loader'
 import CardIconLoader from '@components/ui/loaders/card-icon-loader'
-import {useCategoriesQuery} from '@framework/category/categories.query'
-import {ROUTES} from '@lib/routes'
+import { useCategoriesQuery } from '@framework/category/categories.query'
+import { ROUTES } from '@lib/routes'
 import Alert from '@components/ui/alert'
-import {SwiperSlide} from 'swiper/react'
+import { SwiperSlide } from 'swiper/react'
 import isEmpty from 'lodash/isEmpty'
 import NotFoundItem from '@components/404/not-found-item'
-import {useTranslation} from 'next-i18next'
+import { useTranslation } from 'next-i18next'
 import React from 'react'
-import {getCategoryTypeImage} from '@lib/get-category-type-image'
+import { getCategoryTypeImage } from '@lib/get-category-type-image'
 
 interface CategoriesProps {
     sectionHeading: string
@@ -103,8 +103,14 @@ const modernBreakpoints = {
     },
 }
 
-const CategoryBlock: React.FC<CategoriesProps> = ({className = 'mb-10 md:mb-11 lg:mb-12 xl:mb-14 lg:pb-1 xl:pb-0', sectionHeading, variant = 'circle', effectPosition = 'imageOnly', type}) => {
-    const {t} = useTranslation()
+const CategoryBlock: React.FC<CategoriesProps> = ({
+    className = 'mb-10 md:mb-11 lg:mb-12 xl:mb-14 lg:pb-1 xl:pb-0',
+    sectionHeading,
+    variant = 'circle',
+    effectPosition = 'imageOnly',
+    type,
+}) => {
+    const { t } = useTranslation()
 
     const {
         data: categories,
@@ -136,9 +142,9 @@ const CategoryBlock: React.FC<CategoriesProps> = ({className = 'mb-10 md:mb-11 l
             {error ? (
                 <Alert message={error?.message} />
             ) : (
-                <Carousel breakpoints={sliderBreakpoints} buttonClassName='-mt-8 md:-mt-10'>
+                <Carousel breakpoints={sliderBreakpoints} buttonClassName="-mt-8 md:-mt-10">
                     {loading && !cat?.data
-                        ? Array.from({length: 10}).map((_, idx) => {
+                        ? Array.from({ length: 10 }).map((_, idx) => {
                               if (variant === 'rounded') {
                                   return (
                                       <SwiperSlide key={`card-rounded-${idx}`}>
@@ -160,7 +166,14 @@ const CategoryBlock: React.FC<CategoriesProps> = ({className = 'mb-10 md:mb-11 l
                           })
                         : categories?.data?.map((category) => (
                               <SwiperSlide key={`category--key-${category.id}`}>
-                                  <Card item={category} href={`${ROUTES.CATEGORY}/${category.slug}`} variant={variant} effectActive={true} effectPosition={effectPosition} image={getCategoryTypeImage(category, type)} />
+                                  <Card
+                                      item={category}
+                                      href={`${ROUTES.CATEGORY}/${category.slug}`}
+                                      variant={variant}
+                                      effectActive={true}
+                                      effectPosition={effectPosition}
+                                      image={getCategoryTypeImage(category, type)}
+                                  />
                               </SwiperSlide>
                           ))}
                 </Carousel>

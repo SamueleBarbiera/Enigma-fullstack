@@ -87,7 +87,9 @@ export default function ProductSimpleForm({ initialValues }: IProps) {
                 <Input
                     label={t('form:input-label-length')}
                     {...register('length')}
-                    error={t(errors.length?.message)}
+                    error={t(
+                        errors.length?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
+                    )}
                     variant="outline"
                     className="mb-5"
                 />

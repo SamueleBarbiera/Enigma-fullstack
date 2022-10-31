@@ -38,11 +38,12 @@ const CustomerCreateForm = () => {
                 variables: { permission, name, email, password },
             },
             {
-                onError: (error) => {
-                    Object.keys(error).forEach((field) => {
-                        setError(field as 'name' | 'email' | 'password' | 'permission', {
+                onError: (error: any) => {
+                    Object.keys(error?.response?.data).forEach((field: any) => {
+                        console.log('🚀 - file: user-form.tsx - line 43 - Object.keys - field', field)
+                        setError(field, {
                             type: 'manual',
-                            message: error.message,
+                            message: error?.response?.data[field][0],
                         })
                     })
                 },

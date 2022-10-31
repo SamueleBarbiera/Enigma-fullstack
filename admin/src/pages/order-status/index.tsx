@@ -31,6 +31,7 @@ export default function OrderStatusPage() {
         orderBy,
         sortedBy,
     })
+    console.log('🚀 - file: index.tsx - line 34 - OrderStatusPage - data', data)
     if (loading) return <Loader text={t('common:text-loading')} />
     if (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error'
@@ -42,7 +43,7 @@ export default function OrderStatusPage() {
         setSearchTerm(searchText)
         setPage(1)
     }
-    function handlePagination(current: any) {
+    function handlePagination(current: number) {
         setPage(current)
     }
     return (

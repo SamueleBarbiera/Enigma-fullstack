@@ -7,10 +7,10 @@ const Link: React.FC<NextLinkProps & { className?: string; children: ReactNode; 
     ...props
 }: NextLinkProps & { className?: string; children: ReactNode; title?: string }) => {
     return (
-        <NextLink href={href}>
-            <a {...props}>{children}</a>
+        <NextLink  {...props} href={href}>
+            {children}
         </NextLink>
     )
-}
+} 
 
 export default Link

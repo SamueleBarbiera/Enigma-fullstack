@@ -13,7 +13,6 @@ import EditIcon from '@components/icons/edit'
 import { formatAddress } from '@utils/format-address'
 import { adminAndOwnerOnly, adminOwnerAndStaffOnly, getAuthCredentials, hasAccess } from '@utils/auth-utils'
 import ErrorMessage from '@components/ui/error-message'
-import usePrice from '@utils/use-price'
 import { useTranslation } from 'next-i18next'
 import isEmpty from 'lodash/isEmpty'
 import { useShopQuery } from '@data/shop/use-shop.query'
@@ -33,16 +32,7 @@ export default function ShopPage() {
         locale,
     } = useRouter()
     const { data, isLoading: loading, error } = useShopQuery(shop!.toString())
-    const { price: totalEarnings } = usePrice(
-        data && {
-            amount: data.shop.balance?.total_earnings ?? 0,
-        }
-    )
-    const { price: currentBalance } = usePrice(
-        data && {
-            amount: data.shop.balance?.current_balance ?? 0,
-        }
-    )
+
     const {
         name,
         is_active,
@@ -79,8 +69,8 @@ export default function ShopPage() {
                             <Image
                                 alt="avatar"
                                 src={logo?.thumbnail ?? '/avatar-placeholder.svg'}
-                                layout="fill"
-                                objectFit="contain"
+                                width={200}
+                                height={200}
                             />
                         </div>
 
@@ -136,17 +126,20 @@ export default function ShopPage() {
             <div className="relative order-1 col-span-12 h-full min-h-[400px] overflow-hidden rounded bg-light xl:order-2 xl:col-span-8 3xl:col-span-9">
                 <Image
                     src={cover_image?.original ?? '/product-placeholder-borderless.svg'}
-                    layout="fill"
-                    objectFit="contain"
+                    width={800}
+                    height={800}
+                    alt={''}
                 />
 
                 {hasAccess(adminAndOwnerOnly, permissions) && (
                     <LinkButton
                         size="small"
                         className="absolute top-3 bg-blue-500 shadow-sm end-3 hover:bg-blue-600"
-                        href={`/${shop}/edit`}
+                        href={`/${shop as string}/edit`}
                     >
-                        <EditIcon className="w-4 me-2" /> {t('common:text-edit-shop')}
+                        <>
+                            <EditIcon className="w-4 me-2" /> {t('common:text-edit-shop')}
+                        </>
                     </LinkButton>
                 )}
             </div>
@@ -192,7 +185,9 @@ export default function ShopPage() {
                                 </div>
 
                                 <div className="ml-3">
-                                    <p className="mb-0.5 text-lg font-semibold text-sub-heading">{totalEarnings}</p>
+                                    <p className="mb-0.5 text-lg font-semibold text-sub-heading">
+                                        {data.shop.balance?.total_earnings}
+                                    </p>
                                     <p className="mt-0 text-sm text-muted">{t('common:text-gross-sales')}</p>
                                 </div>
                             </div>
@@ -203,7 +198,9 @@ export default function ShopPage() {
                                 </div>
 
                                 <div className="ml-3">
-                                    <p className="mb-0.5 text-lg font-semibold text-sub-heading">{currentBalance}</p>
+                                    <p className="mb-0.5 text-lg font-semibold text-sub-heading">
+                                        {data.shop.balance?.current_balance}
+                                    </p>
                                     <p className="mt-0 text-sm text-muted">{t('common:text-current-balance')}</p>
                                 </div>
                             </div>

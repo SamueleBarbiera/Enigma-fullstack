@@ -1,15 +1,15 @@
 import SectionHeader from '@components/common/section-header'
 import Carousel from '@components/ui/carousel/carousel'
-import {SwiperSlide} from 'swiper/react'
+import { SwiperSlide } from 'swiper/react'
 import CategoryCard from '@components/common/category-card'
-import {useWindowSize} from '@utils/use-window-size'
+import { useWindowSize } from '@utils/use-window-size'
 import CategoryCardLoader from '@components/ui/loaders/category-card-loader'
 import Alert from '@components/ui/alert'
-import {useFeaturedCategoriesQuery} from '@framework/category/featured-categories.query'
+import { useFeaturedCategoriesQuery } from '@framework/category/featured-categories.query'
 import isEmpty from 'lodash/isEmpty'
 import NotFoundItem from '@components/404/not-found-item'
-import {useTranslation} from 'next-i18next'
-import {Category} from '@framework/types'
+import { useTranslation } from 'next-i18next'
+import { Category } from '@framework/types'
 
 interface CategoriesProps {
     sectionHeading: string
@@ -35,9 +35,12 @@ const breakpoints = {
     },
 }
 
-const CategoryGridBlock: React.FC<CategoriesProps> = ({sectionHeading = 'text-section-title', className = 'mb-12 md:mb-14 xl:mb-16'}) => {
-    const {width} = useWindowSize()
-    const {t} = useTranslation()
+const CategoryGridBlock: React.FC<CategoriesProps> = ({
+    sectionHeading = 'text-section-title',
+    className = 'mb-12 md:mb-14 xl:mb-16',
+}) => {
+    const { width } = useWindowSize()
+    const { t } = useTranslation()
 
     const {
         data: categories,
@@ -61,10 +64,10 @@ const CategoryGridBlock: React.FC<CategoriesProps> = ({sectionHeading = 'text-se
             ) : (
                 <>
                     {width < 1025 ? (
-                        <div className='relative'>
+                        <div className="relative">
                             <Carousel breakpoints={breakpoints}>
                                 {loading
-                                    ? Array.from({length: cat?.length ?? 0}).map((_, idx) => (
+                                    ? Array.from({ length: cat?.length ?? 0 }).map((_, idx) => (
                                           <SwiperSlide key={idx}>
                                               <CategoryCardLoader uniqueKey={`featured-category-${idx}`} />
                                           </SwiperSlide>
@@ -77,10 +80,14 @@ const CategoryGridBlock: React.FC<CategoriesProps> = ({sectionHeading = 'text-se
                             </Carousel>
                         </div>
                     ) : (
-                        <div className='lg:grid lg:grid-cols-3 lg:gap-5 xl:gap-7'>
+                        <div className="lg:grid lg:grid-cols-3 lg:gap-5 xl:gap-7">
                             {loading
-                                ? Array.from({length: cat?.length ?? 0}).map((_, idx) => <CategoryCardLoader key={idx} uniqueKey={`featured-category-${idx}`} />)
-                                : categories?.map((category) => <CategoryCard key={`category--key${category.id}`} category={category} />)}
+                                ? Array.from({ length: cat?.length ?? 0 }).map((_, idx) => (
+                                      <CategoryCardLoader key={idx} uniqueKey={`featured-category-${idx}`} />
+                                  ))
+                                : categories?.map((category) => (
+                                      <CategoryCard key={`category--key${category.id}`} category={category} />
+                                  ))}
                         </div>
                     )}
                 </>

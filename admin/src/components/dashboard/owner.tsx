@@ -33,7 +33,7 @@ export default function OwnerDashboard() {
             {!data?.managed_shop && !data?.shops.length ? (
                 <div className="flex w-full flex-col items-center p-10">
                     <div className="relative h-[180px] w-[300px] sm:h-[370px] sm:w-[490px]">
-                        <Image alt={t('common:text-image')} src={NoShopSvg as string} layout="fill" objectFit="cover" />
+                        <Image width={40} height={40} alt={t('common:text-image')} src={NoShopSvg as string} />
                     </div>
                     <span className="mt-6 text-center text-lg font-semibold text-body-dark sm:mt-10">
                         {t('common:text-no-shop')}

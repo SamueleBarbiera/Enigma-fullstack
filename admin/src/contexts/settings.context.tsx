@@ -91,7 +91,6 @@ export const SettingsProvider = ({ initialValue, ...props }: SettingProvider) =>
 }
 
 export const useSettings = () => {
-    const context = useContext(SettingsContext)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    const context: Context | SettingsInput = useContext(SettingsContext)
     return context
 }

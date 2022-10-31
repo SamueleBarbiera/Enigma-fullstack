@@ -85,7 +85,6 @@ const TypeList = ({ types, onSort, onOrder, onPagination }: IProps) => {
                                 <Image
                                     src={image?.original ?? '/'}
                                     alt={`brand-image-${image.id}`}
-                                    layout="fixed"
                                     width={40}
                                     height={40}
                                     className="overflow-hidden rounded-lg bg-gray-300 object-contain"

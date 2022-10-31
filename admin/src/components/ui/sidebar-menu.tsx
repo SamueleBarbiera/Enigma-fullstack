@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ReactFragment, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/router'
 import cn from 'classnames'
@@ -9,9 +9,16 @@ import * as sidebarIcons from '@components/icons/sidebar'
 import { useUI } from '@contexts/ui.context'
 import { useTranslation } from 'next-i18next'
 
+type TItems = { href: string; labelTransKey: string | undefined; items?: unknown; icon: string }
+
 function SidebarMenuItem(
-    className: string | number | boolean | cn.ArgumentArray | cn.Mapping | null | undefined,
-    item: { href: string; labelTransKey?: any; items?: any; icon?: any },
+    className: string,
+    item: {
+        href: string
+        labelTransKey?: unknown
+        items?: unknown
+        icon: string
+    },
     depth = 0
 ) {
     const router = useRouter()
@@ -33,7 +40,7 @@ function SidebarMenuItem(
         }
     }
 
-    let expandIcon
+    let expandIcon: string | number | boolean | ReactFragment | JSX.Element | null | undefined
     if (Array.isArray(items) && items.length) {
         expandIcon = !isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />
     }
@@ -58,7 +65,9 @@ function SidebarMenuItem(
                         iconName: icon,
                         className: 'w-5 h-5 me-4',
                     })}
-                    <p className="flex-1">{t(labelTransKey)}</p>
+                    <p className="flex-1">
+                        {t(labelTransKey as string | TemplateStringsArray | (string | TemplateStringsArray)[])}
+                    </p>
                     <span>{expandIcon}</span>
                 </button>
             </motion.li>
@@ -96,11 +105,11 @@ function SidebarMenuItem(
     )
 }
 
-function SidebarMenu({ items, className }: any) {
+function SidebarMenu(items: TItems[], className: string) {
     return (
         <ul className={cn('text-xs', className)}>
-            {items?.map((item: any) => (
-                <SidebarMenuItem key={`${item.href}${item.labelTransKey}`} item={item} />
+            {items.map((item: TItems) => (
+                <SidebarMenuItem key={`${item.href}${item.labelTransKey!}`} item={item} />
             ))}
         </ul>
     )

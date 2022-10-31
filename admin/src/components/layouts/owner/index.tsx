@@ -1,8 +1,9 @@
 import Navbar from '@components/layouts/navigation/top-navbar'
 import OwnerInformation from '@components/user/user-details'
 import MobileNavigation from '@components/layouts/navigation/mobile-navigation'
+import { ReactNode } from 'react'
 
-const OwnerLayout = ({ children }) => {
+const OwnerLayout = (children: ReactNode) => {
     return (
         <div className="flex min-h-screen flex-col bg-gray-100 transition-colors duration-150">
             <Navbar />

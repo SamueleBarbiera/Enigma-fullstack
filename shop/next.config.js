@@ -1,4 +1,4 @@
-const {i18n} = require('./next-i18next.config')
+const { i18n } = require('./next-i18next.config')
 const runtimeCaching = require('next-pwa/cache')
 
 const withPWA = require('next-pwa')({
@@ -15,7 +15,7 @@ module.exports = withPWA({
             'localhost',
             'googleusercontent.com',
             'maps.googleapis.com',
-            'chawkbazarapi.redq.io',
+            'chawkbazarapi.Enigma.io',
             'graph.facebook.com',
             'res.cloudinary.com',
             's3.amazonaws.com',
