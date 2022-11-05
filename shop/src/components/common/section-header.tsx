@@ -19,7 +19,7 @@ const SectionHeader: React.FC<Props> = ({
             <Text variant="mediumHeading">{t(`${sectionHeading}`)}</Text>
             {categorySlug && (
                 <Link href={categorySlug} className="text-xs lg:text-sm xl:text-base text-heading mt-0.5 lg:mt-1">
-                    {t('text-see-all-product')}
+                    <div> {t('text-see-all-product')}</div>
                 </Link>
             )}
         </div>

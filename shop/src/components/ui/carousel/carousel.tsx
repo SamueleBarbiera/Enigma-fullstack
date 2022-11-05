@@ -23,6 +23,7 @@ type CarouselPropsType = {
     loop?: boolean
     scrollbar?: {} | any
     buttonPosition?: 'inside' | 'outside'
+    children: any
 }
 
 const Carousel: React.FunctionComponent<CarouselPropsType> = ({

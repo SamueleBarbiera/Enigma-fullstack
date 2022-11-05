@@ -10,8 +10,6 @@ import { useAtom } from 'jotai'
 import { authorizationAtom } from '@store/authorization-atom'
 import PageLoader from '@components/ui/page-loader/page-loader'
 
-export { getStaticProps } from '@framework/ssr/common'
-
 export default function SignInPage() {
     const router = useRouter()
     const [isAuthorized] = useAtom(authorizationAtom)

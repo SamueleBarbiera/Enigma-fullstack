@@ -3,7 +3,7 @@ import Container from '@components/ui/container'
 import { IoClose } from '@react-icons/all-files/io5/IoClose'
 import { useTranslation } from 'next-i18next'
 
-const ShopDiscount: React.FC = () => {
+const ShopDiscount = () => {
     const [status, setStatus] = useState(false)
     const hide = () => {
         setStatus(true)

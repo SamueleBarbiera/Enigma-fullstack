@@ -250,7 +250,7 @@ function uiReducer(state: State, action: Action) {
     }
 }
 
-export const UIProvider: React.FC = (props) => {
+export const UIProvider = (props) => {
     const [state, dispatch] = React.useReducer(uiReducer, initialState)
 
     const openSidebar = () => dispatch({ type: 'OPEN_SIDEBAR' })
@@ -318,8 +318,12 @@ export const useUI = () => {
     return context
 }
 
-export const ManagedUIContext: React.FC = ({ children }) => (
+interface IProps {
+    children: React.ReactNode
+}
+
+export const ManagedUIContext = (children: IProps) => (
     <CartProvider>
-        <UIProvider>{children}</UIProvider>
+        <UIProvider>{children.children}</UIProvider>
     </CartProvider>
 )

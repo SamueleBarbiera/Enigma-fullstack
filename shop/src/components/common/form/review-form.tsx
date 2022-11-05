@@ -13,7 +13,7 @@ interface ReviewFormValues {
     message: string
 }
 
-const ReviewForm: React.FC = () => {
+const ReviewForm = () => {
     const {
         register,
         handleSubmit,

@@ -294,9 +294,12 @@ const ProductSingleDetails: React.FC<Props> = ({ product }: any) => {
                                         href={`${ROUTES.CATEGORY}/${category?.slug}`}
                                         className="transition hover:underline hover:text-heading"
                                     >
-                                        {product?.categories?.length === index + 1
-                                            ? category.name
-                                            : `${category.name}, `}
+                                        <div>
+                                            {' '}
+                                            {product?.categories?.length === index + 1
+                                                ? category.name
+                                                : `${category.name}, `}
+                                        </div>
                                     </Link>
                                 ))}
                             </li>
@@ -311,8 +314,11 @@ const ProductSingleDetails: React.FC<Props> = ({ product }: any) => {
                                         href={`${ROUTES.COLLECTIONS}/${tag?.slug}`}
                                         className="inline-block ltr:pr-1.5 rtl:pl-1.5 transition hover:underline hover:text-heading ltr:last:pr-0 rtl:last:pl-0"
                                     >
-                                        {tag.name}
-                                        <span className="text-heading">,</span>
+                                        <div>
+                                            {' '}
+                                            {tag.name}
+                                            <span className="text-heading">,</span>
+                                        </div>
                                     </Link>
                                 ))}
                             </li>
@@ -326,7 +332,7 @@ const ProductSingleDetails: React.FC<Props> = ({ product }: any) => {
                                 href={`${ROUTES.BRAND}=${product?.type?.slug}`}
                                 className="inline-block ltr:pr-1.5 rtl:pl-1.5 transition hover:underline hover:text-heading ltr:last:pr-0 rtl:last:pl-0"
                             >
-                                {product?.type?.name}
+                                <div>{product?.type?.name}</div>
                             </Link>
                         </li>
 
@@ -338,7 +344,7 @@ const ProductSingleDetails: React.FC<Props> = ({ product }: any) => {
                                 href={`${ROUTES.SHOPS}/${product?.shop?.slug}`}
                                 className="inline-block ltr:pr-1.5 rtl:pl-1.5 transition hover:underline hover:text-heading ltr:last:pr-0 rtl:last:pl-0"
                             >
-                                {product?.shop?.name}
+                                <div>{product?.shop?.name}</div>
                             </Link>
                         </li>
                     </ul>

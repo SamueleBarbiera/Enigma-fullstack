@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { signOut as socialLoginSignOut } from 'next-auth/client'
+import { signOut as socialLoginSignOut } from 'next-auth/react'
 import Cookies from 'js-cookie'
 import { AUTH_TOKEN } from '@lib/constants'
 import { useLogoutMutation } from '@framework/auth/auth.query'

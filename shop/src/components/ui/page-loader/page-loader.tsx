@@ -3,12 +3,16 @@ import styles from './page-loader.module.css'
 
 const PageLoader = () => {
     return (
-        <div className={cn('w-full h-screen flex flex-col items-center justify-center')}>
-            <div className="flex relative">
-                <div className={styles.page_loader} />
-                <h3 className="text-sm font-semibold text-body italic absolute top-1/2 -mt-2 w-full text-center">
-                    Loading...
-                </h3>
+        <div className={cn('flex h-screen w-full flex-col items-center justify-center')}>
+            <div className="relative flex">
+                <div
+                    className={cn('flex w-full flex-col items-center justify-center')}
+                    style={{ height: 'calc(100vh - 200px)' }}
+                >
+                    <div className={styles.loading} />
+
+                    <h3 className="text-lg font-semibold italic text-body"> {'Loading...'}</h3>
+                </div>
             </div>
         </div>
     )

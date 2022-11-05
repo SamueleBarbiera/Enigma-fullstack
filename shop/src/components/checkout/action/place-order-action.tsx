@@ -13,7 +13,7 @@ import { checkoutAtom, discountAtom } from '@store/checkout'
 import { calculatePaidTotal, calculateTotal } from '@store/quick-cart/cart.utils'
 import { useTranslation } from 'next-i18next'
 
-export const PlaceOrderAction: React.FC = (props) => {
+export const PlaceOrderAction = (props) => {
     const router = useRouter()
     const { t } = useTranslation()
     const [errorMessage, setErrorMessage] = useState<string | null>(null)

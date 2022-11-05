@@ -1,8 +1,10 @@
-import BannerCard from '@components/common/banner-card'
 import Carousel from '@components/ui/carousel/carousel'
 import { SwiperSlide } from 'swiper/react'
 import { ROUTES } from '@lib/routes'
 import { StaticBanner } from '@framework/types'
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
+import BannerCard from '@components/common/banner-card'
 
 interface BannerProps {
     data: StaticBanner[]
@@ -28,7 +30,7 @@ const BannerSliderBlock: React.FC<BannerProps> = ({ className = 'mb-12 md:mb-14 
                     paginationVariant="circle"
                     buttonClassName="hidden"
                 >
-                    {data.map((banner: any) => (
+                    {data.map((banner) => (
                         <SwiperSlide key={`banner--key${banner.id}`} className="px-1.5 md:px-2.5 xl:px-3.5">
                             <BannerCard
                                 data={banner}

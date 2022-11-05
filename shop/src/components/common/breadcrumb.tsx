@@ -58,12 +58,16 @@ const Breadcrumb: React.FC<{ separator?: string }> = ({ separator = '/' }) => {
     return (
         <BreadcrumbItems separator={separator}>
             <ActiveLink href={'/'} activeClassName="font-semibold text-heading">
-                <a>{t('breadcrumb-home')}</a>
+                {t('breadcrumb-home')}
             </ActiveLink>
 
             {breadcrumbs?.map((breadcrumb: any) => (
-                <ActiveLink href={breadcrumb.href} activeClassName="font-semibold text-heading" key={breadcrumb.href}>
-                    <a className="capitalize">{convertBreadcrumbTitle(breadcrumb.breadcrumb)}</a>
+                <ActiveLink
+                    href={breadcrumb.href}
+                    activeClassName="font-semibold text-heading capitalize"
+                    key={breadcrumb.href}
+                >
+                    {convertBreadcrumbTitle(breadcrumb.breadcrumb)}
                 </ActiveLink>
             ))}
         </BreadcrumbItems>

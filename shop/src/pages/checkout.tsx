@@ -8,8 +8,6 @@ import { Address } from '@framework/types'
 import Divider from '@components/ui/divider'
 import Container from '@components/ui/container'
 
-export { getStaticProps } from '@framework/ssr/common'
-
 const ScheduleGrid = dynamic(() => import('@components/checkout/schedule/schedule-grid'))
 const AddressGrid = dynamic(() => import('@components/checkout/address-grid'))
 const ContactGrid = dynamic(() => import('@components/checkout/contact/contact-grid'))

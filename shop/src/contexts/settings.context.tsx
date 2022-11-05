@@ -13,6 +13,7 @@ export interface InitialValue {
     shippingClass: number
     contactDetails: ContactDetails
     minimumOrderAmount: number
+    deliveryTime: any
     currencyToWalletRatio: any
 }
 

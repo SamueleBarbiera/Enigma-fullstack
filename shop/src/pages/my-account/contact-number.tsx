@@ -3,8 +3,6 @@ import AccountLayout from '@components/my-account/account-layout'
 import ProfileContactNumber from '@components/profile/profile-contact-number'
 import useUser from '@framework/auth/use-user'
 
-export { getStaticProps } from '@framework/ssr/common'
-
 export default function ChangeContactNumber() {
     const { me } = useUser()
 

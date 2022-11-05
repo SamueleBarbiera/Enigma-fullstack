@@ -19,7 +19,7 @@ const SiteLayout = (children: IProps) => {
                     WebkitOverflowScrolling: 'touch',
                 }}
             >
-                {children}
+                {children.children}
             </main>
             <Footer />
             <MobileNavigation />
@@ -29,7 +29,6 @@ const SiteLayout = (children: IProps) => {
 }
 
 export const getLayout = (page: React.ReactElement) => {
-    console.log('🚀 - file: layout-two.tsx - line 28 - page', page)
     return <SiteLayout>{page}</SiteLayout>
 }
 

@@ -19,7 +19,7 @@ const AuthMenu = dynamic(() => import('@components/layout/header/auth-menu'), {
 })
 const MobileMenu = dynamic(() => import('@components/layout/header/mobile-menu'))
 
-const BottomNavigation: React.FC = () => {
+const BottomNavigation = () => {
     const { openSidebar, closeSidebar, displaySidebar, setDrawerView, openSearch, openModal, setModalView } = useUI()
 
     const [isAuthorize] = useAtom(authorizationAtom)

@@ -7,7 +7,7 @@ import { useShopsQuery } from '@framework/shops/shops.query'
 import Button from '@components/ui/button'
 import { useTranslation } from 'next-i18next'
 
-const ShopsPageContent: React.FC = () => {
+const ShopsPageContent = () => {
     const [gridView, setGridView] = useState(Boolean(false))
     const { t } = useTranslation()
     const {

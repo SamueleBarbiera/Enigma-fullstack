@@ -12,7 +12,7 @@ const AddressDeleteView = dynamic(() => import('@components/address/address-dele
 const AddOrUpdateCheckoutContact = dynamic(() => import('@components/checkout/contact/add-or-update'))
 const ProfileAddOrUpdateContact = dynamic(() => import('@components/profile/profile-add-or-update-contact'))
 
-const ManagedModal: React.FC = () => {
+const ManagedModal = () => {
     const { displayModal, closeModal, modalView, modalData } = useUI()
     const modalVariant =
         modalView === 'ADD_OR_UPDATE_CHECKOUT_CONTACT' ||

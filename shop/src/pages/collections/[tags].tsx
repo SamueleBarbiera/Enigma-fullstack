@@ -25,10 +25,13 @@ export default function Collections() {
                             <div className="pb-5 xl:pb-7 pt-1">
                                 <BreadcrumbItems separator="/">
                                     <ActiveLink href={'/'} activeClassName="font-semibold text-heading">
-                                        <a>{t('breadcrumb-home')}</a>
+                                        {t('breadcrumb-home')}
                                     </ActiveLink>
-                                    <ActiveLink href={ROUTES.SEARCH} activeClassName="font-semibold text-heading">
-                                        <a className="capitalize">{t('breadcrumb-collection')}</a>
+                                    <ActiveLink
+                                        href={ROUTES.SEARCH}
+                                        activeClassName="font-semibold text-heading capitalize"
+                                    >
+                                        {t('breadcrumb-collection')}
                                     </ActiveLink>
                                 </BreadcrumbItems>
                             </div>

@@ -15,7 +15,6 @@ interface ScheduleProps {
 export const ScheduleGrid: React.FC<ScheduleProps> = ({ label, className, count }) => {
     const { t } = useTranslation('common')
     const { deliveryTime: schedules } = useSettings()
-    console.log('🚀 - file: schedule-grid.tsx - line 18 - schedules', schedules)
     const [selectedSchedule, setSchedule] = useAtom(deliveryTimeAtom)
 
     useEffect(() => {

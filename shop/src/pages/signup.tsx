@@ -10,8 +10,6 @@ import { useEffect } from 'react'
 import { ROUTES } from '@lib/routes'
 import PageLoader from '@components/ui/page-loader/page-loader'
 
-export { getStaticProps } from '@framework/ssr/common'
-
 export default function SignUpPage() {
     const router = useRouter()
     const [isAuthorized] = useAtom(authorizationAtom)

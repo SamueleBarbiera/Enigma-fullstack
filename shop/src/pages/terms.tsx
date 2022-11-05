@@ -35,7 +35,7 @@ export default function TermsPage() {
                                             activeClass="text-heading font-semibold"
                                             className="block cursor-pointer py-3 lg:py-3.5 text-sm lg:text-base  text-gray-700 uppercase"
                                         >
-                                            {(index <= 9 ? '0' : '') + index + ' ' + t(`${item.title}`)}
+                                            <div>{(index <= 9 ? '0' : '') + index + ' ' + t(`${item.title}`)}</div>
                                         </Link>
                                     </li>
                                 ))}

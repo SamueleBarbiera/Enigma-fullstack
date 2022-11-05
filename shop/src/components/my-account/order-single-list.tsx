@@ -21,7 +21,7 @@ const OrderSingleList: React.FC<Props> = ({ order }) => {
                         href={`${ROUTES.ACCOUNT_ORDERS}/${order.tracking_number}`}
                         className="underline hover:no-underline text-body"
                     >
-                        #{order.id}
+                        <div> #{order.id}</div>
                     </Link>
                 </span>
             </li>
@@ -46,7 +46,7 @@ const OrderSingleList: React.FC<Props> = ({ order }) => {
                         href={`${ROUTES.ACCOUNT_ORDERS}/${order.tracking_number}`}
                         className="text-sm leading-4 bg-heading text-white px-4 py-2.5 inline-block rounded-md hover:text-white hover:bg-gray-600"
                     >
-                        {t('button-view')}
+                        <div>{t('button-view')}</div>{' '}
                     </Link>
                 </span>
             </li>

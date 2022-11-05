@@ -118,12 +118,6 @@ export default function Search() {
                                                 ))}
                                                 {data?.pages?.[0]?.paginatorInfo?.total > 4 && (
                                                     <div className="w-full overflow-hidden border-t border-gray-150">
-                                                        {/*<Link*/}
-                                                        {/*  href={`${ROUTES.SEARCH}?q=${searchText}`}*/}
-                                                        {/*  className="w-full block text-sm md:text-base text-center px-4 py-3 lg:py-3.5 bg-gray-200 text-heading text-opacity-80 transition hover:text-opacity-100"*/}
-                                                        {/*>*/}
-                                                        {/*  {t("text-load-more-products")}*/}
-                                                        {/*</Link>*/}
                                                         <Button
                                                             variant="custom"
                                                             onClick={handleOnLoadMore}

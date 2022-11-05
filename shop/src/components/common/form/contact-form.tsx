@@ -22,7 +22,7 @@ const defaultValues = {
     description: '',
 }
 
-const ContactForm: React.FC = () => {
+const ContactForm = () => {
     const { t } = useTranslation()
     const { mutate, isLoading: loading } = useContactMutation()
 

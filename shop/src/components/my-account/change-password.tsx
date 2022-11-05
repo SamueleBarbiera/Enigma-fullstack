@@ -30,7 +30,7 @@ const changePasswordSchema = yup.object().shape({
         .required('Please confirm your password'),
 })
 
-const ChangePassword: React.FC = () => {
+const ChangePassword = () => {
     const { t } = useTranslation()
     const { mutate: changePassword, isLoading: loading } = useChangePasswordMutation()
     const {

@@ -6,8 +6,6 @@ import ContactForm from '@components/common/form/contact-form'
 import ContactInfoBlock from '@containers/contact-info'
 import { useTranslation } from 'next-i18next'
 
-export { getStaticProps } from '@framework/ssr/common'
-
 export default function ContactUsPage() {
     const { t } = useTranslation('common')
     return (

@@ -64,13 +64,27 @@ export default function Cart() {
                         }
                     )}
                 >
-                    <span className="w-full ltr:pr-5 rtl:pl-5 -mt-0.5 py-0.5">{t('text-proceed-to-checkout')}</span>
-                    <span className="ltr:ml-auto rtl:mr-auto flex-shrink-0 -mt-0.5 py-0.5 rtl:flex">
-                        <span className="ltr:border-l rtl:border-r border-white ltr:pr-5 rtl:pl-5 py-0.5" />
-                        {cartTotal}
-                    </span>
+                    <div>
+                        <span className="w-full ltr:pr-5 rtl:pl-5 -mt-0.5 py-0.5">{t('text-proceed-to-checkout')}</span>
+                        <span className="ltr:ml-auto rtl:mr-auto flex-shrink-0 -mt-0.5 py-0.5 rtl:flex">
+                            <span className="ltr:border-l rtl:border-r border-white ltr:pr-5 rtl:pl-5 py-0.5" />
+                            {cartTotal}
+                        </span>
+                    </div>
                 </Link>
             </div>
         </div>
+    )
+}
+
+function undefined({ t, cartTotal }) {
+    return (
+        <>
+            <span className="w-full ltr:pr-5 rtl:pl-5 -mt-0.5 py-0.5">{t('text-proceed-to-checkout')}</span>
+            <span className="ltr:ml-auto rtl:mr-auto flex-shrink-0 -mt-0.5 py-0.5 rtl:flex">
+                <span className="ltr:border-l rtl:border-r border-white ltr:pr-5 rtl:pl-5 py-0.5" />
+                {cartTotal}
+            </span>
+        </>
     )
 }

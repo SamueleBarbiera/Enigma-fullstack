@@ -18,49 +18,39 @@ interface Props {
 const VerifiedItemList: React.FC<Props> = ({ className }) => {
     const { t } = useTranslation('common')
     const { items, isEmpty: isEmptyCart } = useCart()
-    const [verifiedResponse] = useAtom(verifiedResponseAtom)
+    const verifiedResponse: any = useAtom(verifiedResponseAtom)
     const [coupon, setCoupon] = useAtom(couponAtom)
     const [discount] = useAtom(discountAtom)
 
     const available_items = items?.filter((item) => !verifiedResponse?.unavailable_products?.includes(item.id))
 
-    const { price: tax } = usePrice(
-        verifiedResponse && {
-            amount: verifiedResponse.total_tax ?? 0,
-        }
-    )
+    const { price: tax } = usePrice({
+        amount: verifiedResponse?.total_tax ?? 0,
+    })
 
-    const { price: shipping } = usePrice(
-        verifiedResponse && {
-            amount: verifiedResponse.shipping_charge ?? 0,
-        }
-    )
+    const { price: shipping } = usePrice({
+        amount: verifiedResponse?.shipping_charge ?? 0,
+    })
 
     const base_amount = calculateTotal(available_items)
-    const { price: sub_total } = usePrice(
-        verifiedResponse && {
-            amount: base_amount,
-        }
-    )
+    const { price: sub_total } = usePrice({
+        amount: base_amount,
+    })
 
-    const { price: discountPrice } = usePrice(
-        discount && {
-            amount: Number(discount),
-        }
-    )
+    const { price: discountPrice } = usePrice({
+        amount: Number(discount),
+    })
 
-    const { price: total } = usePrice(
-        verifiedResponse && {
-            amount: calculatePaidTotal(
-                {
-                    totalAmount: base_amount,
-                    tax: verifiedResponse?.total_tax,
-                    shipping_charge: verifiedResponse?.shipping_charge,
-                },
-                Number(discount)
-            ),
-        }
-    )
+    const { price: total } = usePrice({
+        amount: calculatePaidTotal(
+            {
+                totalAmount: base_amount,
+                tax: verifiedResponse?.total_tax,
+                shipping_charge: verifiedResponse?.shipping_charge,
+            },
+            Number(discount)
+        ),
+    })
     return (
         <div className={className}>
             <div className="flex flex-col">

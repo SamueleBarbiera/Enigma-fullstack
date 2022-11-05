@@ -10,8 +10,6 @@ import { authorizationAtom } from '@store/authorization-atom'
 import PageLoader from '@components/ui/page-loader/page-loader'
 import OtpLogin from '@components/auth/otp/otp-login'
 
-export { getStaticProps } from '@framework/ssr/common'
-
 export default function OtpLoginPage() {
     const router = useRouter()
     const [isAuthorized] = useAtom(authorizationAtom)

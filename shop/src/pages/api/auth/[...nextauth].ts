@@ -1,110 +1,183 @@
-import NextAuth from 'next-auth'
-import Providers from 'next-auth/providers'
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { AppProviders } from 'next-auth/providers'
+import GoogleProvider from 'next-auth/providers/google'
+import FacebookProvider from 'next-auth/providers/facebook'
+import axios, { AxiosResponse } from 'axios'
+import { JWT } from 'next-auth/jwt'
+import NextAuth, { type NextAuthOptions, Session, User } from 'next-auth'
+//import { env } from '../../../env/server.mjs'
 
-// For more information on each option (and a full list of options) go to
-// https://next-auth.js.org/configuration/options
-export default NextAuth({
-    // Configure one or more authentication providers
-    // https://next-auth.js.org/configuration/providers
-    providers: [
-        Providers.Google({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+const GOOGLE_AUTHORIZATION_URL =
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    'https://accounts.google.com/o/oauth2/v2/auth?' +
+    new URLSearchParams({
+        prompt: 'consent',
+        access_type: 'offline',
+        response_type: 'code',
+    })
+
+interface Token extends JWT {
+    refreshToken: string
+    jwt: JWT
+    access_token: string | undefined
+    id: string
+    accessTokenExpires: string | JWT | undefined
+    expires_in: string
+}
+
+interface Profile {
+    sub: string
+    name: string
+    email: string
+    picture: string
+}
+
+const refreshAccessToken = async (payload: Token, clientId: string, clientSecret: string) => {
+    try {
+        const url = new URL('https://accounts.google.com/o/oauth2/token')
+        url.searchParams.set('client_id', clientId)
+        url.searchParams.set('client_secret', clientSecret)
+        url.searchParams.set('grant_type', 'refresh_token')
+        url.searchParams.set('refresh_token', payload.refreshToken)
+
+        const response: Response = await fetch(url.toString(), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            method: 'POST',
+        })
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const refreshToken: Token = await response.json()
+
+        if (!response.ok) {
+            throw new Error(response.statusText)
+        }
+
+        // Give a 10 sec buffer
+        const now = new Date()
+        const accessTokenExpires: number = now.setSeconds(now.getSeconds() + parseInt(refreshToken.expires_in) - 10)
+        return {
+            ...payload,
+            accessToken: refreshToken.access_token,
+            accessTokenExpires,
+            refreshToken: payload.refreshToken,
+        }
+    } catch (err) {
+        console.error('Error :', err instanceof Error ? err.message : 'Unknown error')
+
+        return {
+            ...payload,
+            error: 'RefreshAccessTokenError',
+        }
+    }
+}
+
+let ErrorGoogleEnv = false
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET } = process.env
+if (
+    process.env.NODE_ENV === 'test' ||
+    (process.env.NODE_ENV === 'production' && GOOGLE_CLIENT_ID === '') ||
+    GOOGLE_CLIENT_SECRET === '' ||
+    FACEBOOK_CLIENT_ID === '' ||
+    FACEBOOK_CLIENT_SECRET === ''
+) {
+    ErrorGoogleEnv = true
+    throw new Error('⚠️ auth credentials were not added ⚠️')
+} else {
+    ErrorGoogleEnv = false
+}
+
+const providers: AppProviders = []
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+if (ErrorGoogleEnv) {
+    throw new Error('⚠️ auth credentials were not added ⚠️')
+} else {
+    providers.push(
+        GoogleProvider({
+            clientId: GOOGLE_CLIENT_ID!,
+            clientSecret: GOOGLE_CLIENT_SECRET!,
+            accessTokenUrl: GOOGLE_AUTHORIZATION_URL,
+            profile(profile: Profile) {
+                //console.log('🚀 - file: [...nextauth].ts - line 92 - profile - profile', profile)
+                return {
+                    id: profile.sub,
+                    name: profile.name,
+                    email: profile.email,
+                    image: profile.picture,
+                }
+            },
         }),
+        FacebookProvider({
+            clientId: process.env.FACEBOOK_CLIENT_ID!,
+            clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+        })
+    )
+}
+//console.log('🚀 ~ file: [...nextauth].ts ~ line 94 ~ providers', providers)
 
-        Providers.Facebook({
-            clientId: process.env.FACEBOOK_CLIENT_ID,
-            clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-        }),
-    ],
-
-    // The secret should be set to a reasonably long random string.
-    // It is used to sign cookies and to sign and encrypt JSON Web Tokens, unless
-    // a separate secret is defined explicitly for encrypting the JWT.
-    secret: process.env.SECRET,
-
-    session: {
-        // Use JSON Web Tokens for session instead of database sessions.
-        // This option can be used with or without a database for users/accounts.
-        // Note: `jwt` is automatically set to `true` if no database is specified.
-        jwt: true,
-
-        // Seconds - How long until an idle session expires and is no longer valid.
-        // maxAge: 30 * 24 * 60 * 60, // 30 days
-
-        // Seconds - Throttle how frequently to write to database to extend a session.
-        // Use it to limit write operations. Set to 0 to always update the database.
-        // Note: This option is ignored if using JSON Web Tokens
-        // updateAge: 24 * 60 * 60, // 24 hours
-    },
-
-    // JSON Web tokens are only used for sessions if the `jwt: true` session
-    // option is set - or by default if no database is specified.
-    // https://next-auth.js.org/configuration/options#jwt
+export const authOptions: NextAuthOptions = {
+    providers,
+    secret: process.env.NEXTAUTH_SECRET,
     jwt: {
-        // A secret to use for key generation (you should set this explicitly)
-        // secret: 'INp8IvdIyeMcoGAgFGoA61DdBglwwSqnXJZkgz8PSnw',
-        // Set to true to use encryption (default: false)
-        // encryption: true,
-        // You can define your own encode/decode functions for signing and encryption
-        // if you want to override the default behaviour.
-        // encode: async ({ secret, token, maxAge }) => {},
-        // decode: async ({ secret, token, maxAge }) => {},
+        secret: process.env.NEXTAUTH_SECRET,
     },
-
-    // You can define custom pages to override the built-in ones. These will be regular Next.js pages
-    // so ensure that they are placed outside of the '/api' folder, e.g. signIn: '/auth/mycustom-signin'
-    // The routes shown here are the default URLs that will be used when a custom
-    // pages is not specified for that route.
-    // https://next-auth.js.org/configuration/pages
-    pages: {
-        // signIn: '/auth/signin',  // Displays signin buttons
-        // signOut: '/auth/signout', // Displays form with sign out button
-        // error: '/auth/error', // Error code passed in query string as ?error=
-        // verifyRequest: '/auth/verify-request', // Used for check email page
-        // newUser: null // If set, new users will be directed here on first sign in
-    },
-
-    // Callbacks are asynchronous functions you can use to control what happens
-    // when an action is performed.
-    // https://next-auth.js.org/configuration/callbacks
     callbacks: {
-        // async signIn(user, account, profile) {
-        // 	const { access_token } = account;
-        // 	if (access_token) {
-        // 		user.accessToken = access_token;
-        // 		return user;
-        // 	}
-        // 	return false;
-        // },
-
-        async jwt(token, _user, account, _profile, _isNewUser) {
-            if (account) {
-                const { accessToken, provider } = account
-                token.provider = provider
-
-                // reform the `token` object from the access token we appended to the `user` object
-                token.accessToken = accessToken
+        session({ session, user }: { session: Session; user: User }) {
+            //console.log('🚀 - file: [...nextauth].ts - line 113 - session - user', user, session)
+            if (session.user) {
+                session.user.id = user.id
             }
-
-            return token
-        },
-
-        async session(session, user) {
-            if (user) {
-                const { accessToken, provider } = user
-                session.provider = provider
-                session.accessToken = accessToken
-            }
-
             return session
         },
+        async jwt({ token, user, account }) {
+            const isSignIn = user && account ? true : false
+            if (isSignIn) {
+                const response: AxiosResponse = await axios.get(
+                    `${process.env.NEXT_PUBLIC_API_URL ?? ''}/api/auth/${account!.provider}/callback?access_token=${
+                        account!.access_token
+                    }`
+                )
+
+                token.access_token = account?.access_token
+                token.accessTokenExpires = account?.expires_in
+                token.refreshToken = account?.refresh_token
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+                token.jwt = response.data?.jwt
+                token.access_token = account?.access_token
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+                token.id = response.data.user.id
+                //console.log(response.data, token)
+                if (account) {
+                    const { accessToken, provider } = account
+                    token.provider = provider
+
+                    // reform the `token` object from the access token we appended to the `user` object
+                    token.accessToken = accessToken
+                }
+            }
+
+            // Return previous token if the access token has not expired yet
+            if (Date.now() < Number(account?.expires_in)) {
+                return token
+            }
+
+            // Access token has expired, try to update it
+            return await refreshAccessToken(
+                token as Token,
+                String(process.env.GOOGLE_CLIENT_ID),
+                String(process.env.GOOGLE_CLIENT_SECRET)
+            )
+        },
+        redirect({ url, baseUrl }: { url: string; baseUrl: string }) {
+            // Allows relative callback URLs
+            if (url.startsWith('/')) return `${baseUrl}${url}`
+            // Allows callback URLs on the same origin
+            else if (new URL(url).origin === baseUrl) return url
+            return baseUrl
+        },
     },
+    debug: true,
+}
 
-    // Events are useful for logging
-    // https://next-auth.js.org/configuration/events
-    events: {},
-
-    // Enable debug messages in the console if you are having problems
-    debug: process.env.NODE_ENV === 'development',
-})
+export default NextAuth(authOptions)

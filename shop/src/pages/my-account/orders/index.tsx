@@ -8,8 +8,6 @@ import { useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import NotFound from '@components/404/not-found'
 
-export { getStaticProps } from '@framework/ssr/common'
-
 export default function OrdersTablePage() {
     const { t } = useTranslation()
     const [page, setPage] = useState(1)

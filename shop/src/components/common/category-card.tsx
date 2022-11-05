@@ -21,8 +21,13 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
             </Text>
             <div className="grid grid-cols-3 gap-2.5 xl:gap-3">
                 {products?.slice(0, 3)?.map((product: Product) => (
-                    <Link href={`${ROUTES.PRODUCT}/${product?.slug}`} key={`image--key${product?.id}`}>
-                        <a className="flex rounded-md overflow-hidden">
+                    <Link
+                        href={`${ROUTES.PRODUCT}/${product?.slug}`}
+                        key={`image--key${product?.id}`}
+                        className="flex rounded-md overflow-hidden"
+                    >
+                        <div>
+                            {' '}
                             <Image
                                 src={product?.image?.original ?? '/assets/placeholder/products/product-cat.svg'}
                                 alt={name || t('text-category-thumbnail')}
@@ -30,7 +35,7 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
                                 height={165}
                                 className="bg-gray-300 object-cover rounded-md transition duration-300 ease-in-out transform hover:scale-110"
                             />
-                        </a>
+                        </div>
                     </Link>
                 ))}
             </div>

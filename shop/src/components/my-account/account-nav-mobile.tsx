@@ -88,12 +88,15 @@ export default function AccountNavMobile({ options }: { options: Option[] }) {
                                 className="w-full flex items-center text-sm lg:text-[15px] py-3 px-4 md:px-5 cursor-pointer focus:outline-none hover:bg-gray-200"
                                 href={`${ROUTES.LOGOUT}`}
                             >
-                                <span className="flex-shrink-0 flex justify-center">
-                                    <IoLogOutOutline className="w-[18px] md:w-5 h-[18px] md:h-5" />
-                                </span>
-                                <span className="block truncate ltr:pl-2.5 rtl:pr-2.5 ltr:md:pl-3 rtl:md:pr-3">
-                                    {t('text-logout')}
-                                </span>
+                                <div>
+                                    {' '}
+                                    <span className="flex-shrink-0 flex justify-center">
+                                        <IoLogOutOutline className="w-[18px] md:w-5 h-[18px] md:h-5" />
+                                    </span>
+                                    <span className="block truncate ltr:pl-2.5 rtl:pr-2.5 ltr:md:pl-3 rtl:md:pr-3">
+                                        {t('text-logout')}
+                                    </span>
+                                </div>
                             </Link>
                         </Listbox.Options>
                     </Transition>

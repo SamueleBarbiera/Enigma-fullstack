@@ -12,7 +12,6 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({ className, ...props })
             <Image
                 src={logo?.original ?? siteSettings.logo.url}
                 alt={siteTitle || 'Enigma Logo'}
-                // TODO: Make it dynamic
                 height={30}
                 width={95}
                 layout="fixed"

@@ -30,8 +30,11 @@ export default function AccountNav({ options }: { options: Option[] }) {
                                 : 'flex items-center cursor-pointer text-sm lg:text-base text-heading font-normal py-3.5 px-4 lg:px-5 rounded mb-2'
                         }
                     >
-                        {item.icon}
-                        <span className="ltr:pl-2 rtl:pr-2">{t(`${item.name}`)}</span>
+                        <div>
+                            {' '}
+                            {item.icon}
+                            <span className="ltr:pl-2 rtl:pr-2">{t(`${item.name}`)}</span>
+                        </div>
                     </Link>
                 )
             })}
@@ -39,8 +42,11 @@ export default function AccountNav({ options }: { options: Option[] }) {
                 href={`${ROUTES.LOGOUT}`}
                 className="flex items-center cursor-pointer text-sm lg:text-base text-heading font-normal py-3.5 px-4 lg:px-5 focus:outline-none"
             >
-                <IoLogOutOutline className="w-5 h-5" />
-                <span className="ltr:pl-2 rtl:pr-2">{t('text-logout')}</span>
+                <div>
+                    {' '}
+                    <IoLogOutOutline className="w-5 h-5" />
+                    <span className="ltr:pl-2 rtl:pr-2">{t('text-logout')}</span>
+                </div>
             </Link>
         </nav>
     )

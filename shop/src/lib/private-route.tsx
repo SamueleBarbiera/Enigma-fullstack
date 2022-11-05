@@ -6,7 +6,11 @@ import { BackArrowRound } from '@components/icons/back-arrow-round'
 import PageLoader from '@components/ui/page-loader/page-loader'
 import LoginForm from '@components/auth/login-form'
 
-const PrivateRoute: React.FC = ({ children }) => {
+interface IProps {
+    children: React.ReactNode
+}
+
+const PrivateRoute = (children: IProps) => {
     const router = useRouter()
     const [isAuthorized] = useAtom(authorizationAtom)
     const { me } = useUser()
@@ -28,7 +32,7 @@ const PrivateRoute: React.FC = ({ children }) => {
         )
     }
     if (isUser && isAuthorized) {
-        return <>{children}</>
+        return <>{children.children}</>
     }
 
     // Session is being fetched, or no user.

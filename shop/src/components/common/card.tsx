@@ -59,26 +59,64 @@ const Card: React.FC<Props> = ({
                     : 'text-center'
             } flex-col relative ${variant === 'modern' ? 'lg:h-60 md:h-48 h-44 w-full bg-gray-200 rounded-md' : ''}`}
         >
-            <div
-                className={`relative inline-flex ${variant === 'elegant' ? '' : ' mx-auto '} ${
-                    (['rounded', 'modern', 'elegant'].includes(variant) && 'rounded-md') ||
-                    (variant === 'circle' && 'rounded-full')
-                } ${variant !== 'modern' ? ' mb-3.5 md:mb-4 lg:mb-5 xl:mb-6' : ' xl:mb-8 md:mb-4'}`}
-            >
-                <div className="flex">
-                    <Image
-                        src={image?.original ?? placeholderImage}
-                        alt={name || t('text-card-thumbnail')}
-                        width={imageSize}
-                        height={imageSize}
-                        quality={100}
-                        className={`${
-                            (['rounded', 'modern', 'elegant'].includes(variant) ? 'rounded-md' : '') ||
-                            (variant === 'circle' && 'rounded-full')
-                        } ${['elegant', 'modern'].includes(variant) ? 'object-contain' : 'object-cover bg-gray-300'}`}
-                    />
+            <div>
+                {' '}
+                <div
+                    className={`relative inline-flex ${variant === 'elegant' ? '' : ' mx-auto '} ${
+                        (['rounded', 'modern', 'elegant'].includes(variant) && 'rounded-md') ||
+                        (variant === 'circle' && 'rounded-full')
+                    } ${variant !== 'modern' ? ' mb-3.5 md:mb-4 lg:mb-5 xl:mb-6' : ' xl:mb-8 md:mb-4'}`}
+                >
+                    <div className="flex">
+                        <Image
+                            src={image?.original ?? placeholderImage}
+                            alt={name || t('text-card-thumbnail')}
+                            width={imageSize}
+                            height={imageSize}
+                            quality={100}
+                            className={`${
+                                (['rounded', 'modern', 'elegant'].includes(variant) ? 'rounded-md' : '') ||
+                                (variant === 'circle' && 'rounded-full')
+                            } ${
+                                ['elegant', 'modern'].includes(variant) ? 'object-contain' : 'object-cover bg-gray-300'
+                            }`}
+                        />
+                    </div>
+                    {effectActive === true && effectPosition === 'imageOnly' && (
+                        <>
+                            <div
+                                className={`absolute top-0 left-0 bg-black w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-30 ${
+                                    (['rounded', 'modern', 'elegant'].includes(variant) && 'rounded-md') ||
+                                    (variant === 'circle' && 'rounded-full')
+                                }`}
+                            />
+                            <div className="absolute top-0 left-0 h-full w-full flex items-center justify-center">
+                                <FaLink className="text-white text-base sm:text-xl lg:text-2xl xl:text-3xl transform opacity-0 scale-0 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:scale-100" />
+                            </div>
+                        </>
+                    )}
                 </div>
-                {effectActive === true && effectPosition === 'imageOnly' && (
+                {variant === 'modern' ? (
+                    <Text
+                        variant="heading"
+                        className="text-heading text-sm md:text-base xl:text-lg font-semibold capitalize absolute text-center bottom-4 sm:bottom-5 md:bottom-6 xl:bottom-8 inset-x-0 z-10"
+                    >
+                        {name}
+                    </Text>
+                ) : (
+                    <Text variant="heading" className="capitalize">
+                        {name}
+                    </Text>
+                )}
+                {variant === 'elegant' ? (
+                    <Text className="text-body text-sm sm:leading-6 leading-7 pb-0.5 truncate">
+                        {products_count}{' '}
+                        {products_count > 1 || products_count === 0 ? t('text-products') : t('text-product')}
+                    </Text>
+                ) : (
+                    ''
+                )}
+                {effectActive === true && effectPosition === 'fullBody' && (
                     <>
                         <div
                             className={`absolute top-0 left-0 bg-black w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-30 ${
@@ -92,39 +130,6 @@ const Card: React.FC<Props> = ({
                     </>
                 )}
             </div>
-            {variant === 'modern' ? (
-                <Text
-                    variant="heading"
-                    className="text-heading text-sm md:text-base xl:text-lg font-semibold capitalize absolute text-center bottom-4 sm:bottom-5 md:bottom-6 xl:bottom-8 inset-x-0 z-10"
-                >
-                    {name}
-                </Text>
-            ) : (
-                <Text variant="heading" className="capitalize">
-                    {name}
-                </Text>
-            )}
-            {variant === 'elegant' ? (
-                <Text className="text-body text-sm sm:leading-6 leading-7 pb-0.5 truncate">
-                    {products_count}{' '}
-                    {products_count > 1 || products_count === 0 ? t('text-products') : t('text-product')}
-                </Text>
-            ) : (
-                ''
-            )}
-            {effectActive === true && effectPosition === 'fullBody' && (
-                <>
-                    <div
-                        className={`absolute top-0 left-0 bg-black w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-30 ${
-                            (['rounded', 'modern', 'elegant'].includes(variant) && 'rounded-md') ||
-                            (variant === 'circle' && 'rounded-full')
-                        }`}
-                    />
-                    <div className="absolute top-0 left-0 h-full w-full flex items-center justify-center">
-                        <FaLink className="text-white text-base sm:text-xl lg:text-2xl xl:text-3xl transform opacity-0 scale-0 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:scale-100" />
-                    </div>
-                </>
-            )}
         </Link>
     )
 }

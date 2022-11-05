@@ -35,7 +35,7 @@ export default function OrderView({ order }: any) {
                         href={ROUTES.HOME}
                         className="inline-flex items-center text-heading order-1 sm:order-2 text-accent text-base font-semibold underline hover:no-underline"
                     >
-                        {t('text-back-to-home')}
+                        <div>{t('text-back-to-home')}</div>
                     </Link>
                 </div>
 

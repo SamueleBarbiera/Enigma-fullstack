@@ -132,7 +132,6 @@ export function SellWithProgressCardSection() {
         <>
             {width < 1441 ? (
                 <SellWithProgress
-                    // TODO: Fix the types
                     products={products?.data}
                     className="col-span-full"
                     loading={loading}
@@ -140,7 +139,6 @@ export function SellWithProgressCardSection() {
                 />
             ) : (
                 <SellWithProgress
-                    // TODO: Fix the types
                     products={products?.data}
                     productVariant="gridSlim"
                     loading={loading}

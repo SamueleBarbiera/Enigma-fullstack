@@ -25,7 +25,7 @@ const ItemCard = ({ item, notAvailable }: Props) => {
                     className="bg-gray-100 object-cover"
                 />
             </div>
-            <p className="flex items-center justify-between text-base ltr:pr-1.5 ltr:pl-1.5 ltr:mr-auto rtl:ml-auto">
+            <div className="flex items-center justify-between text-base ltr:pr-1.5 ltr:pl-1.5 ltr:mr-auto rtl:ml-auto">
                 <span className={cn('text-sm', notAvailable ? 'text-red-500' : 'text-body')}>
                     <span className={cn('text-sm font-bold', notAvailable ? 'text-red-500' : 'text-heading')}>
                         {item.quantity}
@@ -33,7 +33,7 @@ const ItemCard = ({ item, notAvailable }: Props) => {
                     <span className="mx-2">x</span>
                     <span>{item.name}</span> | <span>{item.unit}</span>
                 </span>
-            </p>
+            </div>
             <span className={cn('text-sm font-semibold ', notAvailable ? 'text-red-500' : 'text-heading')}>
                 {!notAvailable ? price : t('text-unavailable')}
             </span>

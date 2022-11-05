@@ -18,8 +18,12 @@ const CategoryListCard: React.FC<Props> = ({ category }) => {
     const parsedImage = getCategoryTypeImage(category)
 
     return (
-        <Link href={`${ROUTES.CATEGORY}/${category.slug}`}>
-            <a className="flex justify-between items-center bg-gray-200 rounded-md px-5 2xl:px-3.5 py-3 xl:py-3.5 2xl:py-2.5 3xl:py-3.5 transition hover:bg-gray-100">
+        <Link
+            href={`${ROUTES.CATEGORY}/${category.slug}`}
+            className="flex justify-between items-center bg-gray-200 rounded-md px-5 2xl:px-3.5 py-3 xl:py-3.5 2xl:py-2.5 3xl:py-3.5 transition hover:bg-gray-100"
+        >
+            <div>
+                {' '}
                 <div className="flex items-center">
                     <div className="inline-flex flex-shrink-0 2xl:w-12 2xl:h-12 3xl:w-auto 3xl:h-auto">
                         <Image
@@ -40,7 +44,7 @@ const CategoryListCard: React.FC<Props> = ({ category }) => {
                     </div>
                     <IoIosArrowForward className="hidden 2xl:block text-sm text-heading" />
                 </div>
-            </a>
+            </div>
         </Link>
     )
 }

@@ -8,7 +8,7 @@ import { useTranslation } from 'next-i18next'
 import { useAttributesQuery } from '@framework/attributes/attributes.query'
 import { AttributesFilter } from '@components/shop/attributes-filter'
 
-export const ShopFilters: React.FC = () => {
+export const ShopFilters = () => {
     const router = useRouter()
     const { pathname, query } = router
     const { t } = useTranslation('common')

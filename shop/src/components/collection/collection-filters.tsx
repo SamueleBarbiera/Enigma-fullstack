@@ -7,7 +7,7 @@ import { useUI } from '@contexts/ui.context'
 import { useRouter } from 'next/router'
 import classNames from 'classnames'
 
-export const CollectionFilters: React.FC = () => {
+export const CollectionFilters = () => {
     const { t } = useTranslation('common')
     const { closeFilter } = useUI()
     const { data, isLoading: loading } = useTagsQuery({})
@@ -32,7 +32,7 @@ export const CollectionFilters: React.FC = () => {
                 <ul className="mt-2 flex flex-col space-y-5">
                     {items?.map((item: any) => (
                         <li key={item.id} className="text-sm lg:text-[15px] cursor-pointer" onClick={closeFilter}>
-                            <ActiveLink href={`${ROUTES.COLLECTIONS}/${item.slug}`}>
+                            <ActiveLink href={`${ROUTES.COLLECTIONS}/${item.slug}`} activeClassName={''}>
                                 <a
                                     className={classNames(
                                         'block transition duration-300 ease-in-out text-heading hover:font-semibold py-0.5',

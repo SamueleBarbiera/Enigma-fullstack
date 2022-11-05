@@ -18,10 +18,8 @@ const WidgetContact: FC = () => {
             <ul className="text-xs md:text-[13px] lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
                 {ROUTES?.CONTACT && (
                     <li className="flex items-baseline">
-                        <Link href={ROUTES.CONTACT}>
-                            <a className="transition-colors duration-200 hover:text-black">
-                                {t(`text-page-contact-us`)}
-                            </a>
+                        <Link href={ROUTES.CONTACT} className="transition-colors duration-200 hover:text-black">
+                            <div>{t(`text-page-contact-us`)}</div>
                         </Link>
                     </li>
                 )}
@@ -35,10 +33,11 @@ const WidgetContact: FC = () => {
                 {contactDetails?.website && (
                     <li className="flex items-baseline">
                         {t('text-website')}:
-                        <Link href={contactDetails.website}>
-                            <a className="transition-colors duration-200 hover:text-black ml-1">
-                                {contactDetails.website}
-                            </a>
+                        <Link
+                            href={contactDetails.website}
+                            className="transition-colors duration-200 hover:text-black ml-1"
+                        >
+                            <div>{contactDetails.website}</div>
                         </Link>
                     </li>
                 )}

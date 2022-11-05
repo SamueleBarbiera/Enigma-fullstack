@@ -8,7 +8,7 @@ import Button from '@components/ui/button'
 import { useCart } from '@store/quick-cart/cart.context'
 import { useTranslation } from 'next-i18next'
 
-export const CheckAvailabilityAction: React.FC = (props) => {
+export const CheckAvailabilityAction = (props) => {
     const { t } = useTranslation('common')
     const [billing_address] = useAtom(billingAddressAtom)
     const [shipping_address] = useAtom(shippingAddressAtom)

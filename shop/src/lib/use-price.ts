@@ -41,11 +41,7 @@ export function formatVariantPrice({
 }
 
 export default function usePrice(
-    data?: {
-        amount: number
-        baseAmount?: number
-        currencyCode?: string
-    } | null
+    data?: { amount: number; baseAmount?: number | undefined; currencyCode?: string | undefined } | null | undefined
 ) {
     const { currency } = useSettings()
     const { amount, baseAmount, currencyCode = currency } = data ?? {}

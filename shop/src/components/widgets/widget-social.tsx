@@ -28,10 +28,11 @@ const WidgetSocial: FC = () => {
                                 })}
                             </span>
                         )}
-                        <Link href={social.url ? social.url : '#!'}>
-                            <a className="transition-colors duration-200 hover:text-black">
-                                {social?.label ? social?.label : social?.url}
-                            </a>
+                        <Link
+                            href={social.url ? social.url : '#!'}
+                            className="transition-colors duration-200 hover:text-black"
+                        >
+                            <div>{social?.label ? social?.label : social?.url}</div>
                         </Link>
                     </li>
                 ))}

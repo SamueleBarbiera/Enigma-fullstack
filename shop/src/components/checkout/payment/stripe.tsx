@@ -6,7 +6,7 @@ import { useAtom } from 'jotai'
 import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 
-const StripeForm: React.FC = () => {
+const StripeForm = () => {
     const { t } = useTranslation('common')
     const stripe = useStripe()
     const elements = useElements()
@@ -54,7 +54,7 @@ const StripeForm: React.FC = () => {
         </form>
     )
 }
-const StripePayment: React.FC = () => {
+const StripePayment = () => {
     return (
         <Elements stripe={getStripe()}>
             <StripeForm />

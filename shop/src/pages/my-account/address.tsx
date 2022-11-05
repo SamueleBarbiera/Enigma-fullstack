@@ -6,8 +6,6 @@ import AccountAddress from '@components/my-account/account-address'
 import useUser from '@framework/auth/use-user'
 import { useTranslation } from 'next-i18next'
 
-export { getStaticProps } from '@framework/ssr/common'
-
 export default function AccountDetailsPage() {
     const { me, loading, error } = useUser()
     const { t } = useTranslation()

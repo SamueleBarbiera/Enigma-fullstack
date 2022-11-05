@@ -26,7 +26,7 @@ export const useCart = () => {
     return context
 }
 
-export const CartProvider: React.FC = (props) => {
+export const CartProvider = (props) => {
     const [savedCart, saveCart] = useLocalStorage(CART_KEY, JSON.stringify(initialState))
     const [state, dispatch] = React.useReducer(cartReducer, JSON.parse(savedCart!))
     const [, emptyVerifiedResponse] = useAtom(verifiedResponseAtom)

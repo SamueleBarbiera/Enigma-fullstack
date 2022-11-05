@@ -30,7 +30,7 @@ const ExclusiveBlock: React.FC<Props> = ({ className = 'mb-12 md:mb-14 xl:mb-16'
                                     : 'ltr:right-3 ltr:sm:right-5 ltr:xl:right-7 rtl:left-3 rtl:sm:left-5 rtl:xl:left-7'
                             }`}
                         >
-                            {t(`${item.buttonText}`)}
+                            <div>{t(`${item.buttonText}`)}</div>
                         </Link>
                         {data.exclusiveName && (
                             <div

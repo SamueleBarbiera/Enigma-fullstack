@@ -19,8 +19,10 @@ const BrandCard: React.FC<{ brand: Type }> = ({ brand }) => {
                 pathname: ROUTES.SEARCH,
                 query: { brand: slug },
             }}
+            className="group flex justify-center text-center relative overflow-hidden rounded-md"
         >
-            <a className="group flex justify-center text-center relative overflow-hidden rounded-md">
+            <div>
+                {' '}
                 <Image
                     src={filterImages?.image?.[0]?.original ?? '/assets/placeholder/brand-bg.svg'}
                     alt={name || t('text-brand-thumbnail')}
@@ -36,7 +38,7 @@ const BrandCard: React.FC<{ brand: Type }> = ({ brand }) => {
                         className="flex-shrink-0"
                     />
                 </div>
-            </a>
+            </div>
         </Link>
     )
 }

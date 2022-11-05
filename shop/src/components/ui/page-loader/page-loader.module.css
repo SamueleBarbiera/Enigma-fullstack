@@ -1,39 +1,50 @@
 .page_loader {
-	margin: 100px auto;
-	width: 120px;
-	height: 120px;
-	border: 16px solid #f9f9f9;
-	border-top: 16px solid #212121;
-	border-radius: 50%;
-	animation: spin 2s linear infinite, heart-beat 2s linear infinite;
-	background-color: #fff;
-	text-align: center;
-	line-height: 120px;
+    margin: 100px auto;
+    width: 120px;
+    height: 120px;
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #212121;
+    border-radius: 50%;
+    animation: spin 2s linear infinite, heart-beat 2s linear infinite;
+    background-color: #fff;
+    text-align: center;
+    line-height: 120px;
+}
+
+.loading {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 12px;
+    border: 0.25rem solid rgba(33, 33, 33, 0.3);
+    border-top-color: rgba(33, 33, 33, 1);
+    -webkit-animation: spin 1s infinite linear;
+    animation: spin 1s infinite linear;
 }
 
 @keyframes spin {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes heart-beat {
-	55% {
-		background-color: #fff;
-	}
-	60% {
-		background-color: #212121;
-	}
-	65% {
-		background-color: #fff;
-	}
-	70% {
-		background-color: #212121;
-	}
-	100% {
-		background-color: #fff;
-	}
+    55% {
+        background-color: #fff;
+    }
+    60% {
+        background-color: #212121;
+    }
+    65% {
+        background-color: #fff;
+    }
+    70% {
+        background-color: #212121;
+    }
+    100% {
+        background-color: #fff;
+    }
 }

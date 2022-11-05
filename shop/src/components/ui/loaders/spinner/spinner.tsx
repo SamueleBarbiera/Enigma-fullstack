@@ -1,4 +1,3 @@
-import styles from './spinner.module.css'
 import cn from 'classnames'
 
 interface Props {
@@ -16,7 +15,7 @@ const Spinner = (props: Props) => {
                 className={cn('flex w-full flex-col items-center justify-center', className)}
                 style={{ height: 'calc(100vh - 200px)' }}
             >
-                <div className={styles.loading} />
+                <div className={'animate-spin'} />
 
                 {showText && <h3 className="text-lg font-semibold italic text-body">{text}</h3>}
             </div>
