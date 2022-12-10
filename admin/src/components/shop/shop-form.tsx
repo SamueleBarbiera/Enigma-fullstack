@@ -342,19 +342,7 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
                     />
 
                     <Card className="w-full sm:w-8/12 md:w-2/3">
-                        {/* <div className="mb-5">
-              <Label>{t("form:input-label-autocomplete")}</Label>
-              <Controller
-                control={control}
-                name="settings.location"
-                render={({ field: { onChange } }) => (
-                  <GooglePlacesAutocomplete
-                    onChange={onChange}
-                    data={getValues("settings.location")!}
-                  />
-                )}
-              />
-            </div> */}
+                       
                         <Input
                             label={t('form:input-label-contact')}
                             {...register('settings.contact')}

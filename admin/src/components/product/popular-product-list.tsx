@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Table } from '@components/ui/table'
-import { CreateProduct, Shop } from '@ts-types/generated'
+import { CreateProduct, Product, ProductType, Shop } from '@ts-types/generated'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
+import usePrice from '@utils/use-price'
 
 export interface IProps {
     products?: CreateProduct | undefined
@@ -15,7 +16,7 @@ const PopularProductList = ({ products, title }: IProps) => {
     const router = useRouter()
     const { t } = useTranslation()
 
-    let columns: readonly (ColumnGroupType<CreateProduct> | ColumnType<CreateProduct>)[] = [
+    let columns: readonly (ColumnGroupType<Product> | ColumnType<Product>)[] = [
         {
             title: t('table:table-item-id'),
             dataIndex: 'id',
@@ -29,6 +30,14 @@ const PopularProductList = ({ products, title }: IProps) => {
             key: 'name',
             align: 'left',
             width: 200,
+            render: (name: string) => <span className="whitespace-nowrap">{name}</span>,
+        },
+        {
+            title: t('table:table-item-group'),
+            dataIndex: 'product_type',
+            key: 'product_type',
+            align: 'center',
+            render: (product_type: any) => <span className="whitespace-nowrap">{product_type}</span>,
         },
 
         {
@@ -38,7 +47,7 @@ const PopularProductList = ({ products, title }: IProps) => {
             // width: 120,
             align: 'center',
             ellipsis: true,
-            render: (prod: Shop) => <span className="truncate whitespace-nowrap">{prod.name}</span>,
+            render: (shop: Shop) => <span className="truncate whitespace-nowrap">{shop?.name}</span>,
         },
 
         {
@@ -47,6 +56,18 @@ const PopularProductList = ({ products, title }: IProps) => {
             key: 'price',
             align: 'right',
             width: 160,
+            render: (value: number, record: Product) => {
+                if (record?.product_type === ProductType.Variable) {
+                    return (
+                        <span
+                            className="whitespace-nowrap"
+                            title={`${record?.min_price} - ${record?.max_price}`}
+                        >{`${record?.min_price} - ${record?.max_price}`}</span>
+                    )
+                } else {
+                    return <span className="whitespace-nowrap">{value}</span>
+                }
+            },
         },
         {
             title: t('table:table-item-quantity'),
@@ -57,8 +78,8 @@ const PopularProductList = ({ products, title }: IProps) => {
         },
     ]
 
-    if (router.query.shop) {
-        columns = columns.filter((column) => column.key !== 'shop')
+    if (router?.query?.shop) {
+        columns = columns?.filter((column) => column?.key !== 'shop')
     }
 
     return (

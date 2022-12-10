@@ -6,16 +6,15 @@ import { CloseIcon } from '@components/icons/close-icon'
 import Loader from '@components/ui/loader/loader'
 import { useTranslation } from 'next-i18next'
 import { useUploadMutation } from '@data/upload/use-upload.mutation'
-import Image from 'next/image'
 
-const getPreviewImage = (value: Attachment[]) => {
-    let images: Attachment[] = []
-
-    images = Array.isArray(value) ? value : []
-
+const getPreviewImage = (value: any) => {
+    let images: any[] = []
+    if (value) {
+        images = Array.isArray(value) ? value : [{ ...value }]
+    }
     return images
 }
-export default function Uploader(onChange: (arg0: Attachment[]) => void, value: Attachment[], multiple: boolean) {
+export default function Uploader({ onChange, value, multiple }: any) {
     const { t } = useTranslation()
     const [files, setFiles] = useState<Attachment[]>(getPreviewImage(value))
     const { mutate: upload, isLoading: loading } = useUploadMutation()
@@ -24,7 +23,7 @@ export default function Uploader(onChange: (arg0: Attachment[]) => void, value: 
             'image/*': ['.jpeg', '.jpg', '.png'],
         },
         multiple,
-        onDrop: (acceptedFiles) => {
+        onDrop: async (acceptedFiles) => {
             if (acceptedFiles.length) {
                 upload(
                     acceptedFiles, // it will be an array of uploaded attachments
@@ -32,11 +31,11 @@ export default function Uploader(onChange: (arg0: Attachment[]) => void, value: 
                         onSuccess: (data) => {
                             let mergedData
                             if (multiple) {
-                                mergedData = files.concat(data)
-                                setFiles(files.concat(data))
+                                mergedData = files.concat(data!)
+                                setFiles(files.concat(data!))
                             } else {
-                                mergedData = data[0]
-                                setFiles(data)
+                                mergedData = data![0]
+                                setFiles(data as any)
                             }
                             if (onChange) {
                                 onChange(mergedData)
@@ -50,10 +49,13 @@ export default function Uploader(onChange: (arg0: Attachment[]) => void, value: 
 
     const handleDelete = (image: string) => {
         const images = files.filter((file) => file.thumbnail !== image)
+
         setFiles(images)
-        onChange(images)
+        if (onChange) {
+            onChange(images)
+        }
     }
-    const thumbs = files.map((file, idx) => {
+    const thumbs = files?.map((file: any, idx) => {
         if (file.id) {
             return (
                 <div
@@ -61,12 +63,12 @@ export default function Uploader(onChange: (arg0: Attachment[]) => void, value: 
                     key={idx}
                 >
                     <div className="flex h-16 w-16 min-w-0 items-center justify-center overflow-hidden bg-gray-300">
-                        <Image width={40} height={40} src={file.original ?? ''} alt={''} />
+                        <img src={file.original} />
                     </div>
                     {multiple ? (
                         <button
                             className="absolute top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs text-light shadow-xl outline-none end-1"
-                            onClick={() => handleDelete(file.thumbnail!)}
+                            onClick={() => handleDelete(file.thumbnail)}
                         >
                             <CloseIcon width={10} height={10} />
                         </button>
@@ -79,7 +81,7 @@ export default function Uploader(onChange: (arg0: Attachment[]) => void, value: 
     useEffect(
         () => () => {
             // Make sure to revoke the data uris to avoid memory leaks
-            files.forEach((file) => URL.revokeObjectURL(file.thumbnail!))
+            files.forEach((file: any) => URL.revokeObjectURL(file.thumbnail))
         },
         [files]
     )

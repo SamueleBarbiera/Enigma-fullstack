@@ -1,11 +1,10 @@
 import Input from '@components/ui/input'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import Button from '@components/ui/button'
 import {
-    Attachment,
-    AttachmentInput,
     ContactDetailsInput,
     Maybe,
+    SettingsOptions,
     SettingsOptionsInput,
     Shipping,
     ShippingInput,
@@ -26,28 +25,33 @@ import { settingsValidationSchema } from './settings-validation-schema'
 import FileInput from '@components/ui/file-input'
 import SelectInput from '@components/ui/select-input'
 import TextArea from '@components/ui/text-area'
-import { getFormattedImage, IImage } from '@utils/get-formatted-image'
+import { getFormattedImage } from '@utils/get-formatted-image'
+import Alert from '@components/ui/alert'
 import { getIcon } from '@utils/get-icon'
 import * as socialIcons from '@components/icons/social'
 import omit from 'lodash/omit'
 
-interface FormValues {
+type FormValues = {
     siteTitle: string
     siteSubtitle: string
-    currency: string
+    currency: any
     minimumOrderAmount: number
-    logo: AttachmentInput
+    logo: any
     taxClass: Tax
     shippingClass: Shipping
     signupPoints: number
     currencyToWalletRatio: number
     contactDetails: ContactDetailsInput
+    deliveryTime: {
+        title: string
+        description: string
+    }
     seo: {
         metaTitle: string
         metaDescription: string
         ogTitle: string
         ogDescription: string
-        ogImage: IImage
+        ogImage: any
         twitterHandle: string
         twitterCardType: string
         metaTags: string
@@ -83,9 +87,9 @@ const socialIcon = [
     },
 ]
 
-export const updatedIcons = socialIcon.map((item) => {
-    return (
-        <div className="flex items-center text-body space-s-4" key={item.label}>
+export const updatedIcons = socialIcon.map((item: any) => {
+    item.label = (
+        <div className="flex items-center text-body space-s-4">
             <span className="flex h-4 w-4 items-center justify-center">
                 {getIcon({
                     iconList: socialIcons,
@@ -96,12 +100,13 @@ export const updatedIcons = socialIcon.map((item) => {
             <span>{item.label}</span>
         </div>
     )
+    return item
 })
 
-interface IProps {
-    settings?: Maybe<SettingsOptionsInput> | null
-    taxClasses: TaxInput | undefined
-    shippingClasses: ShippingInput | undefined
+type IProps = {
+    settings?: Maybe<SettingsOptionsInput> | undefined
+    taxClasses: { taxes: TaxInput } | undefined
+    shippingClasses: { shippingClasses: ShippingInput } | undefined
 }
 
 export default function SettingsForm({ settings, taxClasses, shippingClasses }: IProps) {
@@ -111,9 +116,9 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
         register,
         handleSubmit,
         control,
-
+        getValues,
         formState: { errors },
-    } = useForm({
+    } = useForm<FormValues>({
         shouldUnregister: true,
         resolver: yupResolver(settingsValidationSchema),
         defaultValues: {
@@ -121,17 +126,24 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
             contactDetails: {
                 ...settings?.contactDetails,
                 socials: settings?.contactDetails?.socials
-                    ? settings.contactDetails.socials.map((social) => ({
-                          icon: updatedIcons.find((icon) => icon.props === social?.icon),
+                    ? settings?.contactDetails?.socials.map((social: any) => ({
+                          icon: updatedIcons?.find((icon) => icon?.value === social?.icon),
                           url: social?.url,
                           label: social?.label,
                       }))
                     : [],
             },
+
+            //@ts-ignore
+            deliveryTime: settings?.deliveryTime ? settings?.deliveryTime : [],
             logo: settings?.logo ?? '',
-            currency: settings?.currency ? CURRENCY.find((item) => item.code == settings.currency) : '',
-            taxClass: taxClasses?.name == settings?.taxClass,
-            shippingClass: shippingClasses?.name == settings?.shippingClass,
+            currency: settings?.currency ? CURRENCY.find((item) => item.code == settings?.currency) : '',
+            // @ts-ignore
+            taxClass: !!taxClasses?.length ? taxClasses?.find((tax: Tax) => tax.id == settings?.taxClass) : '',
+            // @ts-ignore
+            shippingClass: !!shippingClasses?.length
+                ? shippingClasses?.find((shipping: Shipping) => shipping.id == settings?.shippingClass)
+                : '',
         },
     })
 
@@ -144,13 +156,13 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
         name: 'contactDetails.socials',
     })
 
-    function onSubmit(values: FormValues) {
+    async function onSubmit(values: FormValues) {
         const contactDetails = {
-            ...values.contactDetails,
-            location: { ...omit(values.contactDetails.location, '__typename') },
-            socials: values.contactDetails.socials
-                ? values.contactDetails.socials.map((social) => ({
-                      icon: social?.icon,
+            ...values?.contactDetails,
+            location: { ...omit(values?.contactDetails?.location, '__typename') },
+            socials: values?.contactDetails?.socials
+                ? values?.contactDetails?.socials?.map((social: any) => ({
+                      icon: social?.icon?.value,
                       url: social?.url,
                       label: social?.label,
                   }))
@@ -161,17 +173,19 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                 input: {
                     options: {
                         ...values,
-                        signupPoints: values.signupPoints,
+                        //@ts-ignore
+                        signupPoints: Number(values.signupPoints),
                         currencyToWalletRatio: Number(values.currencyToWalletRatio),
                         minimumOrderAmount: Number(values.minimumOrderAmount),
-                        currency: values.currency,
-                        taxClass: values.taxClass.id,
-                        shippingClass: values.shippingClass.id,
-                        logo: values.logo,
+                        currency: values.currency?.code,
+                        taxClass: values?.taxClass?.id,
+                        shippingClass: values?.shippingClass?.id,
+                        logo: values?.logo,
                         contactDetails,
+                        //@ts-ignore
                         seo: {
-                            ...values.seo,
-                            ogImage: getFormattedImage(values.seo.ogImage),
+                            ...values?.seo,
+                            ogImage: getFormattedImage(values?.seo?.ogImage),
                         },
                     },
                 },
@@ -214,24 +228,14 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                     <Input
                         label={t('form:input-label-site-title')}
                         {...register('siteTitle')}
-                        error={t(
-                            errors.siteTitle?.message as
-                                | string
-                                | TemplateStringsArray
-                                | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.siteTitle?.message!)}
                         variant="outline"
                         className="mb-5"
                     />
                     <Input
                         label={t('form:input-label-site-subtitle')}
                         {...register('siteSubtitle')}
-                        error={t(
-                            errors.siteSubtitle?.message as
-                                | string
-                                | TemplateStringsArray
-                                | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.siteSubtitle?.message!)}
                         variant="outline"
                         className="mb-5"
                     />
@@ -241,8 +245,8 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         <SelectInput
                             name="currency"
                             control={control}
-                            getOptionLabel={(option: { name: string }) => option.name}
-                            getOptionValue={(option: { code: string }) => option.code}
+                            getOptionLabel={(option: any) => option.name}
+                            getOptionValue={(option: any) => option.code}
                             options={CURRENCY}
                             isMulti={undefined}
                             isClearable={undefined}
@@ -262,12 +266,7 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         label={`${t('form:input-label-min-order-amount')}`}
                         {...register('minimumOrderAmount')}
                         type="number"
-                        error={t(
-                            errors.minimumOrderAmount?.message as
-                                | string
-                                | TemplateStringsArray
-                                | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.minimumOrderAmount?.message!)}
                         variant="outline"
                         className="mb-5"
                     />
@@ -277,8 +276,8 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         <SelectInput
                             name="taxClass"
                             control={control}
-                            getOptionLabel={(option: { name: string }) => option.name}
-                            getOptionValue={(option: { id: string }) => option.id}
+                            getOptionLabel={(option: any) => option.name}
+                            getOptionValue={(option: any) => option.id}
                             options={taxClasses!}
                             isMulti={undefined}
                             isClearable={undefined}
@@ -291,9 +290,9 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         <SelectInput
                             name="shippingClass"
                             control={control}
-                            getOptionLabel={(option: { name: string }) => option.name}
-                            getOptionValue={(option: { id: string }) => option.id}
-                            options={shippingClasses}
+                            getOptionLabel={(option: any) => option.name}
+                            getOptionValue={(option: any) => option.id}
+                            options={shippingClasses!}
                             isMulti={undefined}
                             isClearable={undefined}
                             isLoading={false}
@@ -349,20 +348,6 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         <Label>{t('form:input-label-og-image')}</Label>
                         <FileInput name="seo.ogImage" control={control} multiple={false} />
                     </div>
-                    <Input
-                        label={t('form:input-label-twitter-handle')}
-                        {...register('seo.twitterHandle')}
-                        variant="outline"
-                        className="mb-5"
-                        placeholder="your twitter username (exp: @username)"
-                    />
-                    <Input
-                        label={t('form:input-label-twitter-card-type')}
-                        {...register('seo.twitterCardType')}
-                        variant="outline"
-                        className="mb-5"
-                        placeholder="one of summary, summary_large_image, app, or player"
-                    />
                 </Card>
             </div>
 
@@ -379,12 +364,7 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         {...register('contactDetails.contact')}
                         variant="outline"
                         className="mb-5"
-                        error={t(
-                            errors.contactDetails?.contact?.message as
-                                | string
-                                | TemplateStringsArray
-                                | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.contactDetails?.contact?.message!)}
                     />
 
                     <Input
@@ -393,12 +373,7 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         variant="outline"
                         className="mb-5"
                         type="email"
-                        error={t(
-                            errors.contactDetails?.email?.message as
-                                | string
-                                | TemplateStringsArray
-                                | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.contactDetails?.email?.message!)}
                     />
 
                     <Input
@@ -406,12 +381,7 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         {...register('contactDetails.website')}
                         variant="outline"
                         className="mb-5"
-                        error={t(
-                            errors.contactDetails?.website?.message as
-                                | string
-                                | TemplateStringsArray
-                                | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.contactDetails?.website?.message!)}
                     />
 
                     {/* Social and Icon picker */}
@@ -431,7 +401,7 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                                             control={control}
                                             options={updatedIcons}
                                             isClearable={true}
-                                            defaultValue={item.icon!}
+                                            defaultValue={item?.icon!}
                                             getOptionLabel={undefined}
                                             getOptionValue={undefined}
                                             isMulti={undefined}

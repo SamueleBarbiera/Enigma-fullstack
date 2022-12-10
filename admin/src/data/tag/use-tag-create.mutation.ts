@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'next-i18next'
 
 export interface ITagCreateVariables {
-    variables: { input: CreateTagInput }
+    variables: { id: string; input: CreateTagInput }
 }
 
 export const useCreateTagMutation = () => {

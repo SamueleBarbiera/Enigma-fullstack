@@ -9,7 +9,7 @@ import { SettingsProvider } from '@contexts/settings.context'
 import ErrorMessage from '@components/ui/error-message'
 import PageLoader from '@components/ui/page-loader/page-loader'
 import { ToastContainer } from 'react-toastify'
-import { DehydratedState, MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Hydrate } from '@tanstack/react-query'
 import { ComponentType, useState } from 'react'
 import { useSettingsQuery } from '@data/settings/use-settings.query'
@@ -53,26 +53,26 @@ interface SSRConfigi18n {
     userConfig: UserConfig | null
 }
 
-interface INextProps {
-    _nextI18Next: SSRConfigi18n
-    dehydratedState: DehydratedState
-}
+// interface INextProps {
+//     _nextI18Next: SSRConfigi18n
+//     dehydratedState: DehydratedState
+// }
 
-type NextPageWithLayout<T> = NextPage<T> &
+type NextPageWithLayout = NextPage &
     ComponentType & {
         Layout?: React.ElementType
         authenticate?: boolean
     }
 
-type AppPropsWithLayout<T> = AppProps<T> & {
-    Component: NextPageWithLayout<T>
-    pageProps: T
+type AppPropsWithLayout = AppProps & {
+    Component: NextPageWithLayout
+    pageProps: any
 }
 
 const queryCache = new QueryCache()
 const mutationCache = new MutationCache()
 
-const MyApp = ({ Component, pageProps }: AppPropsWithLayout<INextProps>) => {
+const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
     const [queryClient] = useState(() => new QueryClient({ queryCache, mutationCache }))
     const Layout = Component.Layout ?? Noop
     const authProps: boolean | undefined = Component.authenticate

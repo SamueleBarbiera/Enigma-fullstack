@@ -4,6 +4,11 @@ import { ArrowUp } from '@components/icons/arrow-up'
 import { ArrowDown } from '@components/icons/arrow-down'
 
 const BarChart = ({ widgetTitle, series, colors, prefix, totalValue, text, position, percentage, categories }: any) => {
+    console.log(
+        '🚀 - file: column-chart.tsx - line 7 - BarChart -  widgetTitle, series, colors, prefix, totalValue, text, position, percentage, categories',
+        widgetTitle,
+        series
+    )
     const options = {
         options: {
             chart: {

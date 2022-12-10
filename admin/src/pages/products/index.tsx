@@ -15,16 +15,28 @@ import { ArrowDown } from '@components/icons/arrow-down'
 import { ArrowUp } from '@components/icons/arrow-up'
 import { adminOnly } from '@utils/auth-utils'
 import { GetServerSideProps } from 'next'
+import Button from '@components/ui/button'
+import LinkButton from '@components/ui/link-button'
+import { useRouter } from 'next/router'
+import { useShopQuery } from '@data/shop/use-shop.query'
+import { useModalAction } from '@components/ui/modal/modal.context'
+import { MoreIcon } from '@components/icons/more-icon'
 
 export default function ProductsPage() {
+    const {
+        query: { shop },
+    } = useRouter()
+    const { data: shopData, isLoading: fetchingShop } = useShopQuery(shop as string)
+    console.log('🚀 - file: index.tsx:30 - ProductsPage - shopData', shopData)
+    const shopId = shopData?.shop.id
+    const { t } = useTranslation()
     const [searchTerm, setSearchTerm] = useState('')
     const [type, setType] = useState('')
-    const [category, setCategory] = useState('')
     const [page, setPage] = useState(1)
-    const { t } = useTranslation()
     const [orderBy, setOrder] = useState('created_at')
     const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc)
     const [visible, setVisible] = useState(false)
+    const { openModal } = useModalAction()
 
     const toggleVisible = () => {
         setVisible((v) => !v)
@@ -34,25 +46,34 @@ export default function ProductsPage() {
         data,
         isLoading: loading,
         error,
-    } = useProductsQuery({
-        limit: 20,
-        page,
-        type,
-        category,
-        text: searchTerm,
-        orderBy,
-        sortedBy,
-    })
+    } = useProductsQuery(
+        {
+            text: searchTerm,
+            limit: 10,
+            shop_id: Number(shopId),
+            type,
+            orderBy,
+            sortedBy,
+            page,
+        },
+        {
+            enabled: Boolean(shopId),
+        }
+    )
+
+    console.log('🚀 - file: index.tsx:50 - ProductsPage - data', data)
+    function handleImportModal() {
+        openModal('EXPORT_IMPORT_PRODUCT', shopId)
+    }
 
     function handleSearch({ searchText }: { searchText: string }) {
         setSearchTerm(searchText)
-        setPage(1)
     }
     function handlePagination(current: any) {
         setPage(current)
     }
 
-    if (loading) return <Loader text={t('common:text-loading')} />
+    if (loading && fetchingShop) return <Loader text={t('common:text-loading')} />
     if (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error'
         if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
@@ -66,17 +87,37 @@ export default function ProductsPage() {
                         <h1 className="text-lg font-semibold text-heading">{t('form:input-label-products')}</h1>
                     </div>
 
-                    <div className="flex w-full flex-col items-center ms-auto md:w-3/4">
-                        <Search onSearch={handleSearch} />
-                    </div>
+                    <div className="flex w-full flex-col items-center md:w-3/4 md:flex-row">
+                        <div className="flex w-full items-center">
+                            <Search onSearch={handleSearch} />
 
-                    <button
-                        className="mt-5 flex items-center text-base font-semibold text-accent md:mt-0 md:ms-5"
-                        onClick={toggleVisible}
-                    >
-                        {t('common:text-filter')}{' '}
-                        {visible ? <ArrowUp className="ms-2" /> : <ArrowDown className="ms-2" />}
-                    </button>
+                            <LinkButton href={`/${shop as string}/products/create`} className="h-12 ms-4 md:ms-6">
+                                <>
+                                    <span className="hidden md:block">+ {t('form:button-label-add-product')}</span>
+                                    <span className="md:hidden">+ {t('form:button-label-add')}</span>
+                                </>
+                            </LinkButton>
+                        </div>
+
+                        <Button onClick={handleImportModal} className="mt-5 w-full md:hidden">
+                            {t('common:text-export-import')}
+                        </Button>
+
+                        <button
+                            className="mt-5 flex items-center text-base font-semibold text-accent md:mt-0 md:ms-5"
+                            onClick={toggleVisible}
+                        >
+                            {t('common:text-filter')}{' '}
+                            {visible ? <ArrowUp className="ms-2" /> : <ArrowDown className="ms-2" />}
+                        </button>
+
+                        <button
+                            onClick={handleImportModal}
+                            className="hidden h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gray-50 transition duration-300 ms-5 hover:bg-gray-100 md:flex"
+                        >
+                            <MoreIcon className="w-3.5 text-body" />
+                        </button>
+                    </div>
                 </div>
 
                 <div
@@ -88,9 +129,6 @@ export default function ProductsPage() {
                     <div className="mt-5 flex w-full flex-col border-t border-gray-200 pt-5 md:mt-8 md:flex-row md:items-center md:pt-8">
                         <CategoryTypeFilter
                             className="w-full"
-                            onCategoryFilter={(slug: string) => {
-                                setCategory(slug)
-                            }}
                             onTypeFilter={(slug: string) => {
                                 setType(slug)
                             }}

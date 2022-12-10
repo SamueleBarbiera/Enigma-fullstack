@@ -8,5 +8,8 @@ export interface ILoginVariables {
 }
 
 export const useLoginMutation = () => {
-    return useMutation(({ variables }: ILoginVariables) => User.login(API_ENDPOINTS.TOKEN, variables))
+    return useMutation(({ variables }: ILoginVariables) => {
+        console.log("🚀 - file: use-login.mutation.ts - line 12 - useLoginMutation - variables", variables)
+        return User.login(API_ENDPOINTS.TOKEN, variables)
+    })
 }

@@ -8,6 +8,9 @@ const withPWA = require('next-pwa')({
 })
 
 module.exports = withPWA({
+    typescript: {
+        ignoreBuildErrors: true,
+    },
     i18n,
     images: {
         domains: [

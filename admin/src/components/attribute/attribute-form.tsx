@@ -5,7 +5,7 @@ import Description from '@components/ui/description'
 import Card from '@components/common/card'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
-import { Attribute, AttributeValueInput } from '@ts-types/generated'
+import { Attribute } from '@ts-types/generated'
 import { useShopQuery } from '@data/shop/use-shop.query'
 import { useCreateAttributeMutation } from '@data/attributes/use-attribute-create.mutation'
 import { useUpdateAttributeMutation } from '@data/attributes/use-attribute-update.mutation'
@@ -15,16 +15,15 @@ import { animateScroll } from 'react-scroll'
 import { attributeValidationSchema } from '@components/attribute/attribute-validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-interface FormValues {
+type FormValues = {
     name?: string | null
-    values: AttributeValueInput
+    values: any
 }
 
-interface IProps {
+type IProps = {
     initialValues?: Attribute | null
 }
 export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
-    console.log('🚀 - file: attribute-form.tsx - line 27 - CreateOrUpdateAttributeForm - initialValues', initialValues)
     const router = useRouter()
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -33,7 +32,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
     } = router
     const { t } = useTranslation()
     const { data: shopData } = useShopQuery(shop as string, { enabled: !!shop })
-    const shopId = shopData?.shop.id
+    const shopId = shopData?.shop?.id!
     const {
         register,
         handleSubmit,
@@ -45,7 +44,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
     })
     const { fields, append, remove } = useFieldArray({
         control,
-        name: 'values' as never,
+        name: 'values',
     })
     const { mutate: createAttribute, isLoading: creating } = useCreateAttributeMutation()
     const { mutate: updateAttribute, isLoading: updating } = useUpdateAttributeMutation()
@@ -62,8 +61,8 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                     },
                 },
                 {
-                    onError: (error) => {
-                        setErrorMessage(error.message)
+                    onError: (error: any) => {
+                        setErrorMessage(error?.response?.data?.message)
                         animateScroll.scrollToTop()
                     },
                 }
@@ -74,9 +73,9 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                     id: initialValues.id,
                     input: {
                         name: values.name!,
-                        shop_id: Number(initialValues.shop_id),
-                        values: values.values.map(({ id, value, meta }: AttributeValueInput) => ({
-                            id: id,
+                        shop_id: Number(initialValues?.shop_id),
+                        values: values.values.map(({ id, value, meta }: any) => ({
+                            id: Number(id),
                             value,
                             meta,
                         })),
@@ -110,12 +109,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                         <Input
                             label={t('form:input-label-name')}
                             {...register('name')}
-                            error={t(
-                                errors.name?.message as
-                                    | string
-                                    | TemplateStringsArray
-                                    | (string | TemplateStringsArray)[]
-                            )}
+                            error={t(errors.name?.message!)}
                             variant="outline"
                             className="mb-5"
                         />
@@ -143,7 +137,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                                             className="sm:col-span-2"
                                             label={t('form:input-label-value-star')}
                                             variant="outline"
-                                            {...register(`values.${index}.value`)}
+                                            {...register(`values.${index}.value` as const)}
                                             defaultValue={item.value} // make sure to set up defaultValue
                                             error={t(errors.values?.[index]?.value?.message)}
                                         />
@@ -174,17 +168,8 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                             {t('form:button-label-add-value')}
                         </Button>
 
-                        {errors.values?.message ? (
-                            <Alert
-                                message={t(
-                                    errors.values.message as
-                                        | string
-                                        | TemplateStringsArray
-                                        | (string | TemplateStringsArray)[]
-                                )}
-                                variant="error"
-                                className="mt-5"
-                            />
+                        {errors?.values?.message ? (
+                            <Alert message={t(errors?.values?.message)} variant="error" className="mt-5" />
                         ) : null}
                     </Card>
                 </div>

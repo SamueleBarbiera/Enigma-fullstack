@@ -5,16 +5,16 @@ export const siteSettings = {
     name: 'Enigma',
     description: '',
     logo: {
-        url: '/logo.svg',
+        url: '/logoScreenFinal.png',
         alt: 'Enigma',
         href: '/',
         width: 128,
-        height: 40,
+        height: 50,
     },
-    defaultLanguage: 'en',
+    defaultLanguage: 'it',
     author: {
-        name: 'RedQ, Inc.',
-        websiteUrl: 'https://redq.io',
+        name: 'Enigma',
+        websiteUrl: '',
         address: '',
     },
     headerLinks: [],
@@ -28,7 +28,7 @@ export const siteSettings = {
             labelTransKey: 'authorized-nav-item-logout',
         },
     ],
-    currencyCode: 'USD',
+    currencyCode: 'EUR',
     sidebarLinks: {
         admin: [
             {
@@ -56,11 +56,11 @@ export const siteSettings = {
                 label: 'sidebar-nav-item-attributes',
                 icon: 'AttributeIcon',
             },
-            {
-                href: ROUTES.BRANDS,
-                label: 'sidebar-nav-item-groups',
-                icon: 'TypesIcon',
-            },
+            // {
+            //     href: ROUTES.BRANDS,
+            //     label: 'sidebar-nav-item-groups',
+            //     icon: 'TypesIcon',
+            // },
             {
                 href: ROUTES.CATEGORIES,
                 label: 'sidebar-nav-item-categories',

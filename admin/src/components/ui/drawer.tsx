@@ -1,11 +1,13 @@
-import { useEffect, useRef } from 'react'
-import Portal from '@reach/portal'
+import { MutableRefObject, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import cn from 'classnames'
 import { fadeInRight } from '@utils/motion/fade-in-right'
 import { fadeInLeft } from '@utils/motion/fade-in-left'
 import { fadeInOut } from '@utils/motion/fade-in-out'
+import React from 'react'
+
+import { Portal } from '@reach/portal'
 
 interface SidebarProps {
     children: React.ReactElement
@@ -14,11 +16,11 @@ interface SidebarProps {
     useBlurBackdrop?: boolean
     onClose: () => void
 }
-type DivElementRef = React.MutableRefObject<HTMLDivElement>
 
 const Drawer = ({ children, open = false, variant = 'right', useBlurBackdrop, onClose }: SidebarProps) => {
-    //console.log('🚀 - file: drawer.tsx - line 20 - Drawer - children', children)
-    const ref = useRef() as DivElementRef
+    console.log('🚀 - file: drawer.tsx - line 20 - Drawer - children', children)
+    const ref = useRef() as MutableRefObject<HTMLElement>
+
     useEffect(() => {
         if (open) {
             disableBodyScroll(ref.current)

@@ -21,18 +21,11 @@ export const useUpdateSettingsMutation = () => {
         {
             onSuccess: ({ data }) => {
                 updateSettings(data?.options)
-                toast.success(t('common:successfully-updated'))
+                //toast.success(t("common:successfully-updated"));
             },
             // Always refetch after error or success:
-            onSettled: async () => {
-                await queryClient.invalidateQueries([API_ENDPOINTS.SETTINGS])
-            },
-
-            onError: (error: AxiosError) => {
-                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
-                if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
-                toast.error(t(`common:${error.message}`))
-                return errorMessage
+            onSettled: () => {
+                queryClient.invalidateQueries([API_ENDPOINTS.SETTINGS])
             },
         }
     )

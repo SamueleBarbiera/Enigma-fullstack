@@ -8,7 +8,7 @@ import Description from '@components/ui/description'
 import * as categoriesIcon from '@components/icons/category'
 import { getIcon } from '@utils/get-icon'
 import { useRouter } from 'next/router'
-import { Attachment, AttachmentInput, Category, CategoryPaginator, CreateCategory } from '@ts-types/generated'
+import { AttachmentInput, Category, CreateCategory } from '@ts-types/generated'
 import { useUpdateCategoryMutation } from '@data/category/use-category-update.mutation'
 import { useCreateCategoryMutation } from '@data/category/use-category-create.mutation'
 import { categoryIcons } from './category-icons'
@@ -18,9 +18,9 @@ import SelectInput from '@components/ui/select-input'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { categoryValidationSchema } from './category-validation-schema'
 
-export const updatedIcons = categoryIcons.map((item) => {
-    return (
-        <div className="flex items-center space-s-5" key={item.value}>
+export const updatedIcons = categoryIcons.map((item: any) => {
+    item.label = (
+        <div className="flex items-center space-s-5">
             <span className="flex h-5 w-5 items-center justify-center">
                 {getIcon({
                     iconList: categoriesIcon,
@@ -31,28 +31,27 @@ export const updatedIcons = categoryIcons.map((item) => {
             <span>{item.label}</span>
         </div>
     )
+    return item
 })
 
-interface FormValues {
+type FormValues = {
     name: string
     details: string
     parent: any
     image: AttachmentInput[]
-    banner_image: any
     icon: any
 }
 
 const defaultValues = {
     image: [],
-    banner_image: [],
     name: '',
     details: '',
     parent: '',
     icon: '',
 }
 
-interface IProps {
-    initialValues?: Category | null
+type IProps = {
+    initialValues?: any | null
 }
 export default function CreateOrUpdateCategoriesForm({ initialValues }: IProps) {
     const router = useRouter()
@@ -63,14 +62,12 @@ export default function CreateOrUpdateCategoriesForm({ initialValues }: IProps) 
         control,
 
         formState: { errors },
-    } = useForm<Category>({
-        // shouldUnregister: true,
-
+    } = useForm<CreateCategory>({
         defaultValues: initialValues
             ? {
                   ...initialValues,
-                  icon: initialValues.icon
-                      ? categoryIcons.find((singleIcon) => singleIcon.value === initialValues.icon!)
+                  icon: initialValues?.icon
+                      ? categoryIcons.find((singleIcon) => singleIcon.value === initialValues?.icon!)
                       : '',
               }
             : defaultValues,
@@ -80,27 +77,23 @@ export default function CreateOrUpdateCategoriesForm({ initialValues }: IProps) 
     const { mutate: createCategory, isLoading: creating } = useCreateCategoryMutation()
     const { mutate: updateCategory, isLoading: updating } = useUpdateCategoryMutation()
 
-    const onSubmit = (values: Category) => {
-        const input: CreateCategory = {
+    const onSubmit = async (values: CreateCategory) => {
+        const input = {
             name: values.name,
             details: values.details,
-            image: values.image!.map((thumbnail, original, id) => ({
-                thumbnail,
-                original,
-                id,
-            })),
-            // image: {
-            //     thumbnail: values.image?.thumbnail,
-            //     original: values.banner_image?.original,
-            //     id: values.banner_image?.id,
-            // },
-            icon: values.icon,
-            parent: values.parent,
+            image: values?.image,
+            banner_image: {
+                thumbnail: values?.image?.thumbnail,
+                original: values?.image?.original,
+                id: values?.image?.id,
+            },
+            icon: values.icon?.toString() || '',
+            parent: values?.parent ?? null,
         }
         if (initialValues) {
             updateCategory({
                 variables: {
-                    id: initialValues.id,
+                    id: initialValues?.id,
                     input: {
                         ...input,
                     },
@@ -137,7 +130,7 @@ export default function CreateOrUpdateCategoriesForm({ initialValues }: IProps) 
                 />
 
                 <Card className="w-full sm:w-8/12 md:w-2/3">
-                    <FileInput name="banner_image" control={control} multiple={false} />
+                    <FileInput name="image" control={control} multiple={false} />
                 </Card>
             </div>
 
@@ -154,9 +147,7 @@ export default function CreateOrUpdateCategoriesForm({ initialValues }: IProps) 
                     <Input
                         label={t('form:input-label-name')}
                         {...register('name')}
-                        error={t(
-                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.name?.message!)}
                         variant="outline"
                         className="mb-5"
                     />

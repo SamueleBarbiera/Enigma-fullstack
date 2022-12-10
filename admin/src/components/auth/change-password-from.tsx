@@ -38,7 +38,7 @@ const ChangePasswordForm = () => {
         resolver: yupResolver(changePasswordSchema),
     })
 
-    function onSubmit(values: FormValues) {
+    async function onSubmit(values: FormValues) {
         changePassword(
             {
                 variables: {
@@ -49,7 +49,7 @@ const ChangePasswordForm = () => {
                 },
             },
             {
-                onError: (error) => {
+                onError: (error: any) => {
                     Object.keys(error?.response?.data).forEach((field: any) => {
                         setError(field, {
                             type: 'manual',
@@ -58,9 +58,15 @@ const ChangePasswordForm = () => {
                     })
                 },
                 onSuccess: ({ data }) => {
-                    console.log('🚀 - file: change-password-from.tsx - line 61 - onSubmit - data', data)
-                    toast.success(t('common:password-changed-successfully'))
-                    reset()
+                    if (!data) {
+                        setError('oldPassword', {
+                            type: 'manual',
+                            message: data ?? '',
+                        })
+                    } else if (data) {
+                        //toast.success(t('common:password-changed-successfully'))
+                        reset()
+                    }
                 },
             }
         )
@@ -80,36 +86,21 @@ const ChangePasswordForm = () => {
                         label={t('form:input-label-old-password')}
                         {...register('oldPassword')}
                         variant="outline"
-                        error={t(
-                            errors.oldPassword?.message as
-                                | string
-                                | TemplateStringsArray
-                                | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.oldPassword?.message!)}
                         className="mb-5"
                     />
                     <PasswordInput
                         label={t('form:input-label-new-password')}
                         {...register('newPassword')}
                         variant="outline"
-                        error={t(
-                            errors.newPassword?.message as
-                                | string
-                                | TemplateStringsArray
-                                | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.newPassword?.message!)}
                         className="mb-5"
                     />
                     <PasswordInput
                         label={t('form:input-label-confirm-password')}
                         {...register('passwordConfirmation')}
                         variant="outline"
-                        error={t(
-                            errors.passwordConfirmation?.message as
-                                | string
-                                | TemplateStringsArray
-                                | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.passwordConfirmation?.message!)}
                     />
                 </Card>
 

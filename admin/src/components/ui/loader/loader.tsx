@@ -20,7 +20,7 @@ const Loader = (props: Props) => {
                     >
                         <div className={styles.loading} />
 
-                        <h3 className="text-lg font-semibold italic text-body"> {'Loading...'}</h3>
+                        <h3 className="text-lg font-semibold italic text-body"> {text}</h3>
                     </div>
                 </div>
             </div>

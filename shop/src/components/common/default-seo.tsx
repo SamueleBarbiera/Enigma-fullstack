@@ -37,7 +37,7 @@ const DefaultSeo = () => {
                 title: settings?.seo?.ogTitle,
                 description: settings?.seo?.ogDescription,
                 type: 'website',
-                locale: 'en_US',
+                locale: 'it_IT',
                 site_name: settings?.siteTitle,
                 images: [
                     {
@@ -48,11 +48,11 @@ const DefaultSeo = () => {
                     },
                 ],
             }}
-            twitter={{
-                handle: settings?.seo?.twitterHandle,
-                site: settings?.siteTitle,
-                cardType: settings?.seo?.twitterCardType,
-            }}
+            // twitter={{
+            //     handle: settings?.seo?.twitterHandle,
+            //     site: settings?.siteTitle,
+            //     cardType: settings?.seo?.twitterCardType,
+            // }}
         />
     )
 }

@@ -19,11 +19,11 @@ const Logo: React.FC<React.AnchorHTMLAttributes<unknown>> = ({
                 }}
             >
                 <Image
-                    width={500}
-                    height={500}
+                    width={130}
+                    height={30}
                     src={setting.logo?.original ?? siteSettings.logo.url}
                     alt={setting.siteTitle ?? siteSettings.logo.alt}
-                    loading="eager"
+                    loading="lazy"
                 />
             </span>
         </Link>

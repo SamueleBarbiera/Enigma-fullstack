@@ -112,9 +112,6 @@ const TagList = ({ tags, onPagination, onSort, onOrder }: IProps) => {
                     data={data}
                     rowKey="id"
                     scroll={{ x: 1000 }}
-                    expandable={{
-                        expandedRowRender: () => '',
-                    }}
                 />
             </div>
 

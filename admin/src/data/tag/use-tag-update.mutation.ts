@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next'
 import { AxiosError } from 'axios'
 export interface ITagUpdateVariables {
     variables: {
-        id: string
+        id: any
         input: UpdateTagInput
     }
 }
@@ -16,12 +16,12 @@ export const useUpdateTagMutation = () => {
     const { t } = useTranslation()
     const queryClient = useQueryClient()
     return useMutation(
-        (variables: { id: string; input: UpdateTagInput }) => {
-            return Tag.update(`${API_ENDPOINTS.TAGS}/${variables.id}`, variables.input)
+        (variables: ITagUpdateVariables) => {
+            return Tag.update(`${API_ENDPOINTS.TAGS}/${variables.variables.id}`, variables.variables.input)
         },
         {
             onSuccess: () => {
-                toast.success(t('common:successfully-updated'))
+                //toast.success(t('common:successfully-updated'))
             },
             // Always refetch after error or success:
             onSettled: async () => {

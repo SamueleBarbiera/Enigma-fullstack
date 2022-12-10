@@ -8,7 +8,7 @@ import { AxiosError } from 'axios'
 export interface ITypeUpdateVariables {
     variables: {
         id: string
-        input: CreateTypeInput
+        input: any
     }
 }
 
@@ -19,7 +19,7 @@ export const useUpdateTypeMutation = () => {
         ({ variables: { id, input } }: ITypeUpdateVariables) => Type.update(`${API_ENDPOINTS.TYPES}/${id}`, input),
         {
             onSuccess: () => {
-                toast.success(t('common:successfully-updated'))
+                //toast.success(t('common:successfully-updated'))
             },
             // Always refetch after error or success:
             onSettled: async () => {

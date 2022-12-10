@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 import Router from 'next/router'
 
 const http: AxiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_REST_API_ENDPOINT, // TODO: take this api URL from env
+    baseURL: process.env.NEXT_PUBLIC_REST_API_ENDPOINT ?? 'https://abhorrent-potato-production.up.railway.app/', // TODO: take this api URL from env
     timeout: 10000,
     headers: {
         Accept: 'application/json',

@@ -24,14 +24,10 @@ interface SortingObjType {
 }
 
 const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
-    console.log('🚀 - file: product-list.tsx - line 27 - ProductList - products', products)
+    const { data, paginatorInfo } = products ?? {}
+    console.log('🚀 - file: product-list.tsx:27 - ProductList - products', products)
     const router = useRouter()
     const { t } = useTranslation()
-    console.log(
-        '🚀 - file: product-list.tsx - line 159 - ProductList - `${router.asPath}/${slug}/edit`',
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        `${router.asPath}/${products?.data.map((data: Product) => data.slug)}/edit`
-    )
 
     const [sortingObj, setSortingObj] = useState<SortingObjType>({
         sort: SortOrder.Desc,
@@ -176,7 +172,7 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
                 <Table
                     columns={columns}
                     emptyText={t('table:empty-table-data')}
-                    data={products?.data}
+                    data={data}
                     rowKey="id"
                     scroll={{ x: 900 }}
                 />
@@ -185,9 +181,9 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
             {!!products?.paginatorInfo.total && (
                 <div className="flex items-center justify-end">
                     <Pagination
-                        total={products.paginatorInfo.total}
-                        current={products.paginatorInfo.currentPage}
-                        pageSize={products.paginatorInfo.perPage}
+                        total={paginatorInfo?.total}
+                        current={paginatorInfo?.currentPage}
+                        pageSize={paginatorInfo?.perPage}
                         onChange={onPagination}
                         showLessItems
                     />

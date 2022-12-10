@@ -22,9 +22,20 @@ import { useOrderQuery } from '@data/order/use-order.query'
 import { Attachment, OrderStatus, Product } from '@ts-types/generated'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 import { GetServerSideProps } from 'next'
+import usePrice from '@utils/use-price'
 
 interface FormValues {
-    order_status: OrderStatus
+    order_status?:
+        | {
+              id?: string 
+              name?: string | undefined
+              color?: string | undefined
+              serial?: number | undefined
+              created_at?: string | undefined
+              updated_at?: string | undefined
+              data?: OrderStatus[] | undefined
+          }
+        | undefined
 }
 
 export default function OrderDetailsPage() {
@@ -36,27 +47,51 @@ export default function OrderDetailsPage() {
     })
 
     const { data, isLoading: loading, error } = useOrderQuery(query.orderId as string)
+    console.log('🚀 - file: index.tsx - line 40 - OrderDetailsPage - query.orderId ', query.orderId)
 
     const {
         handleSubmit,
         control,
-
         formState: { errors },
-    } = useForm({
-        defaultValues: { order_status: data?.status ?? '' },
+    } = useForm<FormValues>({
+        defaultValues: { order_status: data?.status },
     })
 
     const ChangeStatus = ({ order_status }: FormValues) => {
         updateOrder({
             variables: {
-                id: data?.id ?? '',
+                id: data?.id!,
                 input: {
-                    status: order_status.id,
+                    status: order_status?.id!,
                 },
             },
         })
     }
-
+    const { price: subtotal } = usePrice(
+        data && {
+            amount: data?.amount,
+        }
+    )
+    const { price: total } = usePrice(
+        data && {
+            amount: data?.paid_total,
+        }
+    )
+    const { price: discount } = usePrice(
+        data && {
+            amount: data?.discount!,
+        }
+    )
+    const { price: delivery_fee } = usePrice(
+        data && {
+            amount: data?.delivery_fee!,
+        }
+    )
+    const { price: sales_tax } = usePrice(
+        data && {
+            amount: data?.sales_tax,
+        }
+    )
     const columns: readonly (ColumnGroupType<Product> | ColumnType<Product>)[] = [
         {
             dataIndex: 'image',
@@ -109,7 +144,7 @@ export default function OrderDetailsPage() {
                 <Card>
                     <div className="flex flex-col items-center lg:flex-row">
                         <h3 className="mb-8 w-full whitespace-nowrap text-center text-2xl font-semibold text-heading lg:mb-0 lg:w-1/3 lg:text-start">
-                            {t('form:input-label-order-id')} - {data.tracking_number}
+                            {t('form:input-label-order-id')} - {data?.tracking_number}
                         </h3>
 
                         <form
@@ -122,7 +157,7 @@ export default function OrderDetailsPage() {
                                     control={control}
                                     getOptionLabel={(option: { name: string }) => option.name}
                                     getOptionValue={(option: { id: string }) => option.id}
-                                    options={orderStatusData?.order_statuses.data}
+                                    options={orderStatusData?.order_statuses?.data}
                                     placeholder={t('form:input-placeholder-order-status')}
                                     rules={{
                                         required: 'Status is required',
@@ -134,7 +169,7 @@ export default function OrderDetailsPage() {
 
                                 <ValidationError
                                     message={t(
-                                        errors.order_status?.message as
+                                        errors?.order_status?.message as
                                             | string
                                             | TemplateStringsArray
                                             | (string | TemplateStringsArray)[]
@@ -149,7 +184,7 @@ export default function OrderDetailsPage() {
                     </div>
 
                     <div className="my-5 flex items-center justify-center lg:my-10">
-                        <ProgressBox data={orderStatusData?.order_statuses.data} status={data.status.serial} />
+                        <ProgressBox data={orderStatusData?.order_statuses?.data} status={data?.status?.serial} />
                     </div>
 
                     <div className="mb-10">
@@ -157,7 +192,7 @@ export default function OrderDetailsPage() {
                             <Table
                                 columns={columns}
                                 emptyText={t('table:empty-table-data')}
-                                data={data.products}
+                                data={data?.products}
                                 rowKey="id"
                                 scroll={{ x: 300 }}
                             />
@@ -168,23 +203,23 @@ export default function OrderDetailsPage() {
                         <div className="flex w-full flex-col space-y-2 border-t-4 border-double border-border-200 px-4 py-4 ms-auto sm:w-1/2 md:w-1/3">
                             <div className="flex items-center justify-between text-sm text-body">
                                 <span>{t('common:order-sub-total')}</span>
-                                <span>{data.amount}</span>
+                                <span>{subtotal}</span>
                             </div>
                             <div className="flex items-center justify-between text-sm text-body">
                                 <span>{t('common:order-tax')}</span>
-                                <span>{data.sales_tax}</span>
+                                <span>{sales_tax}</span>
                             </div>
                             <div className="flex items-center justify-between text-sm text-body">
                                 <span>{t('common:order-delivery-fee')}</span>
-                                <span>{data.delivery_fee}</span>
+                                <span>{delivery_fee}</span>
                             </div>
                             <div className="flex items-center justify-between text-sm text-body">
                                 <span>{t('common:order-discount')}</span>
-                                <span>{data.discount}</span>
+                                <span>{discount}</span>
                             </div>
                             <div className="flex items-center justify-between font-semibold text-body">
                                 <span>{t('common:order-total')}</span>
-                                <span>{data.total}</span>
+                                <span>{total}</span>
                             </div>
                         </div>
                     </div>
@@ -196,21 +231,21 @@ export default function OrderDetailsPage() {
                             </h3>
 
                             <div className="flex flex-col items-start space-y-1 text-sm text-body">
-                                <span>{data.customer?.name}</span>
-                                {data.billing_address && <span>{formatAddress(data.billing_address)}</span>}
-                                {data.customer_contact && <span>{data.customer_contact}</span>}
+                                <span>{data?.customer?.name}</span>
+                                {data?.billing_address && <span>{formatAddress(data.billing_address)}</span>}
+                                {data?.customer_contact && <span>{data?.customer_contact}</span>}
                             </div>
                         </div>
 
                         <div className="w-full sm:w-1/2 sm:ps-8">
-                            <h3 className="mb-3 border-b border-border-200 pb-2 text-start font-semibold text-heading sm:text-end">
+                            <h3 className="mb-3 border-b border-border-200 pb-2 font-semibold text-heading text-start sm:text-end">
                                 {t('common:shipping-address')}
                             </h3>
 
-                            <div className="flex flex-col items-start space-y-1 text-start text-sm text-body sm:items-end sm:text-end">
-                                <span>{data.customer?.name}</span>
-                                {data.shipping_address && <span>{formatAddress(data.shipping_address)}</span>}
-                                {data.customer_contact && <span>{data.customer_contact}</span>}
+                            <div className="flex flex-col items-start space-y-1 text-sm text-body text-start sm:items-end sm:text-end">
+                                <span>{data?.customer?.name}</span>
+                                {data?.shipping_address && <span>{formatAddress(data.shipping_address)}</span>}
+                                {data?.customer_contact && <span>{data?.customer_contact}</span>}
                             </div>
                         </div>
                     </div>

@@ -879,6 +879,7 @@ export declare interface TagPaginator {
 }
 
 export declare interface CreateTagInput {
+    id: any
     name: Scalars['String']
     type?: Maybe<ConnectTypeBelongsTo>
     details?: Maybe<Scalars['String']>

@@ -11,8 +11,9 @@ const UserDetails = () => {
     const { t } = useTranslation('common')
     const { data, isLoading: loading } = useMeQuery()
     const { name, email, profile, is_active } = data!
+    console.log('🚀 - file: user-details.tsx - line 14 - UserDetails - data', data)
 
-    if (loading) return <Loader text={t('')} />
+    if (loading) return <Loader text={t('common:text-loading')} />
     return (
         <div className="flex h-full flex-col items-center p-5">
             <div className="relative flex h-32 w-32 items-center justify-center overflow-hidden rounded-full border border-gray-200">
@@ -22,7 +23,7 @@ const UserDetails = () => {
             <p className="mt-1 text-sm text-muted">{email}</p>
             {!profile ? (
                 <p className="mt-0.5 text-sm text-muted">
-                    {t('text-add-your')}{' '}
+                    {t('text-add-your')}
                     <Link href={ROUTES.PROFILE_UPDATE} className="text-accent underline">
                         {t('authorized-nav-item-profile')}
                     </Link>

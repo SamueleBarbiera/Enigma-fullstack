@@ -7,7 +7,7 @@ import { API_ENDPOINTS } from '@utils/api/endpoints'
 
 export interface ITypeCreateVariables {
     variables: {
-        input: CreateTypeInput
+        input: any
     }
 }
 

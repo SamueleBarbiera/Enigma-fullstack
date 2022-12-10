@@ -39,7 +39,7 @@ const SelectInput = ({
             {...rest}
             render={({ field }) => (
                 <Select
-                    key={field.name}
+                    key={field.value}
                     {...field}
                     getOptionLabel={getOptionLabel}
                     getOptionValue={getOptionValue}

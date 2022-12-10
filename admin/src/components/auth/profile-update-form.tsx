@@ -1,5 +1,5 @@
 import Input from '@components/ui/input'
-import { Control, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import Button from '@components/ui/button'
 import Description from '@components/ui/description'
 import Card from '@components/common/card'
@@ -8,22 +8,14 @@ import TextArea from '@components/ui/text-area'
 import { useTranslation } from 'next-i18next'
 import FileInput from '@components/ui/file-input'
 import pick from 'lodash/pick'
+import { Profile, User } from '@ts-types/generated'
 
-interface FormValues {
+type FormValues = {
     name: string
-    profile: {
-        id: string
-        bio: string
-        contact: string
-        avatar: {
-            thumbnail: string
-            original: string
-            id: string
-        }
-    }
+    profile: Profile
 }
 
-export default function ProfileUpdate(me) {
+export default function ProfileUpdate(me: any) {
     const { t } = useTranslation()
     const { mutate: updateUser, isLoading: loading } = useUpdateUserMutation()
     const {
@@ -37,21 +29,21 @@ export default function ProfileUpdate(me) {
         },
     })
 
-    function onSubmit(values: FormValues) {
+    async function onSubmit(values: FormValues) {
         const { name, profile } = values
         updateUser({
             variables: {
-                id: me.id,
+                id: me?.id,
                 input: {
                     name: name,
                     profile: {
-                        id: me.profile.id,
-                        bio: profile.bio,
-                        contact: profile.contact,
+                        id: me?.profile?.id,
+                        bio: profile?.bio,
+                        contact: profile?.contact,
                         avatar: {
-                            thumbnail: profile.avatar.thumbnail,
-                            original: profile.avatar.original,
-                            id: profile.avatar.id,
+                            thumbnail: profile?.avatar?.thumbnail,
+                            original: profile?.avatar?.original,
+                            id: profile?.avatar?.id,
                         },
                     },
                 },
@@ -83,28 +75,23 @@ export default function ProfileUpdate(me) {
                 <Card className="mb-5 w-full sm:w-8/12 md:w-2/3">
                     <Input
                         label={t('form:input-label-name')}
+                        //@ts-ignore
                         {...register('name')}
-                        error={t(
-                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.name?.message!)}
                         variant="outline"
                         className="mb-5"
                     />
                     <TextArea
                         label={t('form:input-label-bio')}
                         {...register('profile.bio')}
-                        error={t(
-                            errors.profile?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.profile?.bio?.message!)}
                         variant="outline"
                         className="mb-6"
                     />
                     <Input
                         label={t('form:input-label-contact')}
                         {...register('profile.contact')}
-                        error={t(
-                            errors.profile?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.profile?.contact?.message!)}
                         variant="outline"
                         className="mb-5"
                     />

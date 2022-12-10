@@ -31,10 +31,10 @@ const ForgotPassword: React.FC = () => {
             },
             {
                 onSuccess: ({ data }) => {
-                    if (data?.success) {
+                    if (data?.data) {
                         setVerifiedEmail(email)
                     } else {
-                        setErrorMsg(data?.message)
+                        setErrorMsg(data?.profile?.id)
                     }
                 },
             }
@@ -52,10 +52,10 @@ const ForgotPassword: React.FC = () => {
             },
             {
                 onSuccess: ({ data }) => {
-                    if (data?.success) {
+                    if (data?.data) {
                         setVerifiedToken(token)
                     } else {
-                        setErrorMsg(data?.message)
+                        setErrorMsg(data?.name)
                     }
                 },
             }
@@ -74,10 +74,10 @@ const ForgotPassword: React.FC = () => {
             },
             {
                 onSuccess: ({ data }) => {
-                    if (data?.success) {
+                    if (data?.data) {
                         Router.push('/')
                     } else {
-                        setErrorMsg(data?.message)
+                        setErrorMsg(data?.name)
                     }
                 },
             }

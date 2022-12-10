@@ -32,7 +32,6 @@ export default function ProductsPage() {
     const { t } = useTranslation()
     const [searchTerm, setSearchTerm] = useState('')
     const [type, setType] = useState('')
-    const [category, setCategory] = useState('')
     const [page, setPage] = useState(1)
     const [orderBy, setOrder] = useState('created_at')
     const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc)
@@ -53,7 +52,6 @@ export default function ProductsPage() {
             limit: 10,
             shop_id: Number(shopId),
             type,
-            category,
             orderBy,
             sortedBy,
             page,
@@ -130,9 +128,6 @@ export default function ProductsPage() {
                     <div className="mt-5 flex w-full flex-col border-t border-gray-200 pt-5 md:mt-8 md:flex-row md:items-center md:pt-8">
                         <CategoryTypeFilter
                             className="w-full"
-                            onCategoryFilter={({ slug }: { slug: string }) => {
-                                setCategory(slug)
-                            }}
                             onTypeFilter={({ slug }: { slug: string }) => {
                                 setType(slug)
                             }}

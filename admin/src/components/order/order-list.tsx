@@ -162,10 +162,6 @@ const OrderList = ({ orders, onPagination, onSort, onOrder }: IProps) => {
                     data={data}
                     rowKey="id"
                     scroll={{ x: 1000 }}
-                    expandable={{
-                        expandedRowRender: () => '',
-                        //rowExpandable: rowExpandable,
-                    }}
                 />
             </div>
 

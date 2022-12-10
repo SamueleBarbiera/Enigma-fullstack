@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import Input from '@components/ui/input'
 import { useForm } from 'react-hook-form'
 import Button from '@components/ui/button'
@@ -18,24 +16,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { tagValidationSchema } from './tag-validation-schema'
 import { useCreateTagMutation } from '@data/tag/use-tag-create.mutation'
 import { useUpdateTagMutation } from '@data/tag/use-tag-update.mutation'
-import { ConnectTypeBelongsTo, CreateTagInput, Maybe } from '@ts-types/generated'
 
-export interface Iitem {
-    value: string
-    label: string
-}
-
-const defaultValues = {
-    image: '',
-    name: '',
-    details: '',
-    icon: '',
-    type: '',
-}
-
-export const updatedIcons: object[] = tagIcons.map((item: Iitem) => {
-    return (
-        <div className="flex items-center space-s-5" key={item.label}>
+export const updatedIcons = tagIcons.map((item: any) => {
+    item.label = (
+        <div className="flex items-center space-s-5">
             <span className="flex h-5 w-5 items-center justify-center">
                 {getIcon({
                     iconList: categoriesIcon,
@@ -46,19 +30,29 @@ export const updatedIcons: object[] = tagIcons.map((item: Iitem) => {
             <span>{item.label}</span>
         </div>
     )
+    return item
 })
 
-interface FormValues {
+type FormValues = {
     name: string
+    type: any
     details: string
-    image: { thumbnail: Maybe<string> | undefined; original: Maybe<string> | undefined; id: Maybe<string> | undefined }
-    icon: { value: Maybe<string> | undefined }
-    type: { id: Maybe<ConnectTypeBelongsTo> | undefined }
-    id: string
+    image: any
+    icon: any
 }
 
-export default function CreateOrUpdateTagForm(initialValues: CreateTagInput | undefined) {
-    console.log('🚀 - file: tag-form.tsx - line 53 - CreateOrUpdateTagForm - initialValues', initialValues)
+const defaultValues = {
+    image: '',
+    name: '',
+    details: '',
+    icon: '',
+    type: '',
+}
+
+type IProps = {
+    initialValues?: any
+}
+export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
     const router = useRouter()
     const { t } = useTranslation()
     const {
@@ -71,7 +65,7 @@ export default function CreateOrUpdateTagForm(initialValues: CreateTagInput | un
             ? {
                   ...initialValues,
                   icon: initialValues?.icon
-                      ? tagIcons.find((singleIcon) => singleIcon.value === initialValues?.icon)
+                      ? tagIcons.find((singleIcon) => singleIcon.value === initialValues?.icon!)
                       : '',
               }
             : defaultValues,
@@ -82,8 +76,9 @@ export default function CreateOrUpdateTagForm(initialValues: CreateTagInput | un
     const { mutate: createTag, isLoading: creating } = useCreateTagMutation()
     const { mutate: updateTag, isLoading: updating } = useUpdateTagMutation()
 
-    const onSubmit = (values: FormValues) => {
+    const onSubmit = async (values: FormValues) => {
         const input = {
+            id: values.type?.id,
             name: values.name,
             details: values.details,
             image: {
@@ -98,7 +93,7 @@ export default function CreateOrUpdateTagForm(initialValues: CreateTagInput | un
             if (initialValues) {
                 updateTag({
                     variables: {
-                        id: initialValues?.id!,
+                        id: initialValues?.id,
                         input: {
                             ...input,
                         },
@@ -107,6 +102,7 @@ export default function CreateOrUpdateTagForm(initialValues: CreateTagInput | un
             } else {
                 createTag({
                     variables: {
+                        id: initialValues?.id,
                         input,
                     },
                 })
@@ -131,7 +127,7 @@ export default function CreateOrUpdateTagForm(initialValues: CreateTagInput | un
                     <Input
                         label={t('form:input-label-name')}
                         {...register('name')}
-                        error={t(errors.name?.message ?? '')}
+                        error={t(errors.name?.message!)}
                         variant="outline"
                         className="mb-5"
                     />

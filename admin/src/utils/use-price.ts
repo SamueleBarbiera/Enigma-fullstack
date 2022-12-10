@@ -39,7 +39,7 @@ export function formatVariantPrice({
     return { price, basePrice, discount }
 }
 
-type PriceProps = {
+export type PriceProps = {
     amount: number
     baseAmount?: number
     currencyCode?: string

@@ -8,8 +8,13 @@ const withPWA = require('next-pwa')({
 })
 
 module.exports = withPWA({
-    reactStrictMode: true,
-    swcMinify: true,
+    typescript: {
+        ignoreBuildErrors: true,
+    },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
+    reactStrictMode: false,
     i18n,
     images: {
         domains: [
@@ -24,6 +29,8 @@ module.exports = withPWA({
             'pickbazarlaravel.s3.ap-southeast-1.amazonaws.com',
             'chawkbazarlaravel.s3.ap-southeast-1.amazonaws.com',
             'lh3.googleusercontent.com',
+            'https://abhorrent-potato-production.up.railway.app/',
+            'abhorrent-potato-production.up.railway.app',
         ],
     },
 })

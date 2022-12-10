@@ -24,11 +24,11 @@ type State = {
     type: string
     id: number
     view?: MODAL_VIEWS
-    data: unknown
+    data: any
     isOpen: boolean
 }
 
-type Action = { type: 'open'; view?: MODAL_VIEWS; payload?: unknown } | { type: 'close' }
+type Action = { type: 'open'; view?: MODAL_VIEWS; payload?: any } | { type: 'close' }
 
 const initialState: State = {
     id: 0,

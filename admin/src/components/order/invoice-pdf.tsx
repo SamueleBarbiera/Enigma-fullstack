@@ -5,30 +5,30 @@ import { formatAddress } from '@utils/format-address'
 import usePrice from '@utils/use-price'
 import dayjs from 'dayjs'
 
-export default function InvoicePdf({ order }: { order: Order }) {
+export default function InvoicePdf({ order }: { order: Order | undefined }) {
     const { price: subtotal } = usePrice(
         order && {
-            amount: order.amount,
+            amount: order?.amount,
         }
     )
     const { price: total } = usePrice(
         order && {
-            amount: order.paid_total,
+            amount: order?.paid_total,
         }
     )
     const { price: discount } = usePrice(
         order && {
-            amount: order.discount!,
+            amount: order?.discount!,
         }
     )
     const { price: delivery_fee } = usePrice(
         order && {
-            amount: order.delivery_fee!,
+            amount: order?.delivery_fee!,
         }
     )
     const { price: sales_tax } = usePrice(
         order && {
-            amount: order.sales_tax,
+            amount: order?.sales_tax,
         }
     )
 
@@ -41,30 +41,30 @@ export default function InvoicePdf({ order }: { order: Order }) {
                         <View style={styles.section}>
                             <Text style={[styles.addressText, { marginBottom: 20 }]}>
                                 Invoice No:
-                                <Text style={{ color: '#374151' }}>{order.tracking_number}</Text>
+                                <Text style={{ color: '#374151' }}>{order?.tracking_number}</Text>
                             </Text>
                             <Text style={[styles.addressText, { color: '#374151', fontSize: 12 }]}>
-                                {order.customer?.name}
+                                {order?.customer?.name}
                             </Text>
-                            <Text style={styles.addressText}>{order.customer?.email}</Text>
-                            <Text style={styles.addressText}>{order.customer_contact}</Text>
-                            <Text style={styles.addressText}>{formatAddress(order.shipping_address!)}</Text>
+                            <Text style={styles.addressText}>{order?.customer?.email}</Text>
+                            <Text style={styles.addressText}>{order?.customer_contact}</Text>
+                            <Text style={styles.addressText}>{formatAddress(order?.shipping_address!)}</Text>
                         </View>
 
                         <View style={[styles.section]}>
                             <Text style={[styles.addressTextRight, { marginBottom: 20 }]}>
                                 Date: {dayjs().format('D MMMM, YYYY')}
                             </Text>
-                            <Text style={[styles.addressTextRight, { color: '#374151', fontSize: 12 }]}>Enigma</Text>
-                            <Text style={styles.addressTextRight}>Enigma@dummy.com</Text>
-                            <Text style={styles.addressTextRight}>+123456789</Text>
-                            <Text style={styles.addressTextRight}>21 Jump Street, CA, California</Text>
+                            <Text style={[styles.addressTextRight, { color: '#374151', fontSize: 12 }]}>Enigma Moda</Text>
+                            <Text style={styles.addressTextRight}>enigma.moda.shopping@gmail.com</Text>
+                            <Text style={styles.addressTextRight}>+393384380124</Text>
+                            <Text style={styles.addressTextRight}>Via Alessandro Volta 6, Alte Ceccato, Italia</Text>
                         </View>
                     </View>
 
                     {/* Table */}
                     <View style={styles.orderTable}>
-                        {order.products.map((product: Product, index: number) => {
+                        {order?.products.map((product: Product, index: number) => {
                             return (
                                 <View style={styles.tbody} key={index}>
                                     <View style={styles.tr}>

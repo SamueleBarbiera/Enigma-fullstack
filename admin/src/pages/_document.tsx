@@ -2,14 +2,14 @@ import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/do
 import { i18n } from 'next-i18next'
 
 export default class CustomDocument extends Document {
-    public static getInitialProps(ctx: DocumentContext) {
+    static getInitialProps(ctx: DocumentContext) {
         return Document.getInitialProps(ctx)
     }
-    public render() {
+    render() {
         const { locale } = this.props.__NEXT_DATA__
         const dir = locale === 'ar' || locale === 'he' ? 'rtl' : 'ltr'
         if (process.env.NODE_ENV !== 'production') {
-            void i18n?.reloadResources(locale)
+            i18n?.reloadResources(locale)
         }
 
         return (

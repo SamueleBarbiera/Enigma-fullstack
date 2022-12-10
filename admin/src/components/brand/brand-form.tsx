@@ -18,11 +18,10 @@ import SelectInput from '@components/ui/select-input'
 import Alert from '@components/ui/alert'
 import FileInput from '@components/ui/file-input'
 import ValidationError from '@components/ui/form-validation-error'
-import { Iitem } from '@components/tag/tag-form'
 
-export const updatedIcons: object[] = typeIconList.map((item: Iitem) => {
-    return (
-        <div className="flex items-center space-s-5" key={item.label}>
+export const updatedIcons = typeIconList.map((item: any) => {
+    item.label = (
+        <div className="flex items-center space-s-5">
             <span className="flex h-5 w-5 items-center justify-center">
                 {getIcon({
                     iconList: typeIcons,
@@ -33,6 +32,7 @@ export const updatedIcons: object[] = typeIconList.map((item: Iitem) => {
             <span>{item.label}</span>
         </div>
     )
+    return item
 })
 
 const keyBasedImages = [
@@ -58,19 +58,19 @@ export const updateImages = keyBasedImages.map((item: any) => {
     return item
 })
 
-interface FormValues {
+type FormValues = {
     name?: string | null
     icon?: any
     settings: TypeSettingsInput
     images: [
         {
             key: {}
-            image: [Attachment]
+            image: Attachment[]
         }
     ]
 }
 
-interface IProps {
+type IProps = {
     initialValues?: Type | null
 }
 export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
@@ -83,22 +83,24 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
         formState: { errors },
     } = useForm<FormValues>({
         shouldUnregister: true,
-
+        // @ts-ignore
         resolver: yupResolver(typeValidationSchema),
-
+        // @ts-ignore
         defaultValues: {
             ...initialValues,
             settings: {
                 ...initialValues?.settings,
             },
-            icon: initialValues?.icon ? typeIconList.find((singleIcon) => singleIcon.value === initialValues.icon) : '',
-            images: initialValues?.images?.map((item) => {
+            icon: initialValues?.icon
+                ? typeIconList.find((singleIcon) => singleIcon.value === initialValues?.icon!)
+                : '',
+            images: initialValues?.images?.map((item: any) => {
                 return {
                     key: keyBasedImages.find((key) => item?.key === key.value),
                     image: item?.image?.map((singleImage: Attachment) => ({
-                        id: singleImage.id,
-                        original: singleImage.original,
-                        thumbnail: singleImage.thumbnail,
+                        id: singleImage?.id,
+                        original: singleImage?.original,
+                        thumbnail: singleImage?.thumbnail,
                     })),
                 }
             }),
@@ -117,22 +119,22 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
     const { mutate: createType, isLoading: creating } = useCreateTypeMutation()
     const { mutate: updateType, isLoading: updating } = useUpdateTypeMutation()
 
-    const onSubmit = (values: FormValues) => {
+    const onSubmit = async (values: FormValues) => {
         const input = {
             name: values.name!,
             icon: values.icon?.value,
             settings: {
-                isHome: values.settings.isHome,
-                productCard: values.settings.productCard,
-                layoutType: values.settings.layoutType,
+                isHome: values?.settings?.isHome,
+                productCard: values?.settings?.productCard,
+                layoutType: values?.settings?.layoutType,
             },
-            images: values.images.map((item: any) => {
+            images: values.images?.map((item: any) => {
                 return {
                     key: item?.key?.value,
                     image: item?.image?.map((singleImage: Attachment) => ({
-                        id: singleImage.id,
-                        original: singleImage.original,
-                        thumbnail: singleImage.thumbnail,
+                        id: singleImage?.id,
+                        original: singleImage?.original,
+                        thumbnail: singleImage?.thumbnail,
                     })),
                 }
             }),
@@ -147,7 +149,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
         } else {
             updateType({
                 variables: {
-                    id: initialValues.id,
+                    id: initialValues.id!,
                     input,
                 },
             })
@@ -168,9 +170,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
                     <Input
                         label={t('form:input-label-name')}
                         {...register('name')}
-                        error={t(
-                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.name?.message!)}
                         variant="outline"
                         className="mb-5"
                     />
@@ -220,14 +220,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
                                             isMulti={undefined}
                                             isLoading={false}
                                         />
-                                        <ValidationError
-                                            message={t(
-                                                errors.images?.[index]?.key?.message as
-                                                    | string
-                                                    | TemplateStringsArray
-                                                    | (string | TemplateStringsArray)[]
-                                            )}
-                                        />
+                                        <ValidationError message={t(errors.images?.[index]?.key?.message ?? '')} />
 
                                         <div>
                                             <FileInput
@@ -235,7 +228,9 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
                                                 control={control}
                                                 multiple={true}
                                             />
-                                            <ValidationError message={t(errors.images?.[index]?.image?.message!)} />
+                                            <ValidationError
+                                                message={t(errors.images?.[index]?.image?.message ?? '')}
+                                            />
                                         </div>
                                     </div>
 
@@ -260,8 +255,8 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
                         {t('form:button-label-add-brand-layout')}
                     </Button>
 
-                    {errors.images?.message ? (
-                        <Alert message={t(errors.images.message)} variant="error" className="mt-5" />
+                    {errors?.images?.message ? (
+                        <Alert message={t(errors?.images?.message)} variant="error" className="mt-5" />
                     ) : null}
                 </Card>
             </div>
