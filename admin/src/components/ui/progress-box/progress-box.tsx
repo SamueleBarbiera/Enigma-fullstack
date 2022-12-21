@@ -10,7 +10,6 @@ type ProgressProps = {
 }
 
 const ProgressBox = ({ status, data }: ProgressProps) => {
-    console.log('🚀 - file: progress-box.tsx - line 12 - ProgressBox - data', data)
     return (
         <Scrollbar
             className="h-full w-full"

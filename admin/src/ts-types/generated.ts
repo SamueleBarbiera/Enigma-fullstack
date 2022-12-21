@@ -728,6 +728,8 @@ export interface UpdateUser {
     address?: Maybe<Maybe<UserAddressUpsertInput>[]>
 }
 export interface CreateUser {
+    success: any
+    message: string
     name?: Maybe<Scalars['String']>
     email: Scalars['String']
     password: Scalars['String']

@@ -9,13 +9,12 @@ import TitleWithSort from '@components/ui/title-with-sort'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export interface IProps {
-    order_statuses: { data: OrderStatus[]; paginatorInfo: PaginatorInfo } | undefined
+    order_statuses?: { data: OrderStatus[]; paginatorInfo: PaginatorInfo } 
     onPagination: (key: number) => void
     onSort: (current: any) => void
     onOrder: (current: string) => void
 }
 const OrderStatusList = ({ order_statuses, onPagination, onSort, onOrder }: IProps) => {
-    console.log('🚀 - file: order-status-list.tsx - line 18 - OrderStatusList - order_statuses', order_statuses)
     const { data, paginatorInfo } = order_statuses!
     const { t } = useTranslation()
 

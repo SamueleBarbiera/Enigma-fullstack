@@ -27,7 +27,6 @@ export default function AttributePage() {
     const [orderBy, setOrder] = useState('updated_at')
     const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc)
     const { data: shopData, isLoading: fetchingShop } = useShopQuery(shop as string)
-    console.log('🚀 - file: index.tsx - line 30 - AttributePage - shopData', shopData)
     const shopId = shopData?.shop.id
     function handleImportModal() {
         openModal('EXPORT_IMPORT_ATTRIBUTE', shopId)
@@ -46,7 +45,7 @@ export default function AttributePage() {
             enabled: Boolean(shopId),
         }
     )
-    console.log('🚀 - file: index.tsx - line 41 - AttributePage - data', data)
+    
     if (loadingAttributes && fetchingShop) return <Loader text={t('common:text-loading')} />
     if (error && error instanceof Error) {
         return <ErrorMessage message={error.message} />

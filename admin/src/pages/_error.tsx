@@ -1,6 +1,5 @@
 import NextErrorComponent, { ErrorProps as NextErrorProps } from 'next/error'
 import { NextPageContext } from 'next'
-// import envs from 'helpers/envs';
 
 export type ErrorPageProps = {
     err: Error

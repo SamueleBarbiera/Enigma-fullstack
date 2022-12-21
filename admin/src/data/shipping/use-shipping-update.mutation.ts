@@ -5,6 +5,7 @@ import Shipping from '@repositories/shipping'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 import { useTranslation } from 'next-i18next'
 import { AxiosError } from 'axios'
+
 export interface IShippingUpdateVariables {
     variables: {
         id: number | string
@@ -20,14 +21,18 @@ export const useUpdateShippingClassMutation = () => {
             Shipping.update(`${API_ENDPOINTS.SHIPPINGS}/${id}`, input),
         {
             onSuccess: () => {
-                toast.success(t('common:successfully-updated'))
+                //toast.success(t('common:successfully-updated'))
             },
             // Always refetch after error or success:
-            onSettled: async () => {
-                await queryClient.invalidateQueries([API_ENDPOINTS.SHIPPINGS])
+            onSettled: () => {
+                queryClient.invalidateQueries([API_ENDPOINTS.SHIPPINGS])
             },
             onError: (error: AxiosError) => {
                 const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                console.log(
+                    '🚀 - file: use-shipping-update.mutation.ts:32 - useUpdateShippingClassMutation - error',
+                    error
+                )
                 if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
                 toast.error(JSON.stringify(error))
                 return errorMessage

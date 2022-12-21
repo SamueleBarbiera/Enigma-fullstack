@@ -15,7 +15,7 @@ export const useUploadMutation = () => {
         onError: (error: AxiosError) => {
             const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
             if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
-            toast.error(JSON.stringify(error))
+            toast.error(errorMessage)
             return errorMessage
         },
     })

@@ -13,6 +13,7 @@ import { productValidationSchema } from './product-validation-schema'
 import groupBy from 'lodash/groupBy'
 import ProductVariableForm from './product-variable-form'
 import ProductSimpleForm from './product-simple-form'
+import ProductGroupInput from './product-group-input'
 import ProductCategoryInput from './product-category-input'
 import orderBy from 'lodash/orderBy'
 import sum from 'lodash/sum'
@@ -37,11 +38,11 @@ import Alert from '@components/ui/alert'
 import { useState } from 'react'
 import { animateScroll } from 'react-scroll'
 
-interface Variation {
+type Variation = {
     formName: number
 }
 
-interface FormValues {
+type FormValues = {
     sku: string
     name: string
     type: Type
@@ -95,7 +96,7 @@ const defaultValues = {
     variation_options: [],
 }
 
-interface IProps {
+type IProps = {
     initialValues?: Product | null
 }
 
@@ -105,10 +106,10 @@ const productType = [
 ]
 function getFormattedVariations(variations: any) {
     const variationGroup = groupBy(variations, 'attribute.slug')
-    return Object.values(variationGroup).map((vg) => {
+    return Object.values(variationGroup)?.map((vg) => {
         return {
-            attribute: vg[0]?.attribute,
-            value: vg.map((v) => ({ id: v.id, value: v.value })),
+            attribute: vg?.[0]?.attribute,
+            value: vg?.map((v) => ({ id: v.id, value: v.value })),
         }
     })
 }
@@ -124,18 +125,18 @@ function processOptions(options: any) {
 function calculateMaxMinPrice(variationOptions: any) {
     if (!variationOptions || !variationOptions.length) {
         return {
-            min_price: null,
-            max_price: null,
+            min_price: 0,
+            max_price: 10000,
         }
     }
     const sortedVariationsByPrice = orderBy(variationOptions, ['price'])
     const sortedVariationsBySalePrice = orderBy(variationOptions, ['sale_price'])
     return {
         min_price:
-            sortedVariationsBySalePrice[0].sale_price < sortedVariationsByPrice[0]?.price
-                ? Number(sortedVariationsBySalePrice[0].sale_price)
-                : Number(sortedVariationsByPrice[0]?.price),
-        max_price: Number(sortedVariationsByPrice[sortedVariationsByPrice.length - 1]?.price),
+            sortedVariationsBySalePrice?.[0].sale_price < sortedVariationsByPrice?.[0]?.price
+                ? Number(sortedVariationsBySalePrice?.[0].sale_price)
+                : Number(sortedVariationsByPrice?.[0]?.price),
+        max_price: Number(sortedVariationsByPrice?.[sortedVariationsByPrice?.length - 1]?.price),
     }
 }
 
@@ -150,11 +151,11 @@ export default function CreateOrUpdateProductForm({ initialValues }: IProps) {
     const { data: shopData } = useShopQuery(router.query.shop as string, {
         enabled: !!router.query.shop,
     })
-    const shopId = shopData?.shop.id
+    const shopId = shopData?.shop?.id!
     const methods = useForm<FormValues>({
         resolver: yupResolver(productValidationSchema),
         shouldUnregister: true,
-        //@ts-expect-error
+        //@ts-ignore
         defaultValues: initialValues
             ? cloneDeep({
                   ...initialValues,
@@ -163,7 +164,7 @@ export default function CreateOrUpdateProductForm({ initialValues }: IProps) {
                   productTypeValue: initialValues.product_type
                       ? productType.find((type) => initialValues.product_type === type.value)
                       : productType[0],
-                  variations: getFormattedVariations(initialValues.variations),
+                  variations: getFormattedVariations(initialValues?.variations),
               })
             : defaultValues,
     })
@@ -192,35 +193,35 @@ export default function CreateOrUpdateProductForm({ initialValues }: IProps) {
             unit: values.unit,
             width: values.width,
             quantity:
-                values.productTypeValue?.value === ProductType.Simple
-                    ? values.quantity
-                    : calculateQuantity(values.variation_options),
+                values?.productTypeValue?.value === ProductType.Simple
+                    ? values?.quantity
+                    : calculateQuantity(values?.variation_options),
             product_type: values.productTypeValue?.value,
-            type_id: type.id,
-            ...(initialValues ? { shop_id: initialValues.shop_id } : { shop_id: Number(shopId) }),
+            type_id: type?.id,
+            ...(initialValues ? { shop_id: initialValues?.shop_id } : { shop_id: Number(shopId) }),
             price: Number(values.price),
             sale_price: values.sale_price ? Number(values.sale_price) : null,
-            categories: values.categories.map(({ id }: any) => id),
-            tags: values.tags.map(({ id }: any) => id),
+            categories: values?.categories?.map(({ id }: any) => id),
+            tags: values?.tags?.map(({ id }: any) => id),
             image: {
-                thumbnail: values.image.thumbnail,
-                original: values.image.original,
-                id: values.image.id,
+                thumbnail: values?.image?.thumbnail,
+                original: values?.image?.original,
+                id: values?.image?.id,
             },
-            gallery: values.gallery.map(({ thumbnail, original, id }: any) => ({
+            gallery: values.gallery?.map(({ thumbnail, original, id }: any) => ({
                 thumbnail,
                 original,
                 id,
             })),
             ...(productTypeValue?.value === ProductType.Variable && {
-                variations: values.variations.flatMap(({ value }: any) =>
+                variations: values?.variations?.flatMap(({ value }: any) =>
                     value?.map(({ id }: any) => ({ attribute_value_id: id }))
                 ),
             }),
             ...(productTypeValue?.value === ProductType.Variable
                 ? {
                       variation_options: {
-                          upsert: values.variation_options?.map(({ options, ...rest }: any) => ({
+                          upsert: values?.variation_options?.map(({ options, ...rest }: any) => ({
                               ...rest,
                               options: processOptions(options).map(({ name, value }: VariationOption) => ({
                                   name,
@@ -229,7 +230,7 @@ export default function CreateOrUpdateProductForm({ initialValues }: IProps) {
                           })),
                           delete: initialValues?.variation_options
                               ?.map((initialVariationOption) => {
-                                  const find = values.variation_options?.find(
+                                  const find = values?.variation_options?.find(
                                       (variationOption) => variationOption?.id === initialVariationOption?.id
                                   )
                                   if (!find) {
@@ -251,7 +252,7 @@ export default function CreateOrUpdateProductForm({ initialValues }: IProps) {
                       max_price: Number(values.price),
                       min_price: Number(values.price),
                   }
-                : calculateMaxMinPrice(values.variation_options)),
+                : calculateMaxMinPrice(values?.variation_options)),
         }
 
         if (initialValues) {
@@ -342,6 +343,7 @@ export default function CreateOrUpdateProductForm({ initialValues }: IProps) {
                         />
 
                         <Card className="w-full sm:w-8/12 md:w-2/3">
+                            <ProductGroupInput control={control} error={t((errors?.type as any)?.message)} />
                             <ProductCategoryInput control={control} setValue={setValue} />
                             <ProductTagInput control={control} setValue={setValue} />
                         </Card>

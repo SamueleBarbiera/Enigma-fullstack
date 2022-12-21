@@ -10,7 +10,6 @@ type ScrollbarProps = {
 }
 
 const Scrollbar = ({ options, children, style, className, ...props }: ScrollbarProps) => {
-    console.log('🚀 - file: scrollbar.tsx - line 13 - Scrollbar - options', options)
     return (
         <OverlayScrollbarsComponent
             options={{

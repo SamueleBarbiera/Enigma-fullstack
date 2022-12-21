@@ -51,6 +51,7 @@ export default function ProductVariableForm({ shopId, initialValues }: IProps) {
         getValues,
         formState: { errors },
     } = useFormContext()
+    
     // This field array will keep all the attribute dropdown fields
     const { fields, append, remove } = useFieldArray({
         shouldUnregister: true,
@@ -132,7 +133,7 @@ export default function ProductVariableForm({ shopId, initialValues }: IProps) {
 
                     <div className="px-5 md:px-8">
                         <Button
-                            disabled={fields.length === (data as any).length}
+                            //disabled={fields.length === (data as any).length}
                             onClick={(e: any) => {
                                 e.preventDefault()
                                 append({ attribute: '', value: [] })
@@ -182,7 +183,7 @@ export default function ProductVariableForm({ shopId, initialValues }: IProps) {
                                                 className="mb-5"
                                             />
                                             <Input
-                                                label={t('form:input-label-sale-price')}
+                                                label={`${t('form:input-label-sale-price')}*`}
                                                 type="number"
                                                 {...register(`variation_options.${index}.sale_price`)}
                                                 error={t(errors.variation_options?.[index]?.sale_price?.message)}

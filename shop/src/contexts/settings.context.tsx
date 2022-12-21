@@ -90,6 +90,7 @@ const initialState: InitialValue = {
         metaTags: '',
         canonicalUrl: '',
     },
+    deliveryTime: undefined
 }
 
 export const SettingsContext = React.createContext<InitialValue>(initialState)
@@ -97,7 +98,6 @@ export const SettingsContext = React.createContext<InitialValue>(initialState)
 SettingsContext.displayName = 'SettingsContext'
 
 export const SettingsProvider: React.FC<{ initialValue: InitialValue | undefined }> = ({ initialValue, ...props }) => {
-    console.log('🚀 - file: settings.context.tsx - line 49 - initialValue', initialValue)
     const [state] = React.useState(initialValue ?? initialState)
     return <SettingsContext.Provider value={state} {...props} />
 }

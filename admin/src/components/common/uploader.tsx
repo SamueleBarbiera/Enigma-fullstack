@@ -31,11 +31,11 @@ export default function Uploader({ onChange, value, multiple }: any) {
                         onSuccess: (data) => {
                             let mergedData
                             if (multiple) {
-                                mergedData = files.concat(data!)
-                                setFiles(files.concat(data!))
+                                mergedData = files.concat(data)
+                                setFiles(files.concat(data))
                             } else {
-                                mergedData = data![0]
-                                setFiles(data as any)
+                                mergedData = data[0]
+                                setFiles(data)
                             }
                             if (onChange) {
                                 onChange(mergedData)

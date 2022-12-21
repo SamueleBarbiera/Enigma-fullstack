@@ -101,16 +101,9 @@ const ShippingList = ({ shippings, onSort, onOrder }: IProps) => {
             dataIndex: 'id',
             key: 'actions',
             align: 'center',
-            render: (id: string) => {
-                console.log('🚀 - file: shipping-list.tsx - line 105 - ShippingList - id', id)
-                return (
-                    <ActionButtons
-                        id={id}
-                        editUrl={`${ROUTES.SHIPPINGS}/edit/${id}`}
-                        deleteModalView="DELETE_SHIPPING"
-                    />
-                )
-            },
+            render: (id: string) => (
+                <ActionButtons id={id} editUrl={`${ROUTES.SHIPPINGS}/edit/${id}`} deleteModalView="DELETE_SHIPPING" />
+            ),
             width: 200,
         },
     ]

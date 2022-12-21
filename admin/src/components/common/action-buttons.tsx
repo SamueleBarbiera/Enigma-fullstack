@@ -11,7 +11,7 @@ import { CloseFillIcon } from '@components/icons/close-fill'
 
 interface Props {
     id: string
-    deleteModalView?: MODAL_VIEWS | undefined
+    deleteModalView?: MODAL_VIEWS
     editUrl?: string
     detailsUrl?: string
     isUserActive?: boolean

@@ -20,12 +20,11 @@ const defaultValues = {
     type: ShippingType.Fixed,
 }
 
-interface IProps {
+type IProps = {
     initialValues?: Shipping | undefined | null
 }
 
 export default function CreateOrUpdateShippingForm({ initialValues }: IProps) {
-    console.log('🚀 - file: shipping-form.tsx - line 28 - CreateOrUpdateShippingForm - initialValues', initialValues)
     const router = useRouter()
     const { t } = useTranslation()
     const {
@@ -40,7 +39,7 @@ export default function CreateOrUpdateShippingForm({ initialValues }: IProps) {
     })
     const { mutate: createShippingClass, isLoading: creating } = useCreateShippingClassMutation()
     const { mutate: updateShippingClass, isLoading: updating } = useUpdateShippingClassMutation()
-    const onSubmit = (values: ShippingInput) => {
+    const onSubmit = async (values: ShippingInput) => {
         const processedValues = {
             ...values,
             amount: values.type === ShippingType.Free ? 0 : values.amount,
@@ -82,9 +81,7 @@ export default function CreateOrUpdateShippingForm({ initialValues }: IProps) {
                     <Input
                         label={t('form:input-label-name')}
                         {...register('name', { required: 'Name is required' })}
-                        error={t(
-                            errors.name?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[]
-                        )}
+                        error={t(errors.name?.message!)}
                         variant="outline"
                         className="mb-5"
                     />
@@ -117,12 +114,7 @@ export default function CreateOrUpdateShippingForm({ initialValues }: IProps) {
                             label={t('form:input-label-amount')}
                             {...register('amount')}
                             type="number"
-                            error={t(
-                                errors.amount?.message as
-                                    | string
-                                    | TemplateStringsArray
-                                    | (string | TemplateStringsArray)[]
-                            )}
+                            error={t(errors.amount?.message!)}
                             variant="outline"
                             className="mb-5"
                         />

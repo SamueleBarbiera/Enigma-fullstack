@@ -1,0 +1,12 @@
+2022-12-15 21:48:37,471 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2022-12-15 21:48:37,477 INFO supervisord started with pid 16
+2022-12-15 21:48:38,479 INFO spawned: 'php' with pid 24
+2022-12-15 21:48:39,481 INFO success: php entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-12-15 21:50:36,938 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2022-12-15 21:50:36,942 INFO supervisord started with pid 16
+2022-12-15 21:50:37,944 INFO spawned: 'php' with pid 24
+2022-12-15 21:50:38,945 INFO success: php entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-12-16 21:16:26,240 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2022-12-16 21:16:26,245 INFO supervisord started with pid 9
+2022-12-16 21:16:27,256 INFO spawned: 'php' with pid 11
+2022-12-16 21:16:28,260 INFO success: php entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)

@@ -18,7 +18,6 @@ import { useEffect } from 'react'
 export default function Dashboard() {
     const { t } = useTranslation()
     const { data, isLoading: loading, error } = useAnalyticsQuery()
-    console.log('🚀 - file: admin.tsx - line 22 - Dashboard - data', data)
 
     useEffect(() => {
         if (error) {
@@ -34,7 +33,7 @@ export default function Dashboard() {
         limit: 10,
         page: 1,
     })
-    console.log('🚀 - file: admin.tsx - line 51 - Dashboard - orderData', orderData)
+    
     const {
         data: popularProductData,
         isLoading: popularProductLoading,

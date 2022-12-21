@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 import Router from 'next/router'
 
 const http: AxiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_REST_API_ENDPOINT ?? 'https://abhorrent-potato-production.up.railway.app/', // TODO: take this api URL from env
+    baseURL: process.env.NEXT_PUBLIC_REST_API_ENDPOINT ?? 'https://api-production-2850.up.railway.app/', // TODO: take this api URL from env
     timeout: 10000,
     headers: {
         Accept: 'application/json',
@@ -25,7 +25,7 @@ http.interceptors.request.use(
         return config
     },
     (error) => {
-        console.log('🚀 - file: http.ts - line 27 - error', error)
+        //console.log('🚀 - file: http.ts - line 27 - error', error)
         const errorMessage = error instanceof AxiosError ? error.message : 'Unknown error'
         if (error instanceof AxiosError) console.log(`❌ Error message: ${errorMessage}`)
         return Promise.reject(errorMessage)

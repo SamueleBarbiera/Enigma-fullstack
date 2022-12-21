@@ -128,7 +128,7 @@ export default function ProductsPage() {
                     <div className="mt-5 flex w-full flex-col border-t border-gray-200 pt-5 md:mt-8 md:flex-row md:items-center md:pt-8">
                         <CategoryTypeFilter
                             className="w-full"
-                            onTypeFilter={({ slug }: { slug: string }) => {
+                            onTypeFilter={(slug: string) => {
                                 setType(slug)
                             }}
                         />

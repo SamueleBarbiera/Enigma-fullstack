@@ -368,8 +368,8 @@ class AbstractRequestTest extends TestCase
 
     public function testClientIp()
     {
-        $this->assertSame($this->request, $this->request->setClientIp('127.0.0.1'));
-        $this->assertSame('127.0.0.1', $this->request->getClientIp());
+        $this->assertSame($this->request, $this->request->setClientIp('0.0.0.0'));
+        $this->assertSame('0.0.0.0', $this->request->getClientIp());
     }
 
     public function testReturnUrl()

@@ -31,7 +31,7 @@ class ProductCreateRequest extends FormRequest
         return [
             'name'        => ['required', 'string', 'max:255'],
             'price'       => ['nullable', 'numeric'],
-            'sale_price'  => ['nullable', 'lte:price'],
+            'sale_price'  => ['nullable', 'mte:price'],
             'type_id'     => ['required', 'exists:Marvel\Database\Models\Type,id'],
             'shop_id'     => ['required', 'exists:Marvel\Database\Models\Shop,id'],
             'product_type' => ['required', Rule::in([ProductType::SIMPLE, ProductType::VARIABLE])],

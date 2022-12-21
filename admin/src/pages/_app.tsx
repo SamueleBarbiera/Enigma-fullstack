@@ -27,7 +27,7 @@ export interface Root {
 }
 
 const Noop = (children: Root) => {
-    console.log('🚀 - file: _app.tsx - line 25 - Noop - children', children)
+    //console.log('🚀 - file: _app.tsx - line 25 - Noop - children', children)
     return <>{children.children}</>
 }
 

@@ -5,7 +5,7 @@ import { API_ENDPOINTS } from '@utils/api/endpoints'
 
 export const fetchMe = async () => {
     const { data } = await UserData.me(API_ENDPOINTS.ME)
-    console.log('🚀 - file: use-me.query.ts - line 8 - fetchMe - data', data)
+    //console.log('🚀 - file: use-me.query.ts - line 8 - fetchMe - data', data)
     return data
 }
 

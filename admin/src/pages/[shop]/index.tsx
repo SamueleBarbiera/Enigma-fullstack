@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { MapPin } from '@components/icons/map-pin'
 import { PhoneIcon } from '@components/icons/phone'
 import Loader from '@components/ui/loader/loader'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { CheckMarkFill } from '@components/icons/checkmark-circle-fill'
 import { CloseFillIcon } from '@components/icons/close-fill'
 import EditIcon from '@components/icons/edit'
@@ -233,7 +233,7 @@ export default function ShopPage() {
                 <div className="flex flex-col border-b border-gray-200 p-6 2xl:p-7">
                     <span className="mb-2 text-sm text-muted">{t('common:text-registered-since')}</span>
                     <span className="text-sm font-semibold text-sub-heading">
-                        {dayjs(created_at).format('MMMM D, YYYY')}
+                        {dayjs(created_at as string | number | Date | Dayjs | null | undefined).format('MMMM D, YYYY')}
                     </span>
                 </div>
 

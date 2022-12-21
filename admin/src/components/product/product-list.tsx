@@ -3,29 +3,30 @@ import Image from 'next/image'
 import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
 import { siteSettings } from '@settings/site.settings'
+import usePrice from '@utils/use-price'
 import Badge from '@components/ui/badge/badge'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
-import { Product, ProductPaginator, Shop, SortOrder } from '@ts-types/generated'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Product, ProductPaginator, ProductType, Shop, SortOrder } from '@ts-types/generated'
+import { useIsRTL } from '@utils/locals'
+import { useState } from 'react'
 import TitleWithSort from '@components/ui/title-with-sort'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
-export interface IProps {
-    products?: ProductPaginator | undefined
+export type IProps = {
+    products?: ProductPaginator
     onPagination: (current: number) => void
-    onSort: Dispatch<SetStateAction<SortOrder>>
+    onSort: (current: any) => void
     onOrder: (current: string) => void
 }
 
-interface SortingObjType {
+type SortingObjType = {
     sort: SortOrder
     column: string | null
 }
 
 const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
-    const { data, paginatorInfo } = products ?? {}
-    console.log('🚀 - file: product-list.tsx:27 - ProductList - products', products)
+    const { data, paginatorInfo } = products! ?? {}
     const router = useRouter()
     const { t } = useTranslation()
 
@@ -48,17 +49,18 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
         },
     })
 
-    let columns: (ColumnGroupType<Product> | ColumnType<Product>)[] = [
+    let columns: readonly (ColumnGroupType<Product> | ColumnType<Product>)[] = [
         {
             title: t('table:table-item-image'),
             dataIndex: 'image',
             key: 'image',
             align: 'left',
             width: 74,
-            render: (record: Product) => (
+            render: (image: any, { name }: { name: string }) => (
                 <Image
-                    src={record.image?.thumbnail ?? siteSettings.product.placeholder}
-                    alt={''}
+                    src={image?.thumbnail ?? siteSettings.product.placeholder}
+                    alt={name}
+                    layout="fixed"
                     width={42}
                     height={42}
                     className="overflow-hidden rounded object-cover"
@@ -88,6 +90,7 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
             width: 120,
             align: 'center',
             ellipsis: true,
+            render: (type: any) => <span className="truncate whitespace-nowrap">{type?.name}</span>,
         },
         {
             title: t('table:table-item-shop'),
@@ -96,7 +99,7 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
             width: 120,
             align: 'center',
             ellipsis: true,
-            render: (shop: Shop) => <span className="truncate whitespace-nowrap">{shop.name}</span>,
+            render: (shop: Shop) => <span className="truncate whitespace-nowrap">{shop?.name}</span>,
         },
         {
             title: 'Product Type',
@@ -106,21 +109,46 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
             align: 'center',
             render: (product_type: string) => <span className="truncate whitespace-nowrap">{product_type}</span>,
         },
-        {
-            title: (
-                <TitleWithSort
-                    title={t('table:table-item-unit')}
-                    ascending={sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'}
-                    isActive={sortingObj.column === 'price'}
-                />
-            ),
-            className: 'cursor-pointer',
-            dataIndex: 'price',
-            key: 'price',
-            align: 'right',
-            width: 100,
-            onHeaderCell: () => onHeaderClick('price'),
-        },
+        // {
+        //     title: (
+        //         <TitleWithSort
+        //             title={t('table:table-item-unit')}
+        //             ascending={sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'}
+        //             isActive={sortingObj.column === 'price'}
+        //         />
+        //     ),
+        //     className: 'cursor-pointer',
+        //     dataIndex: 'price',
+        //     key: 'price',
+        //     align: alignRight,
+        //     width: 100,
+        //     onHeaderCell: () => onHeaderClick('price'),
+        //     render: (value: number, record: Product) => {
+        //         if (record?.product_type === ProductType.Variable) {
+        //             const { price: max_price } = usePrice({
+        //                 amount: record?.max_price as number,
+        //             })
+        //             const { price: min_price } = usePrice({
+        //                 amount: record?.min_price as number,
+        //             })
+        //             return (
+        //                 <span
+        //                     className="whitespace-nowrap"
+        //                     title={`${min_price} - ${max_price}`}
+        //                 >{`${min_price} - ${max_price}`}</span>
+        //             )
+        //         } else {
+        //             const { price } = usePrice({
+        //                 amount: value,
+        //             })
+        //             return (
+        //                 <span className="whitespace-nowrap" title={price}>
+        //                     {price}
+        //                 </span>
+        //             )
+        //         }
+        //     },
+        // },
         {
             title: (
                 <TitleWithSort
@@ -154,7 +182,7 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
             width: 80,
             render: (slug: string, record: Product) => (
                 <ActionButtons
-                    id={record.id}
+                    id={record?.id}
                     editUrl={`${router.asPath}/${slug}/edit`}
                     deleteModalView="DELETE_PRODUCT"
                 />
@@ -162,8 +190,8 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
         },
     ]
 
-    if (router.query.shop) {
-        columns = columns.filter((column) => column.key !== 'shop')
+    if (router?.query?.shop) {
+        columns = columns?.filter((column) => column?.key !== 'shop')
     }
 
     return (
@@ -178,12 +206,12 @@ const ProductList = ({ products, onPagination, onSort, onOrder }: IProps) => {
                 />
             </div>
 
-            {!!products?.paginatorInfo.total && (
+            {!!paginatorInfo.total && (
                 <div className="flex items-center justify-end">
                     <Pagination
-                        total={paginatorInfo?.total}
-                        current={paginatorInfo?.currentPage}
-                        pageSize={paginatorInfo?.perPage}
+                        total={paginatorInfo.total}
+                        current={paginatorInfo.currentPage}
+                        pageSize={paginatorInfo.perPage}
                         onChange={onPagination}
                         showLessItems
                     />

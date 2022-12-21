@@ -13,7 +13,7 @@ import { TypesPaginator } from '@data/type/use-types.query'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export interface IProps {
-    types: TypesPaginator | undefined | null
+    types?: TypesPaginator | null
     onPagination: (key: number) => void
     onSort: (current: unknown) => void
     onOrder: (current: string) => void

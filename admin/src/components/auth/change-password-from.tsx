@@ -58,13 +58,13 @@ const ChangePasswordForm = () => {
                     })
                 },
                 onSuccess: ({ data }) => {
-                    if (!data) {
+                    if (!data?.success) {
                         setError('oldPassword', {
                             type: 'manual',
-                            message: data ?? '',
+                            message: data?.message ?? '',
                         })
-                    } else if (data) {
-                        //toast.success(t('common:password-changed-successfully'))
+                    } else if (data?.success) {
+                        //toast.success(t('common:password-changed-successfully') as unknown)
                         reset()
                     }
                 },

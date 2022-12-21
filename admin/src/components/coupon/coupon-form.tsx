@@ -85,7 +85,6 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
     const couponType = watch('type')
 
     const onSubmit = (values: FormValues) => {
-        console.log('🚀 - file: coupon-form.tsx - line 82 - onSubmit - values', values)
         const input: CouponInput = {
             code: values.code,
             type: CouponType.FixedCoupon,

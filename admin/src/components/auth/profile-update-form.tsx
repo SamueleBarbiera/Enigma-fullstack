@@ -12,10 +12,19 @@ import { Profile, User } from '@ts-types/generated'
 
 type FormValues = {
     name: string
-    profile: Profile
+    profile: {
+        id: string
+        bio: string
+        contact: string
+        avatar: {
+            thumbnail: string
+            original: string
+            id: string
+        }
+    }
 }
 
-export default function ProfileUpdate(me: any) {
+export default function ProfileUpdate({ me }: any) {
     const { t } = useTranslation()
     const { mutate: updateUser, isLoading: loading } = useUpdateUserMutation()
     const {
@@ -75,7 +84,6 @@ export default function ProfileUpdate(me: any) {
                 <Card className="mb-5 w-full sm:w-8/12 md:w-2/3">
                     <Input
                         label={t('form:input-label-name')}
-                        //@ts-ignore
                         {...register('name')}
                         error={t(errors.name?.message!)}
                         variant="outline"

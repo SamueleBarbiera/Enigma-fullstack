@@ -30,7 +30,7 @@ class ProductUpdateRequest extends FormRequest
         return [
             'name'        => ['string', 'max:255'],
             'price'       => ['nullable', 'numeric'],
-            'sale_price'  => ['nullable', 'lte:price'],
+            'sale_price'  => ['nullable', 'mte:price'],
             'type_id'     => ['exists:Marvel\Database\Models\Type,id'],
             'shop_id'   => ['exists:Marvel\Database\Models\Shop,id'],
             'categories'  => ['exists:Marvel\Database\Models\Category,id'],

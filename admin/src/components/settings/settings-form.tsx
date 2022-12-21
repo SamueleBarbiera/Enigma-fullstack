@@ -3,6 +3,7 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import Button from '@components/ui/button'
 import {
     ContactDetailsInput,
+    DeliveryTime,
     Maybe,
     SettingsOptions,
     SettingsOptionsInput,
@@ -42,10 +43,7 @@ type FormValues = {
     signupPoints: number
     currencyToWalletRatio: number
     contactDetails: ContactDetailsInput
-    deliveryTime: {
-        title: string
-        description: string
-    }
+    deliveryTime: Maybe<DeliveryTime>[]
     seo: {
         metaTitle: string
         metaDescription: string
@@ -104,9 +102,9 @@ export const updatedIcons = socialIcon.map((item: any) => {
 })
 
 type IProps = {
-    settings?: Maybe<SettingsOptionsInput> | undefined
-    taxClasses: { taxes: TaxInput } | undefined
-    shippingClasses: { shippingClasses: ShippingInput } | undefined
+    settings?: SettingsOptions | null
+    taxClasses?: Tax[] | null
+    shippingClasses?: Shipping[] | null
 }
 
 export default function SettingsForm({ settings, taxClasses, shippingClasses }: IProps) {
@@ -133,8 +131,6 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                       }))
                     : [],
             },
-
-            //@ts-ignore
             deliveryTime: settings?.deliveryTime ? settings?.deliveryTime : [],
             logo: settings?.logo ?? '',
             currency: settings?.currency ? CURRENCY.find((item) => item.code == settings?.currency) : '',
@@ -145,6 +141,11 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                 ? shippingClasses?.find((shipping: Shipping) => shipping.id == settings?.shippingClass)
                 : '',
         },
+    })
+
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'deliveryTime',
     })
 
     const {
@@ -173,7 +174,6 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                 input: {
                     options: {
                         ...values,
-                        //@ts-ignore
                         signupPoints: Number(values.signupPoints),
                         currencyToWalletRatio: Number(values.currencyToWalletRatio),
                         minimumOrderAmount: Number(values.minimumOrderAmount),
@@ -348,6 +348,20 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         <Label>{t('form:input-label-og-image')}</Label>
                         <FileInput name="seo.ogImage" control={control} multiple={false} />
                     </div>
+                    <Input
+                        label={t('form:input-label-twitter-handle')}
+                        {...register('seo.twitterHandle')}
+                        variant="outline"
+                        className="mb-5"
+                        placeholder="your twitter username (exp: @username)"
+                    />
+                    <Input
+                        label={t('form:input-label-twitter-card-type')}
+                        {...register('seo.twitterCardType')}
+                        variant="outline"
+                        className="mb-5"
+                        placeholder="one of summary, summary_large_image, app, or player"
+                    />
                 </Card>
             </div>
 
@@ -359,6 +373,9 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                 />
 
                 <Card className="w-full sm:w-8/12 md:w-2/3">
+                    <div className="mb-5">
+                        <Label>{t('form:input-label-autocomplete')}</Label>
+                    </div>
                     <Input
                         label={t('form:input-label-contact')}
                         {...register('contactDetails.contact')}

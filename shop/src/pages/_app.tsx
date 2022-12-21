@@ -46,7 +46,6 @@ export interface Props {
 }
 
 const Noop = ({ children }: Props) => {
-    console.log('🚀 - file: _app.tsx - line 25 - Noop - children', children)
     return <>{children}</>
 }
 
@@ -79,7 +78,6 @@ const queryCache = new QueryCache()
 const mutationCache = new MutationCache()
 
 const Hydrated = ({ children }: any) => {
-    console.log('🚀 - file: _app.tsx - line 82 - Hydrated - children', children)
     const [hydration, setHydration] = useState(false)
 
     useEffect(() => {
@@ -91,7 +89,6 @@ const Hydrated = ({ children }: any) => {
 }
 
 const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
-    console.log('🚀 - file: _app.tsx - line 92 - MyApp - Component', { ...Component })
     const [queryClient] = useState(() => new QueryClient({ queryCache, mutationCache }))
     //const Layout = Component.Layout ?? Noop
     const authProps: boolean | undefined = Component.authenticate

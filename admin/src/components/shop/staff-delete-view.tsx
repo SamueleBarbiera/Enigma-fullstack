@@ -13,7 +13,6 @@ const StaffDeleteView = () => {
             removeStaffByID(data as string)
             closeModal()
         } catch (error) {
-            console.log('🚀 - file: staff-delete-view.tsx - line 16 - handleDelete - error', error)
             closeModal()
             getErrorMessage(error)
         }

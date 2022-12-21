@@ -8,12 +8,11 @@ import { useTranslation } from 'next-i18next'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 interface IProps {
-    orders: Order[] | undefined
+    orders?: Order[]
     title?: string
 }
 
 const RecentOrders = ({ orders, title }: IProps) => {
-    console.log('🚀 - file: recent-orders.tsx - line 16 - RecentOrders - orders', orders)
     const { t } = useTranslation()
     //const rowExpandable = (record: { children: string | unknown[] }) => record.children.length
 

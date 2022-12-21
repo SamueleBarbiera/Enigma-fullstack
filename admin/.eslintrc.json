@@ -11,7 +11,7 @@
         "es2022": true
     },
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint", "react", "react-hooks"],
+    "plugins": ["@typescript-eslint", "react", "react-hooks", "@tanstack/query"],
     "overrides": [
         {
             "files": ["*.ts", "*.tsx", "*.css", "*.d.ts", "*.ts"],
@@ -26,13 +26,14 @@
                 "project": ["./tsconfig.json"]
             },
             "rules": {
-                "react/react-in-jsx-scope": "off",
                 "@typescript-eslint/unbound-method": [
                     "warn",
                     {
                         "ignoreStatic": true
                     }
                 ],
+                "@tanstack/query/exhaustive-deps": "error",
+                "@tanstack/query/prefer-query-object-syntax": "error",
                 "@typescript-eslint/no-unsafe-argument": "warn",
                 "@typescript-eslint/no-unnecessary-condition": 2,
                 "@typescript-eslint/no-non-null-assertion": "off",
@@ -61,6 +62,7 @@
                 "next/core-web-vitals",
                 "plugin:@typescript-eslint/strict",
                 "plugin:react/recommended",
+                "plugin:@tanstack/eslint-plugin-query/recommended",
                 "plugin:react-hooks/recommended"
             ]
         }

@@ -40,7 +40,6 @@ const CustomerCreateForm = () => {
             {
                 onError: (error: any) => {
                     Object.keys(error?.response?.data).forEach((field: any) => {
-                        console.log('🚀 - file: user-form.tsx - line 43 - Object.keys - field', field)
                         setError(field, {
                             type: 'manual',
                             message: error?.response?.data[field][0],

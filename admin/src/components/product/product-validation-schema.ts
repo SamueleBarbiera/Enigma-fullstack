@@ -21,7 +21,7 @@ export const productValidationSchema = yup.object().shape({
     sale_price: yup
         .number()
         .transform((value) => (isNaN(value) ? undefined : value))
-        .lessThan(yup.ref('price'), 'Sale Price should be less than ${less}')
+        .moreThan(yup.ref('price'), 'Sale Price should be more than ${more}')
         .positive('form:error-sale-price-must-positive'),
     quantity: yup.mixed().when('productTypeValue', {
         is: (productType: { name: string; value: string; [key: string]: unknown }) =>
@@ -46,8 +46,9 @@ export const productValidationSchema = yup.object().shape({
             sale_price: yup
                 .number()
                 .transform((value) => (isNaN(value) ? undefined : value))
-                .lessThan(yup.ref('price'), 'Sale Price should be less than ${less}')
-                .positive('form:error-sale-price-must-positive'),
+                .moreThan(yup.ref('price'), 'Sale Price should be more than ${more}')
+                .positive('form:error-sale-price-must-positive')
+                .required('form:error-price-required'),
             quantity: yup
                 .number()
                 .typeError('form:error-quantity-must-number')

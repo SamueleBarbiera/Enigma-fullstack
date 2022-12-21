@@ -8,7 +8,6 @@ const CustomerBanView = () => {
     const { mutate: unblockUser, isLoading: activeLoading } = useUnblockUserMutation()
 
     const { data } = useModalState()
-    console.log('🚀 - file: user-ban-view.tsx - line 11 - CustomerBanView - data', data)
     const { closeModal } = useModalAction()
 
     function handleDelete() {

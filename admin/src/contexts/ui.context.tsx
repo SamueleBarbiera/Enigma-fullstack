@@ -33,10 +33,10 @@ const initialState: State = {
         return
     },
     setModalView: function (view: MODAL_VIEWS): void {
-        console.log('🚀 - file: ui.context.tsx - line 37 - view', view)
+        ////console.log('🚀 - file: ui.context.tsx - line 37 - view', view)
     },
     setModalData: function (data: unknown): void {
-        console.log('🚀 - file: ui.context.tsx - line 41 - data', data)
+        ////console.log('🚀 - file: ui.context.tsx - line 41 - data', data)
     },
 }
 

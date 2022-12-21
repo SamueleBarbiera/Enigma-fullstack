@@ -12,7 +12,6 @@ export interface IProps {
 }
 
 const PopularProductList = ({ products, title }: IProps) => {
-    console.log('🚀 - file: popular-product-list.tsx - line 15 - PopularProductList - products', products)
     const router = useRouter()
     const { t } = useTranslation()
 

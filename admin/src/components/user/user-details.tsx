@@ -11,7 +11,6 @@ const UserDetails = () => {
     const { t } = useTranslation('common')
     const { data, isLoading: loading } = useMeQuery()
     const { name, email, profile, is_active } = data!
-    console.log('🚀 - file: user-details.tsx - line 14 - UserDetails - data', data)
 
     if (loading) return <Loader text={t('common:text-loading')} />
     return (

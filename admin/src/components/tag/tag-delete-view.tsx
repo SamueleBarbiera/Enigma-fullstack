@@ -13,7 +13,6 @@ const TagDeleteView = () => {
             deleteTagById(data as string)
             closeModal()
         } catch (error) {
-            console.log('🚀 - file: tag-delete-view.tsx - line 16 - handleDelete - error', error)
             closeModal()
             getErrorMessage(error)
         }

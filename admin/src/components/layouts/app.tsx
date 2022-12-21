@@ -9,7 +9,6 @@ const AdminLayout = dynamic(() => import('@components/layouts/admin'))
 const OwnerLayout = dynamic(() => import('@components/layouts/owner'))
 
 export default function AppLayout(props: any) {
-    console.log('🚀 - file: app.tsx - line 12 - AppLayout - props', props)
     const router = useRouter()
     // Authentication
     const { token, permissions } = getAuthCredentials()

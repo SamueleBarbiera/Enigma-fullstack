@@ -76,6 +76,12 @@ return [
         'string' => 'The :attribute must be less than or equal :value characters.',
         'array' => 'The :attribute must not have more than :value items.',
     ],
+    'mte' => [
+        'numeric' => 'The :attribute must be more than or equal :value.',
+        'file' => 'The :attribute must be more than or equal :value kilobytes.',
+        'string' => 'The :attribute must be more than or equal :value characters.',
+        'array' => 'The :attribute must not have less than :value items.',
+    ],
     'max' => [
         'numeric' => 'The :attribute may not be greater than :max.',
         'file' => 'The :attribute may not be greater than :max kilobytes.',

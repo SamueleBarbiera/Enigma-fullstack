@@ -34,7 +34,7 @@ export default function OrderDetailsPage() {
     const { mutate: updateOrder, isLoading: updating } = useUpdateOrderMutation()
     const { data: orderStatusData } = useOrderStatusesQuery({})
     const { data, isLoading: loading, error } = useOrderQuery(query.orderId as string)
-    console.log('🚀 - file: index.tsx - line 37 - OrderDetailsPage - data', data)
+    //console.log('🚀 - file: index.tsx - line 37 - OrderDetailsPage - data', data)
 
     const {
         handleSubmit,
@@ -195,11 +195,11 @@ export default function OrderDetailsPage() {
                 </div>
 
                 <div className="w-full sm:w-1/2 sm:ps-8">
-                    <h3 className="mb-3 border-b border-border-200 pb-2 text-start font-semibold text-heading sm:text-end">
+                    <h3 className="mb-3 border-b border-border-200 pb-2 font-semibold text-heading text-start sm:text-end">
                         {t('common:shipping-address')}
                     </h3>
 
-                    <div className="flex flex-col items-start space-y-1 text-start text-sm text-body sm:items-end sm:text-end">
+                    <div className="flex flex-col items-start space-y-1 text-sm text-body text-start sm:items-end sm:text-end">
                         <span>{data.customer_id}</span>
                         {data.shipping_address && <span>{formatAddress(data.shipping_address)}</span>}
                         {data.customer_id && <span>{data.tracking_number}</span>}

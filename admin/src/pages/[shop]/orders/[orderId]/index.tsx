@@ -27,7 +27,7 @@ import usePrice from '@utils/use-price'
 interface FormValues {
     order_status?:
         | {
-              id?: string 
+              id?: string
               name?: string | undefined
               color?: string | undefined
               serial?: number | undefined
@@ -47,7 +47,7 @@ export default function OrderDetailsPage() {
     })
 
     const { data, isLoading: loading, error } = useOrderQuery(query.orderId as string)
-    console.log('🚀 - file: index.tsx - line 40 - OrderDetailsPage - query.orderId ', query.orderId)
+    //console.log('🚀 - file: index.tsx - line 40 - OrderDetailsPage - query.orderId ', query.orderId)
 
     const {
         handleSubmit,

@@ -21,8 +21,8 @@ composer require league/omnipay omnipay/stripe
 
 The following gateways are provided by this package:
 
-* [Stripe Charge](https://stripe.com/docs/charges)
-* [Stripe Payment Intents](https://stripe.com/docs/payments/payment-intents)
+-   [Stripe Charge](https://stripe.com/docs/charges)
+-   [Stripe Payment Intents](https://stripe.com/docs/payments/payment-intents)
 
 For general usage instructions, please see the main [Omnipay](https://github.com/thephpleague/omnipay)
 repository.
@@ -43,7 +43,7 @@ Simply pass this through to the gateway as `token`, instead of the usual `card` 
 
         $response = $gateway->purchase([
             'amount' => '10.00',
-            'currency' => 'USD',
+            'currency' => 'EUR',
             'token' => $token,
         ])->send();
 ```
@@ -54,16 +54,16 @@ Stripe Payment Intents is the Stripe's new foundational payment API. As opposed 
 
 This plugin's implementation uses the manual Payment Intent confirmation flow, which is pretty similar to the one the Charges API uses. It shouldn't be too hard to modify your current payment flow.
 
-1) Start by [collecting the payment method details](https://stripe.com/docs/payments/payment-intents/quickstart#collect-payment-method) from the customer. Alternatively, if the customer has provided this earlier and has saved a payment method in your system, you can re-use that.
+1. Start by [collecting the payment method details](https://stripe.com/docs/payments/payment-intents/quickstart#collect-payment-method) from the customer. Alternatively, if the customer has provided this earlier and has saved a payment method in your system, you can re-use that.
 
-2) Proceed to authorize or purchase as when using the Charges API.
+2. Proceed to authorize or purchase as when using the Charges API.
 
 ```php
 $paymentMethod = $_POST['paymentMethodId'];
 
 $response = $gateway->authorize([
      'amount'                   => '10.00',
-     'currency'                 => 'USD',
+     'currency'                 => 'EUR',
      'description'              => 'This is a test purchase transaction.',
      'paymentMethod'            => $paymentMethod,
      'returnUrl'                => $completePaymentUrl,
@@ -71,9 +71,9 @@ $response = $gateway->authorize([
  ])->send();
 ```
 
-* If you have a token, instead of a payment method, you can use that by setting the `token` parameter, instead of setting the `paymentMethod` parameter.
-* The `returnUrl` must point to where you would redirect every off-site gateway. This parameter is mandatory, if `confirm` is set to true.
-* If you don't set the `confirm` parameter to `true`, you will have to manually confirm the payment intent as shown below.
+-   If you have a token, instead of a payment method, you can use that by setting the `token` parameter, instead of setting the `paymentMethod` parameter.
+-   The `returnUrl` must point to where you would redirect every off-site gateway. This parameter is mandatory, if `confirm` is set to true.
+-   If you don't set the `confirm` parameter to `true`, you will have to manually confirm the payment intent as shown below.
 
 ```php
 $paymentIntentReference = $response->getPaymentIntentReference();
@@ -86,7 +86,7 @@ $response = $gateway->confirm([
 
 At this point, you'll need to save a reference to the payment intent. `$_SESSION` can be used for this purpose, but a more common pattern is to have a reference to the current order encoded in the `$completePaymentUrl` URL. In this case, now would be an excellent time to save the relationship between the order and the payment intent somewhere so that you can retrieve the payment intent reference at a later point.
 
-3) Check if the payment is successful. If it is, that means the 3DS authentication was not required. This decision is up to Stripe (taking into account any custom Radar rules you have set) and the issuing bank.
+3. Check if the payment is successful. If it is, that means the 3DS authentication was not required. This decision is up to Stripe (taking into account any custom Radar rules you have set) and the issuing bank.
 
 ```php
 if ($response->isSuccessful()) {
@@ -98,11 +98,11 @@ if ($response->isSuccessful()) {
 }
 ```
 
-4) The customer is redirected to the 3DS authentication page. Once they authenticate (or fail to do so), the customer is redirected to the URL specified earlier with `completePaymentUrl`.
+4. The customer is redirected to the 3DS authentication page. Once they authenticate (or fail to do so), the customer is redirected to the URL specified earlier with `completePaymentUrl`.
 
-5) Retrieve the `$paymentIntentReference` mentioned at the end of step (2).
+5. Retrieve the `$paymentIntentReference` mentioned at the end of step (2).
 
-6) Now we have to confirm the payment intent, to signal Stripe that everything is under control.
+6. Now we have to confirm the payment intent, to signal Stripe that everything is under control.
 
 ```php
 $response = $gateway->confirm([
@@ -119,13 +119,13 @@ if ($response->isSuccessful()) {
 
 ### Stripe Connect
 
-Stripe connect applications can charge an additional fee on top of Stripe's fees for charges they make on behalf of 
+Stripe connect applications can charge an additional fee on top of Stripe's fees for charges they make on behalf of
 their users. To do this you need to specify an additional `transactionFee` parameter as part of an authorize or purchase
 request.
 
 When a charge is refunded the transaction fee is refunded with an amount proportional to the amount of the charge
 refunded and by default this will come from your connected user's Stripe account effectively leaving them out of pocket.
-To refund from your (the applications) Stripe account instead you can pass a ``refundApplicationFee`` parameter with a
+To refund from your (the applications) Stripe account instead you can pass a `refundApplicationFee` parameter with a
 boolean value of true as part of a refund request.
 
 Note: making requests with Stripe Connect specific parameters can only be made using the OAuth access token you received
