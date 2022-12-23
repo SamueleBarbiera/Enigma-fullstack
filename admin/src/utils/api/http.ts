@@ -25,7 +25,6 @@ http.interceptors.request.use(
         return config
     },
     (error) => {
-        //console.log('🚀 - file: http.ts - line 27 - error', error)
         const errorMessage = error instanceof AxiosError ? error.message : 'any error'
         if (error instanceof AxiosError) console.log(`❌ Error message: ${errorMessage}`)
         return Promise.reject(errorMessage)

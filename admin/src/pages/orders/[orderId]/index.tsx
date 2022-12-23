@@ -34,7 +34,6 @@ export default function OrderDetailsPage() {
     const { mutate: updateOrder, isLoading: updating } = useUpdateOrderMutation()
     const { data: orderStatusData } = useOrderStatusesQuery({})
     const { data, isLoading: loading, error } = useOrderQuery(query.orderId as string)
-    //console.log('🚀 - file: index.tsx - line 37 - OrderDetailsPage - data', data)
 
     const {
         handleSubmit,

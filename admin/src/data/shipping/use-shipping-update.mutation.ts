@@ -29,10 +29,6 @@ export const useUpdateShippingClassMutation = () => {
             },
             onError: (error: AxiosError) => {
                 const errorMessage = error.isAxiosError ? error.message : 'any error'
-                console.log(
-                    '🚀 - file: use-shipping-update.mutation.ts:32 - useUpdateShippingClassMutation - error',
-                    error
-                )
                 if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
                 toast.error(JSON.stringify(error))
                 return errorMessage

@@ -99,7 +99,6 @@ if (ErrorGoogleEnv) {
             clientSecret: GOOGLE_CLIENT_SECRET!,
             accessTokenUrl: GOOGLE_AUTHORIZATION_URL,
             profile(profile: Profile) {
-                //console.log('🚀 - file: [...nextauth].ts - line 92 - profile - profile', profile)
                 return {
                     id: profile.sub,
                     name: profile.name,
@@ -114,7 +113,6 @@ if (ErrorGoogleEnv) {
         })
     )
 }
-//console.log('🚀 ~ file: [...nextauth].ts ~ line 94 ~ providers', providers)
 
 export const authOptions: NextAuthOptions = {
     providers,
@@ -124,7 +122,6 @@ export const authOptions: NextAuthOptions = {
     },
     callbacks: {
         session({ session, user }: { session: Session; user: User }) {
-            //console.log('🚀 - file: [...nextauth].ts - line 113 - session - user', user, session)
             if (session.user) {
                 session.user.id = user.id
             }
@@ -147,7 +144,6 @@ export const authOptions: NextAuthOptions = {
                 token.access_token = account?.access_token
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
                 token.id = response.data.user.id
-                //console.log(response.data, token)
                 if (account) {
                     const { accessToken, provider } = account
                     token.provider = provider

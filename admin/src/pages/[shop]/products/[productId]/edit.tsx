@@ -12,7 +12,6 @@ import { GetServerSideProps } from 'next'
 export default function UpdateProductPage() {
     const { query } = useRouter()
     const { t } = useTranslation()
-    //console.log('🚀 - file: edit.tsx - line 16 - UpdateProductPage - query.productId', query.productId)
     const { data, isLoading: loading, error } = useProductQuery(query.productId as string)
 
     if (loading) return <Loader text={t('common:text-loading')} />

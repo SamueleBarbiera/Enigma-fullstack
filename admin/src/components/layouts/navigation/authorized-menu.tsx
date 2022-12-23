@@ -9,7 +9,6 @@ import { useMeQuery } from '@data/user/use-me.query'
 
 export default function AuthorizedMenu() {
     const { data } = useMeQuery()
-    console.log('🚀 - file: authorized-menu.tsx:12 - AuthorizedMenu - data', data)
     const { t } = useTranslation('common')
 
     // Again, we're using framer-motion for the transition effect

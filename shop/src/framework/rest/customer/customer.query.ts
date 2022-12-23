@@ -9,6 +9,7 @@ export const useUpdateCustomerMutation = () => {
     return useMutation((input: CustomerType) => CustomerService.updateCustomer(input), {
         // Always refetch after error or success:
         onSettled: () => {
+            //@ts-ignore
             queryClient.invalidateQueries('me')
         },
     })

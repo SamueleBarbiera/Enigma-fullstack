@@ -29,7 +29,6 @@ const SiteLayout = (children: IProps) => {
 }
 
 export const getLayout = (page: React.ReactElement) => {
-    console.log('🚀 - file: layout.tsx - line 32 - page', page)
     return <SiteLayout>{page}</SiteLayout>
 }
 export default SiteLayout
