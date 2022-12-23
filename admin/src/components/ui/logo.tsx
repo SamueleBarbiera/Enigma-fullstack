@@ -4,10 +4,7 @@ import cn from 'classnames'
 import { siteSettings } from '@settings/site.settings'
 import { useSettings } from '@contexts/settings.context'
 
-const Logo: React.FC<React.AnchorHTMLAttributes<unknown>> = ({
-    className,
-    ...props
-}: React.AnchorHTMLAttributes<unknown>) => {
+const Logo: React.FC<React.AnchorHTMLAttributes<any>> = ({ className, ...props }: React.AnchorHTMLAttributes<any>) => {
     const setting = useSettings()
     return (
         <Link href={siteSettings.logo.href} className={cn('inline-flex', className)} {...props}>

@@ -73,6 +73,7 @@ type FormValues = {
 type IProps = {
     initialValues?: Type | null
 }
+
 export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
     const router = useRouter()
     const { t } = useTranslation()

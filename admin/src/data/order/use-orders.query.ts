@@ -4,7 +4,7 @@
 import { QueryParamsType, QueryOptionsType } from '@ts-types/custom.types'
 import { mapPaginatorData, stringifySearchQuery } from '@utils/data-mappers'
 import { useQuery } from '@tanstack/react-query'
-import Orders from '@repositories/type'
+import Orders from '@repositories/order'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 const fetchOrders = async ({ queryKey }: QueryParamsType) => {
     const [_key, params] = queryKey

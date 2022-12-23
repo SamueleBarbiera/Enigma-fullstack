@@ -9,9 +9,9 @@ import { CheckMarkCircle } from '@components/icons/checkmark-circle'
 import { MODAL_VIEWS, useModalAction } from '@components/ui/modal/modal.context'
 import { CloseFillIcon } from '@components/icons/close-fill'
 
-interface Props {
+type Props = {
     id: string
-    deleteModalView?: MODAL_VIEWS
+    deleteModalView?: string | any
     editUrl?: string
     detailsUrl?: string
     isUserActive?: boolean
@@ -33,7 +33,6 @@ const ActionButtons = ({
     showAddWalletPoints = false,
 }: Props) => {
     const { t } = useTranslation()
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     const { openModal } = useModalAction()
     function handleDelete() {
         openModal(deleteModalView, id)
@@ -45,94 +44,91 @@ const ActionButtons = ({
         openModal('ADD_WALLET_POINTS', id)
     }
     function handleShopStatus(status: boolean) {
-        if (status) {
+        if (status === true) {
             openModal('SHOP_APPROVE_VIEW', id)
         } else {
             openModal('SHOP_DISAPPROVE_VIEW', id)
         }
     }
     return (
-        <>
-            {' '}
-            <div className="inline-flex w-auto items-center space-s-5">
-                {showAddWalletPoints && (
+        <div className="inline-flex w-auto items-center space-s-5">
+            {showAddWalletPoints && (
+                <button
+                    onClick={handleAddWalletPoints}
+                    className="text-accent transition duration-200 hover:text-accent-hover focus:outline-none"
+                    title={t('text-delete')}
+                >
+                    <WalletPointsIcon width={22} />
+                </button>
+            )}
+            {deleteModalView && (
+                <button
+                    onClick={handleDelete}
+                    className="text-red-500 transition duration-200 hover:text-red-600 focus:outline-none"
+                    title={t('text-delete')}
+                >
+                    <Trash width={16} />
+                </button>
+            )}
+            {approveButton &&
+                (!isShopActive ? (
                     <button
-                        onClick={handleAddWalletPoints}
+                        onClick={() => handleShopStatus(true)}
                         className="text-accent transition duration-200 hover:text-accent-hover focus:outline-none"
-                        title={t('text-delete')}
+                        title={t('text-approve-shop')}
                     >
-                        <WalletPointsIcon width={22} />
+                        <CheckMarkCircle width={20} />
                     </button>
-                )}
-                {deleteModalView && (
+                ) : (
                     <button
-                        onClick={handleDelete}
+                        onClick={() => handleShopStatus(false)}
                         className="text-red-500 transition duration-200 hover:text-red-600 focus:outline-none"
-                        title={t('text-delete')}
+                        title={t('text-disapprove-shop')}
                     >
-                        <Trash width={16} />
+                        <CloseFillIcon width={20} />
                     </button>
-                )}
-                {approveButton &&
-                    (!isShopActive ? (
+                ))}
+            {userStatus && (
+                <>
+                    {isUserActive ? (
                         <button
-                            onClick={() => handleShopStatus(true)}
-                            className="text-accent transition duration-200 hover:text-accent-hover focus:outline-none"
-                            title={t('text-approve-shop')}
+                            onClick={() => handleUserStatus('ban')}
+                            className="text-red-500 transition duration-200 hover:text-red-600 focus:outline-none"
+                            title={t('text-ban-user')}
                         >
-                            <CheckMarkCircle width={20} />
+                            <BanUser width={20} />
                         </button>
                     ) : (
                         <button
-                            onClick={() => handleShopStatus(false)}
-                            className="text-red-500 transition duration-200 hover:text-red-600 focus:outline-none"
-                            title={t('text-disapprove-shop')}
+                            onClick={() => handleUserStatus('active')}
+                            className="text-accent transition duration-200 hover:text-accent focus:outline-none"
+                            title={t('text-activate-user')}
                         >
-                            <CloseFillIcon width={20} />
+                            <CheckMarkCircle width={20} />
                         </button>
-                    ))}
-                {userStatus && (
-                    <>
-                        {isUserActive ? (
-                            <button
-                                onClick={() => handleUserStatus('ban')}
-                                className="text-red-500 transition duration-200 hover:text-red-600 focus:outline-none"
-                                title={t('text-ban-user')}
-                            >
-                                <BanUser width={20} />
-                            </button>
-                        ) : (
-                            <button
-                                onClick={() => handleUserStatus('active')}
-                                className="text-accent transition duration-200 hover:text-accent focus:outline-none"
-                                title={t('text-activate-user')}
-                            >
-                                <CheckMarkCircle width={20} />
-                            </button>
-                        )}
-                    </>
-                )}
+                    )}
+                </>
+            )}
 
-                {editUrl && (
-                    <Link
-                        href={editUrl}
-                        className="text-base transition duration-200 hover:text-heading"
-                        title={t('text-edit')}
-                    >
-                        <EditIcon width={16} />
-                    </Link>
-                )}
-                {detailsUrl && (
-                    <Link
-                        href={detailsUrl}
-                        className="ml-2 text-base transition duration-200 hover:text-heading"
-                        title={t('text-view')}
-                    >
-                        <Eye width={24} />
-                    </Link>
-                )}
-            </div>
-        </>
+            {editUrl && (
+                <Link
+                    href={editUrl}
+                    className="text-base transition duration-200 hover:text-heading"
+                    title={t('text-edit')}
+                >
+                    <EditIcon width={16} />
+                </Link>
+            )}
+            {detailsUrl && (
+                <Link
+                    href={detailsUrl}
+                    className="ml-2 text-base transition duration-200 hover:text-heading"
+                    title={t('text-view')}
+                >
+                    <Eye width={24} />
+                </Link>
+            )}
+        </div>
     )
 }
 

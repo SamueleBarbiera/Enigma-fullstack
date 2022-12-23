@@ -68,6 +68,7 @@ export default function CreateOrUpdateShippingForm({ initialValues }: IProps) {
     const type = useWatch({ name: 'type', control })
 
     return (
+        // @ts-ignore
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="my-5 flex flex-wrap sm:my-8">
                 <Description

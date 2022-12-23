@@ -6,7 +6,7 @@ import { formatAddress } from '@utils/format-address'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-import { Order, OrderStatus, PaginatorInfo, SortOrder, UserAddress } from '@ts-types/generated'
+import { Order, OrderPaginator, OrderStatus, PaginatorInfo, SortOrder, UserAddress } from '@ts-types/generated'
 import InvoicePdf from './invoice-pdf'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { useRouter } from 'next/router'
@@ -16,7 +16,7 @@ import TitleWithSort from '@components/ui/title-with-sort'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 interface IProps {
-    orders: { data: Order[] | undefined; paginatorInfo: PaginatorInfo } | null | undefined
+    orders: OrderPaginator | null | undefined
     onPagination: (current: number) => void
     onSort: (current: any) => void
     onOrder: (current: string) => void

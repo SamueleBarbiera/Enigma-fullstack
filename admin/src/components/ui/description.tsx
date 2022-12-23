@@ -2,7 +2,7 @@ type Props = {
     className?: string
     title?: string
     details?: string | JSX.Element
-    [key: string]: unknown
+    [key: string]: any
 }
 
 const Description: React.FC<Props> = ({ title, details, className, ...props }: Props) => {

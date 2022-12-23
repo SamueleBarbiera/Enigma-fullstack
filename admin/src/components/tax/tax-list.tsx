@@ -123,7 +123,7 @@ const TaxList = ({ taxes, onSort, onOrder }: IProps) => {
             <Table
                 columns={columns}
                 emptyText={t('table:empty-table-data')}
-                data={taxes}
+                data={taxes as readonly TaxInput[] | undefined}
                 rowKey="id"
                 scroll={{ x: 900 }}
             />

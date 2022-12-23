@@ -8,13 +8,13 @@ import { useTranslation } from 'next-i18next'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 interface IProps {
-    orders?: Order[]
+    orders?: any[]
     title?: string
 }
 
 const RecentOrders = ({ orders, title }: IProps) => {
     const { t } = useTranslation()
-    //const rowExpandable = (record: { children: string | unknown[] }) => record.children.length
+    //const rowExpandable = (record: { children: string | any[] }) => record.children.length
 
     const columns: readonly (ColumnGroupType<Order> | ColumnType<Order>)[] = [
         {

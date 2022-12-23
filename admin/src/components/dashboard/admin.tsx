@@ -14,6 +14,7 @@ import { ShopIcon } from '@components/icons/sidebar'
 import { DollarIcon } from '@components/icons/shops/dollar'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
+import { Product } from '@ts-types/generated'
 
 export default function Dashboard() {
     const { t } = useTranslation()
@@ -33,7 +34,7 @@ export default function Dashboard() {
         limit: 10,
         page: 1,
     })
-    
+
     const {
         data: popularProductData,
         isLoading: popularProductLoading,
@@ -141,7 +142,7 @@ export default function Dashboard() {
                     </div>
                     <div className="mb-6 w-full sm:pe-0 xl:mb-0">
                         <PopularProductList
-                            products={popularProductData?.data}
+                            products={popularProductData?.data as readonly Product[] | undefined}
                             title={t('table:popular-products-table-title')}
                         />
                     </div>

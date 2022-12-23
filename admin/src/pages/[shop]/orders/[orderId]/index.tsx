@@ -54,6 +54,7 @@ export default function OrderDetailsPage() {
         control,
         formState: { errors },
     } = useForm<FormValues>({
+        //@ts-ignore
         defaultValues: { order_status: data?.status },
     })
 
@@ -138,7 +139,7 @@ export default function OrderDetailsPage() {
                 error instanceof Error ? (
                     <ErrorMessage message={error.message} />
                 ) : (
-                    'Unknown error'
+                    'any error'
                 )
             ) : (
                 <Card>

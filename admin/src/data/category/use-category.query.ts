@@ -9,5 +9,5 @@ export const fetchCategory = async (id: string) => {
 }
 
 export const useCategoryQuery = (id: string) => {
-    return useQuery<TCategory, Error>([API_ENDPOINTS.CATEGORIES, id], () => fetchCategory(id))
+    return useQuery<any, Error>([API_ENDPOINTS.CATEGORIES, id], () => fetchCategory(id))
 }

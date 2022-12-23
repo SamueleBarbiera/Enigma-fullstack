@@ -8,7 +8,7 @@ interface Props {
     subtitleTransKey: string
     icon: any
     iconBgStyle: React.CSSProperties | undefined
-    price: unknown
+    price: any
     indicator: string
     indicatorText: string | undefined
     note: string | undefined

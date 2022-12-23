@@ -23,7 +23,7 @@ export const SettingsContext = createContext<SettingsOptions | any>(initialState
 
 SettingsContext.displayName = 'SettingsContext'
 
-export type SettingProvider = { initialValue?: any | undefined; props?: unknown }
+export type SettingProvider = { initialValue?: any | undefined; props?: any }
 
 export const SettingsProvider = ({ initialValue, ...props }: SettingProvider) => {
     const [state, updateSettings] = useState(initialValue ?? initialState)

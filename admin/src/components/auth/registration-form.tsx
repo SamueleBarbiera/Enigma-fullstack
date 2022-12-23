@@ -68,8 +68,8 @@ const RegistrationForm = () => {
                         setErrorMessage('form:error-credential-wrong')
                     }
                 },
-                onError: (error) => {
-                    Object.keys(error?.response?.data).forEach((field) => {
+                onError: (error: any) => {
+                    Object.keys(error?.response?.data).forEach((field: any) => {
                         setError(field, {
                             type: 'manual',
                             message: error?.response?.data[field],

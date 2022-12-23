@@ -28,7 +28,7 @@ export const useUpdateTagMutation = () => {
                 await queryClient.invalidateQueries([API_ENDPOINTS.TAGS])
             },
             onError: (error: AxiosError) => {
-                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                const errorMessage = error.isAxiosError ? error.message : 'any error'
                 if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
                 toast.error(JSON.stringify(error))
                 return errorMessage

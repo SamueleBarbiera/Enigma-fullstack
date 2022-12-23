@@ -34,7 +34,7 @@ export default function Tags() {
 
     if (loading) return <Loader text={t('common:text-loading')} />
     if (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        const errorMessage = error instanceof Error ? error.message : 'any error'
         if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
         return <ErrorMessage message={errorMessage} />
     }
@@ -56,8 +56,11 @@ export default function Tags() {
                     <Search onSearch={handleSearch} />
 
                     <LinkButton href={`${ROUTES.TAGS}/create`} className="h-12 w-full md:w-auto md:ms-6">
-                        <span className="block md:hidden xl:block">+ {t('form:button-label-add-tag')}</span>
-                        <span className="hidden md:block xl:hidden">+ {t('form:button-label-add')}</span>
+                        <>
+                            {' '}
+                            <span className="block md:hidden xl:block">+ {t('form:button-label-add-tag')}</span>
+                            <span className="hidden md:block xl:hidden">+ {t('form:button-label-add')}</span>
+                        </>
                     </LinkButton>
                 </div>
             </Card>

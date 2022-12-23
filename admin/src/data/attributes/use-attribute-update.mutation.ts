@@ -1,4 +1,4 @@
-import { AttributeInput } from '@ts-types/generated'
+import { Attribute as atr } from '@ts-types/generated'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import Attribute from '@repositories/attribute'
@@ -9,7 +9,7 @@ import { AxiosError } from 'axios'
 export interface IAttributeUpdateVariables {
     variables: {
         id: number | string
-        input: AttributeInput
+        input: atr
     }
 }
 
@@ -21,14 +21,14 @@ export const useUpdateAttributeMutation = () => {
             Attribute.update(`${API_ENDPOINTS.ATTRIBUTES}/${id}`, input),
         {
             onSuccess: () => {
-                toast.success(t('common:successfully-updated'))
+                //toast.success(t('common:successfully-updated'))
             },
             // Always refetch after error or success:
             onSettled: async () => {
                 await queryClient.invalidateQueries([API_ENDPOINTS.ATTRIBUTES])
             },
             onError: (error: AxiosError) => {
-                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                const errorMessage = error.isAxiosError ? error.message : 'any error'
                 if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
                 toast.error(JSON.stringify(error))
                 return errorMessage

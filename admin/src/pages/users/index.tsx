@@ -48,7 +48,7 @@ export default function Customers() {
                 error instanceof Error ? (
                     <ErrorMessage message={error.message} />
                 ) : (
-                    'Unknown error'
+                    'any error'
                 )
             ) : (
                 <>

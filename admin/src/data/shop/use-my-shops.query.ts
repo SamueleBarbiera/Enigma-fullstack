@@ -1,14 +1,13 @@
 import { QueryParamsType, ShopsQueryOptionsType } from '@ts-types/custom.types'
-import { mapPaginatorData, stringifySearchQuery } from '@utils/data-mappers'
+import { stringifySearchQuery } from '@utils/data-mappers'
 import { useQuery } from '@tanstack/react-query'
 import Shop from '@repositories/shop'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
-import { Shop as TShop, ShopPaginator } from '@ts-types/generated'
+import { Shop as TShop } from '@ts-types/generated'
 
 type Props = {
-    shops: TShop[]
+    shops: any
 }
-
 const fetchMyShops = async ({ queryKey }: QueryParamsType): Promise<Props> => {
     const [_key, params] = queryKey
 

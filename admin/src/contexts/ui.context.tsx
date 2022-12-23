@@ -32,12 +32,8 @@ const initialState: State = {
     closeModal: function (): void {
         return
     },
-    setModalView: function (view: MODAL_VIEWS): void {
-        ////console.log('🚀 - file: ui.context.tsx - line 37 - view', view)
-    },
-    setModalData: function (data: unknown): void {
-        ////console.log('🚀 - file: ui.context.tsx - line 41 - data', data)
-    },
+    setModalView: function (): void {},
+    setModalData: function (): void {},
 }
 
 type Action =
@@ -63,7 +59,7 @@ type Action =
       }
 
 type MODAL_VIEWS = 'SIGNUP_VIEW' | 'LOGIN_VIEW' | 'FORGOT_VIEW' | 'DELETE_PRODUCT' | 'BAN_CUSTOMER'
-type MODAL_DATA = unknown
+type MODAL_DATA = any
 
 export const UIContext = React.createContext<State>(initialState)
 

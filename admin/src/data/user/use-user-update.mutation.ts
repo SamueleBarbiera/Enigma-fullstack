@@ -17,7 +17,7 @@ export const useUpdateUserMutation = () => {
         ({ variables: { id, input } }: IUserUpdateVariables) => User.update(`${API_ENDPOINTS.USERS}/${id}`, input),
         {
             onSuccess: () => {
-                toast.success(t('common:successfully-updated'))
+                //toast.success(t('common:successfully-updated'))
             },
             // Always refetch after error or success:
             onSettled: () => {

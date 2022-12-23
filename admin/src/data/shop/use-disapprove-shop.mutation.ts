@@ -17,14 +17,14 @@ export const useDisApproveShopMutation = () => {
         ({ variables }: IShopApproveVariables) => Shop.disapprove(API_ENDPOINTS.DISAPPROVE_SHOP, variables),
         {
             onSuccess: () => {
-                toast.success(t('common:successfully-updated'))
+                //toast.success(t('common:successfully-updated'))
             },
             // Always refetch after error or success:
             onSettled: async () => {
                 await queryClient.invalidateQueries([API_ENDPOINTS.SHOPS])
             },
             onError: (error: AxiosError) => {
-                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                const errorMessage = error.isAxiosError ? error.message : 'any error'
                 if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
                 toast.error(JSON.stringify(error))
                 return errorMessage

@@ -9,7 +9,7 @@ import TitleWithSort from '@components/ui/title-with-sort'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export interface IProps {
-    shippings: ShippingInput[] | undefined
+    shippings: ShippingInput | undefined
     onSort: (current: any) => void
     onOrder: (current: string) => void
 }
@@ -113,7 +113,7 @@ const ShippingList = ({ shippings, onSort, onOrder }: IProps) => {
             <Table
                 columns={columns}
                 emptyText={t('table:empty-table-data')}
-                data={shippings}
+                data={shippings as readonly ShippingInput[] | undefined}
                 rowKey="id"
                 scroll={{ x: 900 }}
             />

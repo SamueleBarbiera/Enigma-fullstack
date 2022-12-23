@@ -22,7 +22,7 @@ dayjs.extend(timezone)
 interface IProps {
     coupons: CouponPaginator | null | undefined
     onPagination: (current: number) => void
-    onSort: (current: unknown) => void
+    onSort: (current: any) => void
     onOrder: (current: string) => void
 }
 const CouponList = ({ coupons, onPagination, onSort, onOrder }: IProps) => {

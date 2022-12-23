@@ -64,7 +64,7 @@ const ChangePasswordForm = () => {
                             message: data?.message ?? '',
                         })
                     } else if (data?.success) {
-                        //toast.success(t('common:password-changed-successfully') as unknown)
+                        //toast.success(t('common:password-changed-successfully') as any)
                         reset()
                     }
                 },

@@ -1,4 +1,4 @@
-import { AttributeInput } from '@ts-types/generated'
+import { Attribute as atr, AttributeInput } from '@ts-types/generated'
 import { ROUTES } from '@utils/routes'
 import Attribute from '@repositories/attribute'
 import { useRouter } from 'next/router'
@@ -10,7 +10,7 @@ import { toast } from 'react-toastify'
 
 export interface IAttributeCreateVariables {
     variables: {
-        input: AttributeInput
+        input: atr
     }
 }
 
@@ -31,7 +31,7 @@ export const useCreateAttributeMutation = () => {
                 await queryClient.invalidateQueries([API_ENDPOINTS.ATTRIBUTES])
             },
             onError: (error: AxiosError) => {
-                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                const errorMessage = error.isAxiosError ? error.message : 'any error'
                 if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
                 toast.error(JSON.stringify(error))
                 return errorMessage

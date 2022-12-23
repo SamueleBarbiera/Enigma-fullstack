@@ -15,7 +15,7 @@ import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 export interface IProps {
     types?: TypesPaginator | null
     onPagination: (key: number) => void
-    onSort: (current: unknown) => void
+    onSort: (current: any) => void
     onOrder: (current: string) => void
 }
 

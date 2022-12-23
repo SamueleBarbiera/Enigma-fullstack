@@ -43,7 +43,10 @@ type FormValues = {
     signupPoints: number
     currencyToWalletRatio: number
     contactDetails: ContactDetailsInput
-    deliveryTime: Maybe<DeliveryTime>[]
+    deliveryTime: {
+        title: string
+        description: string
+    }
     seo: {
         metaTitle: string
         metaDescription: string
@@ -102,9 +105,9 @@ export const updatedIcons = socialIcon.map((item: any) => {
 })
 
 type IProps = {
-    settings?: SettingsOptions | null
-    taxClasses?: Tax[] | null
-    shippingClasses?: Shipping[] | null
+    settings?: Maybe<SettingsOptionsInput> | null
+    taxClasses?: TaxInput | null
+    shippingClasses?: ShippingInput | null
 }
 
 export default function SettingsForm({ settings, taxClasses, shippingClasses }: IProps) {
@@ -119,6 +122,7 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
     } = useForm<FormValues>({
         shouldUnregister: true,
         resolver: yupResolver(settingsValidationSchema),
+        //@ts-ignore
         defaultValues: {
             ...settings,
             contactDetails: {
@@ -131,6 +135,7 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                       }))
                     : [],
             },
+            //@ts-ignore
             deliveryTime: settings?.deliveryTime ? settings?.deliveryTime : [],
             logo: settings?.logo ?? '',
             currency: settings?.currency ? CURRENCY.find((item) => item.code == settings?.currency) : '',
@@ -138,13 +143,15 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
             taxClass: !!taxClasses?.length ? taxClasses?.find((tax: Tax) => tax.id == settings?.taxClass) : '',
             // @ts-ignore
             shippingClass: !!shippingClasses?.length
-                ? shippingClasses?.find((shipping: Shipping) => shipping.id == settings?.shippingClass)
+                ? //@ts-ignore
+                  shippingClasses?.find((shipping: Shipping) => shipping.id == settings?.shippingClass)
                 : '',
         },
     })
 
     const { fields, append, remove } = useFieldArray({
         control,
+        //@ts-ignore
         name: 'deliveryTime',
     })
 
@@ -174,6 +181,7 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                 input: {
                     options: {
                         ...values,
+                        //@ts-ignore
                         signupPoints: Number(values.signupPoints),
                         currencyToWalletRatio: Number(values.currencyToWalletRatio),
                         minimumOrderAmount: Number(values.minimumOrderAmount),
@@ -248,9 +256,6 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                             getOptionLabel={(option: any) => option.name}
                             getOptionValue={(option: any) => option.code}
                             options={CURRENCY}
-                            isMulti={undefined}
-                            isClearable={undefined}
-                            isLoading={false}
                         />
                         <ValidationError
                             message={t(
@@ -279,9 +284,6 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                             getOptionLabel={(option: any) => option.name}
                             getOptionValue={(option: any) => option.id}
                             options={taxClasses!}
-                            isMulti={undefined}
-                            isClearable={undefined}
-                            isLoading={false}
                         />
                     </div>
 
@@ -293,9 +295,6 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                             getOptionLabel={(option: any) => option.name}
                             getOptionValue={(option: any) => option.id}
                             options={shippingClasses!}
-                            isMulti={undefined}
-                            isClearable={undefined}
-                            isLoading={false}
                         />
                     </div>
                 </Card>
@@ -365,102 +364,6 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                 </Card>
             </div>
 
-            <div className="my-5 flex flex-wrap border-b border-dashed border-gray-300 pb-8 sm:my-8">
-                <Description
-                    title={t('form:shop-settings')}
-                    details={t('form:shop-settings-helper-text')}
-                    className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-                />
-
-                <Card className="w-full sm:w-8/12 md:w-2/3">
-                    <div className="mb-5">
-                        <Label>{t('form:input-label-autocomplete')}</Label>
-                    </div>
-                    <Input
-                        label={t('form:input-label-contact')}
-                        {...register('contactDetails.contact')}
-                        variant="outline"
-                        className="mb-5"
-                        error={t(errors.contactDetails?.contact?.message!)}
-                    />
-
-                    <Input
-                        label={t('form:input-label-email')}
-                        {...register('contactDetails.email')}
-                        variant="outline"
-                        className="mb-5"
-                        type="email"
-                        error={t(errors.contactDetails?.email?.message!)}
-                    />
-
-                    <Input
-                        label={t('form:input-label-website')}
-                        {...register('contactDetails.website')}
-                        variant="outline"
-                        className="mb-5"
-                        error={t(errors.contactDetails?.website?.message!)}
-                    />
-
-                    {/* Social and Icon picker */}
-                    <div>
-                        {socialFields.map((item: ShopSocialInput & { id: string }, index: number) => (
-                            <div
-                                className="border-b border-dashed border-border-200 py-5 first:mt-5 first:border-t last:border-b-0 md:py-8 md:first:mt-10"
-                                key={item.id}
-                            >
-                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-8">
-                                    <div className="sm:col-span-1 2xl:col-span-2">
-                                        <Label className="whitespace-nowrap">
-                                            {t('form:input-label-select-platform')}
-                                        </Label>
-                                        <SelectInput
-                                            name={`contactDetails.socials.${index}.icon` as const}
-                                            control={control}
-                                            options={updatedIcons}
-                                            isClearable={true}
-                                            defaultValue={item?.icon!}
-                                            getOptionLabel={undefined}
-                                            getOptionValue={undefined}
-                                            isMulti={undefined}
-                                            isLoading={false}
-                                        />
-                                    </div>
-                                    <Input
-                                        className="sm:col-span-1 2xl:col-span-3"
-                                        label={t('form:input-label-social-url')}
-                                        variant="outline"
-                                        {...register(`contactDetails.socials.${index}.url` as const)}
-                                        defaultValue={item.url!} // make sure to set up defaultValue
-                                    />
-                                    <Input
-                                        className="sm:col-span-1 2xl:col-span-2"
-                                        label={t('form:input-label-social')}
-                                        variant="outline"
-                                        {...register(`contactDetails.socials.${index}.label`)}
-                                    />
-                                    <button
-                                        onClick={() => {
-                                            socialRemove(index)
-                                        }}
-                                        type="button"
-                                        className="text-sm text-red-500 transition-colors duration-200 hover:text-red-700 focus:outline-none sm:col-span-1 sm:mt-5 2xl:col-span-1"
-                                    >
-                                        {t('form:button-label-remove')}
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    <Button
-                        type="button"
-                        onClick={() => socialAppend({ icon: '', url: '' })}
-                        className="w-full sm:w-auto"
-                    >
-                        {t('form:button-label-add-social')}
-                    </Button>
-                </Card>
-            </div>
 
             <div className="mb-4 text-end">
                 <Button loading={loading} disabled={loading}>

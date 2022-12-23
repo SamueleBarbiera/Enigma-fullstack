@@ -7,7 +7,7 @@ import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 import usePrice from '@utils/use-price'
 
 export interface IProps {
-    products?: CreateProduct | undefined
+    products?: readonly Product[]
     title?: string
 }
 

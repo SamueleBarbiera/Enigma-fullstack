@@ -7,18 +7,18 @@ export declare interface Scalars {
     Int: number
     Float: number
     /** A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`. */
-    DateTime: unknown
+    DateTime: any
     /**
      * Loose type that allows any value. Be careful when passing in large `Int` or `Float` literals,
      * as they may not be parsed correctly on the server side. Use `String` literals if you are
      * dealing with really large numbers to be on the safe side.
      */
-    Mixed: unknown
-    Upload: unknown
+    Mixed: any
+    Upload: any
     /** A date string with format `Y-m-d`, e.g. `2011-05-23`. */
-    Date: unknown
+    Date: any
     /** A datetime and timezone string in ISO 8601 format `Y-m-dTH:i:sO`, e.g. `2020-04-20T13:53:12+02:00`. */
-    DateTimeTz: unknown
+    DateTimeTz: any
 }
 export declare interface Address {
     id: Scalars['ID']
@@ -408,6 +408,7 @@ export declare interface CreateCategory {
     details?: Maybe<Scalars['String']>
     image?: Maybe<AttachmentInput>
     icon?: Maybe<Scalars['String']>
+    data: Category[]
 }
 export declare interface ConnectTypeBelongsTo {
     connect?: Maybe<Scalars['ID']>
@@ -481,6 +482,7 @@ export declare interface CouponInput {
     image?: Maybe<AttachmentInput>
     active_from: Scalars['DateTime']
     expire_at: Scalars['DateTime']
+    data: Coupon
 }
 
 export enum CouponType {
@@ -537,6 +539,7 @@ export declare interface CreateOrder {
     card?: Maybe<CardInput>
     billing_address?: Maybe<UserAddressInput>
     shipping_address?: Maybe<UserAddressInput>
+    data: Order[]
 }
 export declare interface CardInput {
     number: Scalars['String']
@@ -728,7 +731,9 @@ export interface UpdateUser {
     address?: Maybe<Maybe<UserAddressUpsertInput>[]>
 }
 export interface CreateUser {
-    success: any
+    token: string
+    permissions?: string[] | null
+    success?: boolean
     message: string
     name?: Maybe<Scalars['String']>
     email: Scalars['String']
@@ -776,7 +781,7 @@ export interface CreateTypeInput {
     gallery?: Maybe<AttachmentInput[]>
     icon?: Maybe<Scalars['String']>
     banner_text?: Maybe<Scalars['String']>
-    data: Order[] | undefined
+    data: any
 }
 
 export enum ProductType {
@@ -844,6 +849,7 @@ export declare interface ShopInput {
     settings?: Maybe<ShopSettingsInput>
     categories?: Maybe<Maybe<Scalars['ID']>[]>
     balance?: Maybe<BalanceInput>
+    data: Shop[]
 }
 /** A paginated list of Shop items. */
 
@@ -887,6 +893,7 @@ export declare interface CreateTagInput {
     details?: Maybe<Scalars['String']>
     image?: Maybe<AttachmentInput>
     icon?: Maybe<Scalars['String']>
+    data: Tag[]
 }
 
 export interface Root {

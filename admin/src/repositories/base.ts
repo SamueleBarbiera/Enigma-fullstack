@@ -3,7 +3,7 @@ import http from '@utils/api/http'
 import { AxiosResponse } from 'axios'
 
 export default class Base<C, U> {
-    public http = async <T>(url: string, type: string, variables: T | null = null, options?: unknown) => {
+    public http = async <T>(url: string, type: string, variables: T | null = null, options?: any) => {
         return (await http[type](url, variables, options)) as AxiosResponse<C, U>
     }
 

@@ -3,7 +3,7 @@ import camelcaseKeys from 'camelcase-keys'
 import { Dictionary } from 'lodash'
 import pickBy from 'lodash/pickBy'
 
-type PaginatorInfoType = Record<string, unknown>
+type PaginatorInfoType = Record<string, any>
 
 export const mapPaginatorData = (obj: PaginatorInfoType): PaginatorInfo => {
     const formattedValues: PaginatorInfo = camelcaseKeys(obj)

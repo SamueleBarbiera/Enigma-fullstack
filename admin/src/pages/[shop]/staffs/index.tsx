@@ -44,7 +44,7 @@ export default function StaffsPage() {
     )
     if (fetchingShopId || loading) return <Loader text={t('common:text-loading')} />
     if (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        const errorMessage = error instanceof Error ? error.message : 'any error'
         if (error instanceof Error) console.log(`❌ Error message: ${errorMessage}`)
         return <ErrorMessage message={errorMessage} />
     }

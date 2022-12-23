@@ -12,7 +12,7 @@ export function setAuthCredentials(token: string, permissions: any) {
     Cookie.set(AUTH_CRED, JSON.stringify({ token, permissions }))
 }
 
-export function getAuthCredentials(context?: unknown): {
+export function getAuthCredentials(context?: any): {
     token: string | null
     permissions: string[] | null
 } {

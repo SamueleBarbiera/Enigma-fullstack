@@ -6,8 +6,8 @@ import AccessDeniedPage from '@components/common/access-denied'
 import { ROUTES } from './routes'
 
 interface IPrivateRoute {
-    children: unknown
-    authProps: unknown
+    children: any
+    authProps: any
 }
 
 const PrivateRoute = ({ children, authProps }: IPrivateRoute) => {

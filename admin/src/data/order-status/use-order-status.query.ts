@@ -1,6 +1,6 @@
 import OrderStatus from '@repositories/order-status'
 import { useQuery } from '@tanstack/react-query'
-import { OrderStatus as TOrderStatus } from '@ts-types/generated'
+import { OrderStatusInput as TOrderStatusInput } from '@ts-types/generated'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 
 export const fetchOrderStatus = async (slug: string) => {
@@ -9,5 +9,7 @@ export const fetchOrderStatus = async (slug: string) => {
 }
 
 export const useOrderStatusQuery = (identifier: string) => {
-    return useQuery<TOrderStatus, Error>([API_ENDPOINTS.ORDER_STATUS, identifier], () => fetchOrderStatus(identifier))
+    return useQuery<TOrderStatusInput, Error>([API_ENDPOINTS.ORDER_STATUS, identifier], () =>
+        fetchOrderStatus(identifier)
+    )
 }

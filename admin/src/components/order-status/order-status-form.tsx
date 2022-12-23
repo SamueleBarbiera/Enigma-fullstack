@@ -68,6 +68,7 @@ export default function CreateOrUpdateOrderStatusForm({ initialValues }: any) {
             createOrderStatus(
                 {
                     variables: {
+                        //@ts-ignore
                         input: {
                             name: values.name,
                             color: values.color,

@@ -2,7 +2,7 @@ import { ReactElement, JSXElementConstructor, ReactFragment } from 'react'
 
 interface Props {
     iconName: string
-    [key: string]: unknown
+    [key: string]: any
     iconList: {
         [x: string]: any
         iconList?:

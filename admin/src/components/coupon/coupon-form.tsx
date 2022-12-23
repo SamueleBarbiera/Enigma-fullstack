@@ -68,6 +68,7 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
 
         formState: { errors },
     } = useForm<FormValues>({
+        //@ts-ignore
         defaultValues: initialValues
             ? {
                   ...initialValues,
@@ -85,6 +86,7 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
     const couponType = watch('type')
 
     const onSubmit = (values: FormValues) => {
+        // @ts-ignore
         const input: CouponInput = {
             code: values.code,
             type: CouponType.FixedCoupon,

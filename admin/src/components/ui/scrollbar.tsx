@@ -3,7 +3,7 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-react'
 import 'overlayscrollbars/css/OverlayScrollbars.css'
 
 type ScrollbarProps = {
-    options?: unknown
+    options?: any
     children: React.ReactNode
     style?: React.CSSProperties
     className?: string

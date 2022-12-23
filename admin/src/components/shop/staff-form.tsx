@@ -47,7 +47,7 @@ const AddStaffForm = () => {
             },
             {
                 onError: (error) => {
-                    setError(error as unknown as 'shop_id' | 'name' | 'email' | 'password', {
+                    setError(error as any as 'shop_id' | 'name' | 'email' | 'password', {
                         type: 'manual',
                         message: JSON.stringify(error.response?.data),
                     })

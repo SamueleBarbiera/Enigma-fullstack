@@ -5,8 +5,8 @@ interface SelectInputProps {
     control: any
     rules?: any
     name: string
-    options: object[]
-    [key: string]: unknown
+    options?: any
+    [key: string]: any
 }
 
 const SelectInput = ({

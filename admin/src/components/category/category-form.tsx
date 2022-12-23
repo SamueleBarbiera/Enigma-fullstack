@@ -102,6 +102,7 @@ export default function CreateOrUpdateCategoriesForm({ initialValues }: IProps) 
         } else {
             createCategory({
                 variables: {
+                    // @ts-ignore
                     input,
                 },
             })
@@ -146,6 +147,7 @@ export default function CreateOrUpdateCategoriesForm({ initialValues }: IProps) 
                 <Card className="w-full sm:w-8/12 md:w-2/3">
                     <Input
                         label={t('form:input-label-name')}
+                        // @ts-ignore
                         {...register('name')}
                         error={t(errors.name?.message!)}
                         variant="outline"

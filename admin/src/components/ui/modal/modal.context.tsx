@@ -55,7 +55,7 @@ function modalReducer(state: State, action: Action): State {
                 isOpen: false,
             }
         default:
-            throw new Error('Unknown Modal Action!')
+            throw new Error('any Modal Action!')
     }
 }
 
@@ -88,7 +88,7 @@ export function useModalAction() {
         throw new Error(`useModalAction must be used within a ModalProvider`)
     }
     return {
-        openModal(view?: MODAL_VIEWS, payload?: unknown) {
+        openModal(view?: MODAL_VIEWS, payload?: any) {
             dispatch({ type: 'open', view, payload })
         },
         closeModal() {

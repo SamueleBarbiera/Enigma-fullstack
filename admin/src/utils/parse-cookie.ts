@@ -2,9 +2,9 @@
 function tryDecode(str: string, decode: (encodedURIComponent: string) => string) {
     try {
         return decode(str)
-    } catch (error: unknown) {
+    } catch (error: any) {
         //console.log('🚀 - file: http.ts - line 27 - error', error)
-        const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+        const errorMessage = error.isAxiosError ? error.message : 'any error'
         if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
         return str
     }

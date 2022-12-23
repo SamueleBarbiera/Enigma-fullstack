@@ -20,7 +20,7 @@ export const useContactMutation = () => {
     return useMutation((input: ContactType) => CustomerService.contact(input), {
         onSuccess: (data) => {
             if (data.success) {
-                toast.success(t(data.message))
+                //toast.success(t(data.message))
             } else {
                 toast.error(t(data.message))
             }

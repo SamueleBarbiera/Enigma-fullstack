@@ -21,7 +21,7 @@ type FormValues = {
 }
 
 type IProps = {
-    initialValues?: Attribute | null
+    initialValues?: Attribute
 }
 export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
     const router = useRouter()
@@ -53,6 +53,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
             createAttribute(
                 {
                     variables: {
+                        // @ts-ignore
                         input: {
                             name: values.name!,
                             shop_id: Number(shopId),
@@ -71,6 +72,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
             updateAttribute({
                 variables: {
                     id: initialValues.id,
+                    // @ts-ignore
                     input: {
                         name: values.name!,
                         shop_id: Number(initialValues?.shop_id),
@@ -138,7 +140,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                                             label={t('form:input-label-value-star')}
                                             variant="outline"
                                             {...register(`values.${index}.value` as const)}
-                                            defaultValue={item.value} // make sure to set up defaultValue
+                                            defaultValue={(item as any).value} // make sure to set up defaultValue
                                             error={t(errors.values?.[index]?.value?.message)}
                                         />
                                         <Input
@@ -146,7 +148,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                                             label={t('form:input-label-meta')}
                                             variant="outline"
                                             {...register(`values.${index}.meta` as const)}
-                                            defaultValue={item.meta} // make sure to set up defaultValue
+                                            defaultValue={(item as any).meta} // make sure to set up defaultValue
                                         />
                                         <button
                                             onClick={() => remove(index)}
@@ -169,7 +171,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                         </Button>
 
                         {errors?.values?.message ? (
-                            <Alert message={t(errors?.values?.message)} variant="error" className="mt-5" />
+                            <Alert message={t(errors?.values?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[])} variant="error" className="mt-5" />
                         ) : null}
                     </Card>
                 </div>

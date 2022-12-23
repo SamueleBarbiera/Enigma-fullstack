@@ -2,7 +2,7 @@ import cn from 'classnames'
 
 interface Props {
     className?: string
-    [key: string]: unknown
+    [key: string]: any
 }
 
 const Card = ({ className, ...props }: Props) => {

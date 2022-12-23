@@ -28,7 +28,7 @@ export const useUpdateShippingClassMutation = () => {
                 queryClient.invalidateQueries([API_ENDPOINTS.SHIPPINGS])
             },
             onError: (error: AxiosError) => {
-                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                const errorMessage = error.isAxiosError ? error.message : 'any error'
                 console.log(
                     '🚀 - file: use-shipping-update.mutation.ts:32 - useUpdateShippingClassMutation - error',
                     error

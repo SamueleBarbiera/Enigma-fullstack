@@ -14,15 +14,14 @@ export const useImportAttributesMutation = () => {
     const { t } = useTranslation('common')
 
     return useMutation(
-        (input: Input) => {
-            return Import.importCsv(API_ENDPOINTS.IMPORT_ATTRIBUTES, input)
-        },
+        (input: Input) => Import.importCsv(API_ENDPOINTS.IMPORT_ATTRIBUTES, input),
+
         {
             onSuccess: () => {
-                toast.success(t('common:attribute-imported-successfully'))
+                //toast.success(t('common:attribute-imported-successfully'))
             },
             onError: (error: AxiosError) => {
-                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                const errorMessage = error.isAxiosError ? error.message : 'any error'
                 if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
                 toast.error(JSON.stringify(error))
                 return errorMessage

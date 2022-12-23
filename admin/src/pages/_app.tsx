@@ -47,7 +47,7 @@ const AppSettings = (props: IProps) => {
 }
 
 interface SSRConfigi18n {
-    initialI18nStore: unknown
+    initialI18nStore: any
     initialLocale: string
     ns: string[]
     userConfig: UserConfig | null

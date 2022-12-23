@@ -24,7 +24,7 @@ export const useAddStaffMutation = () => {
             await queryClient.invalidateQueries([API_ENDPOINTS.STAFFS])
         },
         onError: (error: AxiosError) => {
-            const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+            const errorMessage = error.isAxiosError ? error.message : 'any error'
             if (error.response) {
                 // Request made and server responded
                 console.log(error.response.data)

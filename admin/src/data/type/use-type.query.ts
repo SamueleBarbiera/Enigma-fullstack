@@ -1,6 +1,6 @@
 import Type from '@repositories/type'
 import { useQuery } from '@tanstack/react-query'
-import { Type as TType } from '@ts-types/generated'
+import { CreateTypeInput } from '@ts-types/generated'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 
 export const fetchType = async (slug: string) => {
@@ -9,5 +9,5 @@ export const fetchType = async (slug: string) => {
 }
 
 export const useTypeQuery = (slug: string) => {
-    return useQuery<TType, Error>([API_ENDPOINTS.TYPES, slug], () => fetchType(slug))
+    return useQuery<CreateTypeInput, Error>([API_ENDPOINTS.TYPES, slug], () => fetchType(slug))
 }

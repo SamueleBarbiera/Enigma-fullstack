@@ -8,13 +8,10 @@ const withPWA = require('next-pwa')({
 })
 
 module.exports = withPWA({
-    typescript: {
-        ignoreBuildErrors: true,
-    },
     eslint: {
         ignoreDuringBuilds: true,
     },
-    reactStrictMode: false,
+    reactStrictMode: true,
     i18n,
     images: {
         domains: [

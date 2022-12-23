@@ -9,18 +9,9 @@ import * as sidebarIcons from '@components/icons/sidebar'
 import { useUI } from '@contexts/ui.context'
 import { useTranslation } from 'next-i18next'
 
-type TItems = { href: string; labelTransKey: string | undefined; items?: unknown; icon: string }
+type TItems = { href: string; labelTransKey: string | undefined; items?: any; icon: string }
 
-function SidebarMenuItem(
-    className: string,
-    item: {
-        href: string
-        labelTransKey?: unknown
-        items?: unknown
-        icon: string
-    },
-    depth = 0
-) {
+function SidebarMenuItem({ className, item, depth = 0 }: any) {
     const router = useRouter()
     const { t } = useTranslation('common')
     const [isOpen, setOpen] = useState(() => router.pathname === item.href)
@@ -55,7 +46,7 @@ function SidebarMenuItem(
             >
                 <button
                     className={cn(
-                        'flex w-full items-center border-0 text-start text-base outline-none focus:text-accent focus:outline-none focus:ring-0',
+                        'flex w-full items-center border-0 text-base outline-none text-start focus:text-accent focus:outline-none focus:ring-0',
                         router.pathname === href ? 'text-accent' : 'text-heading',
                         className
                     )}

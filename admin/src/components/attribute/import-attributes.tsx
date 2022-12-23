@@ -13,7 +13,7 @@ export default function ImportAttributes() {
     const shopId = shopData?.shop.id
     const { mutate: importAttributes, isLoading: loading } = useImportAttributesMutation()
 
-    const handleDrop = (acceptedFiles: string | unknown[]) => {
+    const handleDrop = (acceptedFiles: string | any[]) => {
         if (acceptedFiles.length) {
             importAttributes({
                 shop_id: shopId!,

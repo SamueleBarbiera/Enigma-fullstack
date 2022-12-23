@@ -116,6 +116,7 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
             updateShop({
                 variables: {
                     id: initialValues.id,
+                    // @ts-ignore
                     input: {
                         ...values,
                         address: restAddress,
@@ -130,6 +131,7 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
         } else {
             createShop({
                 variables: {
+                    //@ts-ignore
                     input: {
                         ...values,
                         settings,

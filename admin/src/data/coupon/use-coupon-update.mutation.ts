@@ -16,16 +16,16 @@ export const useUpdateCouponMutation = () => {
             Coupon.update(`${API_ENDPOINTS.COUPONS}/${id}`, input),
         {
             onSuccess: () => {
-                toast.success(t('common:successfully-updated'))
+                t //oast.success(t('common:successfully-updated'))
             },
             // Always refetch after error or success:
             onSettled: () => {
                 void queryClient.invalidateQueries([API_ENDPOINTS.COUPONS])
             },
             onError: (error: AxiosError) => {
-                const errorMessage = error.isAxiosError ? error.message : 'Unknown error'
+                const errorMessage = error.isAxiosError ? error.message : 'any error'
                 if (error.isAxiosError) console.log(`❌ Error message: ${errorMessage}`)
-                toast.error(t(`common:${error.message}`))
+                //toast.error(t(`common:${error.message}`))
                 return errorMessage
             },
         }

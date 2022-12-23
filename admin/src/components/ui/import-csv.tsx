@@ -2,7 +2,7 @@ import { UploadIcon } from '@components/icons/upload-icon'
 import { useDropzone } from 'react-dropzone'
 
 interface Import {
-    onDrop: (acceptedFiles: string | unknown[]) => void
+    onDrop: (acceptedFiles: string | any[]) => void
     loading: boolean
     title: string
 }
