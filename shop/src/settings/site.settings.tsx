@@ -7,10 +7,10 @@ import { ESFlag } from '@components/icons/ESFlag'
 
 export const siteSettings = {
     name: 'Enigma',
-    description: 'Fastest E-commerce template built with React, NextJS, TypeScript, React-Query and Tailwind CSS.',
+    description: '',
     author: {
         name: 'Enigma, Inc.',
-        websiteUrl: 'https://Enigma.io',
+        websiteUrl: '',
         address: '',
     },
     logo: {
@@ -20,8 +20,8 @@ export const siteSettings = {
         width: 95,
         height: 30,
     },
-    chatButtonUrl: 'https://www.facebook.com/redqinc',
-    defaultLanguage: 'en',
+    chatButtonUrl: '',
+    defaultLanguage: 'it',
     currency: 'EUR',
     site_header: {
         languageMenu: [

@@ -30,7 +30,7 @@ class TypeRequest extends FormRequest
         return [
             'name' => ['required', 'string'],
             'icon' => ['nullable', 'string'],
-            'images' => ['required', 'array']
+            'images' => ['array']
         ];
     }
 

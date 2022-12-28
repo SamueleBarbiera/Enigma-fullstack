@@ -61,10 +61,6 @@ export default function ProductsPage() {
         }
     )
 
-    function handleImportModal() {
-        openModal('EXPORT_IMPORT_PRODUCT', shopId)
-    }
-
     function handleSearch({ searchText }: { searchText: string }) {
         setSearchTerm(searchText)
     }
@@ -97,28 +93,17 @@ export default function ProductsPage() {
                                 </>
                             </LinkButton>
                         </div>
-
-                        <Button onClick={handleImportModal} className="mt-5 w-full md:hidden">
-                            {t('common:text-export-import')}
-                        </Button>
-
+                        {/* 
                         <button
                             className="mt-5 flex items-center text-base font-semibold text-accent md:mt-0 md:ms-5"
                             onClick={toggleVisible}
                         >
                             {t('common:text-filter')}{' '}
                             {visible ? <ArrowUp className="ms-2" /> : <ArrowDown className="ms-2" />}
-                        </button>
-
-                        <button
-                            onClick={handleImportModal}
-                            className="hidden h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gray-50 transition duration-300 ms-5 hover:bg-gray-100 md:flex"
-                        >
-                            <MoreIcon className="w-3.5 text-body" />
-                        </button>
+                        </button> */}
                     </div>
                 </div>
-
+                {/* 
                 <div
                     className={cn('flex w-full transition', {
                         'visible h-auto': visible,
@@ -133,7 +118,7 @@ export default function ProductsPage() {
                             }}
                         />
                     </div>
-                </div>
+                </div> */}
             </Card>
             <ProductList products={data} onPagination={handlePagination} onOrder={setOrder} onSort={setColumn} />
         </>

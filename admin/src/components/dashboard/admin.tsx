@@ -115,7 +115,7 @@ export default function Dashboard() {
 
                     <div className="mb-6 flex w-full flex-wrap">
                         <ColumnChart
-                            widgetTitle="Sale History"
+                            widgetTitle="Storico delle vendite"
                             colors={['#03D3B5']}
                             series={salesByYear}
                             categories={[

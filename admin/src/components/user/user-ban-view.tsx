@@ -22,9 +22,9 @@ const CustomerBanView = () => {
         <ConfirmationCard
             onCancel={closeModal}
             onDelete={handleDelete}
-            deleteBtnText={data?.type === 'ban' ? 'Block' : 'Unblock'}
-            title={data?.type === 'ban' ? 'Block Customer' : 'Unblock Customer'}
-            description="Are you sure you want to block this customer?"
+            deleteBtnText={data?.type === 'ban' ? 'Blocca' : 'Sblocca'}
+            title={data?.type === 'ban' ? 'Blocca il cliente' : 'Sblocca il cliente'}
+            description="Sei sicuro/a di bloccare il cliente?"
             deleteBtnLoading={loading || activeLoading}
         />
     )

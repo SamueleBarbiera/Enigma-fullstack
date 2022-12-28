@@ -25,21 +25,11 @@ const ProductTypeInput = () => {
                 <SelectInput
                     name="productTypeValue"
                     control={control}
-                    getOptionLabel={(option: { name: string }) => option.name}
-                    getOptionValue={(option: { value: string }) => option.value}
+                    getOptionLabel={(option: any) => option.name}
+                    getOptionValue={(option: any) => option.value}
                     options={productType}
-                    isMulti={undefined}
-                    isClearable={undefined}
-                    isLoading={false}
                 />
-                <ValidationError
-                    message={t(
-                        errors.productTypeValue?.message as
-                            | string
-                            | TemplateStringsArray
-                            | (string | TemplateStringsArray)[]
-                    )}
-                />
+                <ValidationError message={t(errors.productTypeValue?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[])} />
             </div>
         </Card>
     )

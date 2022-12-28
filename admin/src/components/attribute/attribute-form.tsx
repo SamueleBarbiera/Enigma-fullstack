@@ -14,6 +14,8 @@ import Alert from '@components/ui/alert'
 import { animateScroll } from 'react-scroll'
 import { attributeValidationSchema } from '@components/attribute/attribute-validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
+import ColorPicker from '@components/ui/color-picker/color-picker'
+import DisplayColorCode from '@components/ui/color-picker/display-color-code'
 
 type FormValues = {
     name?: string | null
@@ -143,13 +145,21 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                                             defaultValue={(item as any).value} // make sure to set up defaultValue
                                             error={t(errors.values?.[index]?.value?.message)}
                                         />
-                                        <Input
+                                        {/* <Input
                                             className="sm:col-span-2"
                                             label={t('form:input-label-meta')}
                                             variant="outline"
                                             {...register(`values.${index}.meta` as const)}
                                             defaultValue={(item as any).meta} // make sure to set up defaultValue
-                                        />
+                                        /> */}
+                                        <ColorPicker
+                                            className="sm:col-span-2"
+                                            label={t('form:input-label-meta')}
+                                            {...register(`values.${index}.meta` as const)}
+                                            defaultValue={(item as any).meta} // make sure to set up defaultValue
+                                        >
+                                            <DisplayColorCode control={control} />
+                                        </ColorPicker>
                                         <button
                                             onClick={() => remove(index)}
                                             type="button"
@@ -171,7 +181,16 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
                         </Button>
 
                         {errors?.values?.message ? (
-                            <Alert message={t(errors?.values?.message as string | TemplateStringsArray | (string | TemplateStringsArray)[])} variant="error" className="mt-5" />
+                            <Alert
+                                message={t(
+                                    errors?.values?.message as
+                                        | string
+                                        | TemplateStringsArray
+                                        | (string | TemplateStringsArray)[]
+                                )}
+                                variant="error"
+                                className="mt-5"
+                            />
                         ) : null}
                     </Card>
                 </div>

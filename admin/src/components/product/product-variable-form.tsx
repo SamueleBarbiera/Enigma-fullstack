@@ -20,10 +20,14 @@ type IProps = {
     shopId: string | undefined
 }
 
-function filteredAttributes(attributes: any, variations: any) {
+function filteredAttributes(attributes, variations?) {
+    console.log('🚀 - file: product-variable-form.tsx:24 - filteredAttributes - attributes: any, variations: any', {
+        attributes,
+        variations,
+    })
     let res = []
     res = attributes?.filter((el: any) => {
-        return !variations.find((element: any) => {
+        return !variations?.find((element: any) => {
             return element?.attribute?.slug === el?.slug
         })
     })
@@ -51,14 +55,14 @@ export default function ProductVariableForm({ shopId, initialValues }: IProps) {
         getValues,
         formState: { errors },
     } = useFormContext()
-    
+
     // This field array will keep all the attribute dropdown fields
     const { fields, append, remove } = useFieldArray({
         shouldUnregister: true,
         control,
         name: 'variations',
     })
-    const cartesianProduct: any = getCartesianProduct(getValues('variations'))
+    const cartesianProduct = getCartesianProduct(getValues('variations'))
     const variations = watch('variations')
 
     return (

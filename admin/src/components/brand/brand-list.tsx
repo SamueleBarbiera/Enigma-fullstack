@@ -2,7 +2,7 @@ import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
 import { SortOrder, Type } from '@ts-types/generated'
 import { getIcon } from '@utils/get-icon'
-import * as typeIcons from '@components/icons/type'
+import * as brandIcons from '@components/icons/brand'
 import { ROUTES } from '@utils/routes'
 import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
@@ -71,43 +71,16 @@ const TypeList = ({ types, onSort, onOrder, onPagination }: IProps) => {
         },
 
         {
-            title: t('table:table-item-image'),
-            dataIndex: 'images',
-            key: 'image',
-            align: 'center',
-            render: (images: any[]) => {
-                if (!images.length) return null
-
-                return (
-                    <div className="flex flex-row items-center justify-center gap-x-2">
-                        {images.map((item: { image: any[] }) => {
-                            return item.image.map((image: any, index: number) => (
-                                <Image
-                                    src={image?.original ?? '/'}
-                                    alt={`brand-image-${image.id}`}
-                                    width={40}
-                                    height={40}
-                                    className="overflow-hidden rounded-lg bg-gray-300 object-contain"
-                                    key={`brand-image-${index}`}
-                                />
-                            ))
-                        })}
-                    </div>
-                )
-            },
-        },
-
-        {
             title: t('table:table-item-icon'),
             dataIndex: 'icon',
             key: 'slug',
-            align: 'center',
+            align: 'left',
             render: (icon: string) => {
                 if (!icon) return null
                 return (
                     <span className="flex items-center justify-center">
                         {getIcon({
-                            iconList: typeIcons,
+                            iconList: brandIcons,
                             iconName: icon,
                             className: 'w-5 h-5 max-h-full max-w-full',
                         })}

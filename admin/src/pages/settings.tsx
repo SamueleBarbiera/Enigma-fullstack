@@ -14,6 +14,7 @@ export default function Settings() {
     const { t } = useTranslation()
     const { data: taxData, isLoading: taxLoading } = useTaxesQuery()
     const { data: ShippingData, isLoading: shippingLoading } = useShippingClassesQuery()
+
     const { data, isLoading: loading, error } = useSettingsQuery()
 
     return (
@@ -24,7 +25,7 @@ export default function Settings() {
                 error instanceof Error ? (
                     <ErrorMessage message={error.message} />
                 ) : (
-                    'any error'
+                    'Unknown error'
                 )
             ) : (
                 <>

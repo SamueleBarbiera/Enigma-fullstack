@@ -17,8 +17,6 @@ export type MODAL_VIEWS =
     | 'SHOP_DISAPPROVE_VIEW'
     | 'DELETE_STAFF'
     | 'ADD_WALLET_POINTS'
-    | 'EXPORT_IMPORT_PRODUCT'
-    | 'EXPORT_IMPORT_ATTRIBUTE'
 
 type State = {
     type: string

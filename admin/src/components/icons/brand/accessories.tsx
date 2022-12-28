@@ -1,4 +1,4 @@
-export const Accessories: React.FC<React.SVGAttributes<any>> = (props) => {
+export const Accessori: React.FC<React.SVGAttributes<any>> = (props) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" {...props}>
             <g fill="currentColor">

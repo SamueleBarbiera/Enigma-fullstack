@@ -6,7 +6,7 @@ interface SelectInputProps {
     rules?: any
     name: string
     options?: any
-    [key: string]: any
+    [key: string]: unknown
 }
 
 const SelectInput = ({

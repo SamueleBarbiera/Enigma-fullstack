@@ -8,6 +8,7 @@ interface Props {
         iconList?:
             | typeof import('../components/icons/category')
             | typeof import('../components/icons/type')
+            | typeof import('../components/icons/brand')
             | typeof import('../components/icons/sidebar')
             | typeof import('../components/icons/social')
 

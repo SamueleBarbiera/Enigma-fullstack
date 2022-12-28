@@ -1,38 +1,42 @@
-export const typeIconList = [
+export const brandIconList = [
     {
-        value: 'FruitsVegetable',
-        label: 'Fruits and Vegetable',
+        value: 'Accessori',
+        label: 'Accessori',
     },
     {
-        value: 'FacialCare',
-        label: 'Facial Care',
+        value: 'Borsellino',
+        label: 'Borsellino',
     },
     {
-        value: 'Handbag',
-        label: 'Hand Bag',
+        value: 'Borsa',
+        label: 'Borsa',
     },
     {
-        value: 'DressIcon',
-        label: 'Dress Icon',
+        value: 'BorsaTracolla',
+        label: 'Borsa a tracolla',
     },
     {
-        value: 'FurnitureIcon',
-        label: 'Furniture Icon',
+        value: 'Abito',
+        label: 'Abito',
     },
     {
-        value: 'BookIcon',
-        label: 'Book Icon',
+        value: 'Vestito',
+        label: 'Vestito',
     },
     {
-        value: 'MedicineIcon',
-        label: 'Medicine Icon',
+        value: 'Pantaloni',
+        label: 'Pantaloni',
     },
     {
-        value: 'Restaurant',
-        label: 'Restaurant',
+        value: 'Top',
+        label: 'Top',
     },
     {
-        value: 'Bakery',
-        label: 'Bakery',
+        value: 'Maglia',
+        label: 'Maglia',
+    },
+    {
+        value: 'Gonna',
+        label: 'Gonna',
     },
 ]

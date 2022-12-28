@@ -125,8 +125,8 @@ function processOptions(options: any) {
 function calculateMaxMinPrice(variationOptions: any) {
     if (!variationOptions || !variationOptions.length) {
         return {
-            min_price: 0,
-            max_price: 10000,
+            min_price: null,
+            max_price: null,
         }
     }
     const sortedVariationsByPrice = orderBy(variationOptions, ['price'])

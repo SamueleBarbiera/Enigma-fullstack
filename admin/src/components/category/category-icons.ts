@@ -1,166 +1,42 @@
 export const categoryIcons = [
     {
-        value: 'Accessories',
-        label: 'Accessories',
+        value: 'Accessori',
+        label: 'Accessori',
     },
     {
-        value: 'FruitsVegetable',
-        label: 'Fruits and Vegetable',
+        value: 'Borsellino',
+        label: 'Borsellino',
     },
     {
-        value: 'MeatFish',
-        label: 'Meat and Fish',
+        value: 'Borsa',
+        label: 'Borsa',
     },
     {
-        value: 'Purse',
-        label: 'Purse',
+        value: 'BorsaTracolla',
+        label: 'Borsa a tracolla',
     },
     {
-        value: 'HandBags',
-        label: 'Hand Bags',
+        value: 'Abito',
+        label: 'Abito',
     },
     {
-        value: 'ShoulderBags',
-        label: 'Shoulder Bags',
+        value: 'Vestito',
+        label: 'Vestito',
     },
     {
-        value: 'Wallet',
-        label: 'Wallet',
+        value: 'Pantaloni',
+        label: 'Pantaloni',
     },
     {
-        value: 'LaptopBags',
-        label: 'Laptop Bags',
+        value: 'Top',
+        label: 'Top',
     },
     {
-        value: 'WomenDress',
-        label: 'Women Dress',
+        value: 'Maglia',
+        label: 'Maglia',
     },
     {
-        value: 'OuterWear',
-        label: 'Outer Wear',
-    },
-    {
-        value: 'Pants',
-        label: 'Pants',
-    },
-    {
-        value: 'Tops',
-        label: 'Tops',
-    },
-    {
-        value: 'Shirts',
-        label: 'Shirts',
-    },
-    {
-        value: 'Skirts',
-        label: 'Skirts',
-    },
-    {
-        value: 'Face',
-        label: 'Face',
-    },
-    {
-        value: 'Eyes',
-        label: 'Eyes',
-    },
-    {
-        value: 'Lips',
-        label: 'Lips',
-    },
-    {
-        value: 'Snacks',
-        label: 'Snacks',
-    },
-    {
-        value: 'PetCare',
-        label: 'PetCare',
-    },
-    {
-        value: 'HomeCleaning',
-        label: 'Home Cleaning',
-    },
-    {
-        value: 'Dairy',
-        label: 'Dairy',
-    },
-    {
-        value: 'Cooking',
-        label: 'Cooking',
-    },
-    {
-        value: 'Breakfast',
-        label: 'Breakfast',
-    },
-    {
-        value: 'Beverage',
-        label: 'Beverage',
-    },
-    {
-        value: 'BeautyHealth',
-        label: 'Beauty Health',
-    },
-    {
-        value: 'ShavingNeeds',
-        label: 'Shaving Needs',
-    },
-    {
-        value: 'OralCare',
-        label: 'Oral Care',
-    },
-    {
-        value: 'FacialCare',
-        label: 'Facial Care',
-    },
-    {
-        value: 'Deodorant',
-        label: 'Deodorant',
-    },
-    {
-        value: 'BathOil',
-        label: 'Bath Oil',
-    },
-    {
-        value: 'Chair',
-        label: 'Chair',
-    },
-    {
-        value: 'Bed',
-        label: 'Bed',
-    },
-    {
-        value: 'Bookshelf',
-        label: 'Bookshelf',
-    },
-    {
-        value: 'CenterTable',
-        label: 'Center Table',
-    },
-    {
-        value: 'DressingTable',
-        label: 'Dressing Table',
-    },
-    {
-        value: 'ReadingTable',
-        label: 'Reading Table',
-    },
-    {
-        value: 'Sofa',
-        label: 'Sofa',
-    },
-    {
-        value: 'RelaxChair',
-        label: 'Relax Chair',
-    },
-    {
-        value: 'Storage',
-        label: 'Storage',
-    },
-    {
-        value: 'Tools',
-        label: 'Tools',
-    },
-    {
-        value: 'Table',
-        label: 'Table',
+        value: 'Gonna',
+        label: 'Gonna',
     },
 ]

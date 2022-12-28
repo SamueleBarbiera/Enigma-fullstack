@@ -56,11 +56,11 @@ export const siteSettings = {
                 label: 'sidebar-nav-item-attributes',
                 icon: 'AttributeIcon',
             },
-            // {
-            //     href: ROUTES.BRANDS,
-            //     label: 'sidebar-nav-item-groups',
-            //     icon: 'TypesIcon',
-            // },
+            {
+                href: ROUTES.BRANDS,
+                label: 'sidebar-nav-item-groups',
+                icon: 'TypesIcon',
+            },
             {
                 href: ROUTES.CATEGORIES,
                 label: 'sidebar-nav-item-categories',

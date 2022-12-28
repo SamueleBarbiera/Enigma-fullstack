@@ -102,9 +102,9 @@ export const updatedIcons = socialIcon.map((item: any) => {
 })
 
 type IProps = {
-    settings?: Maybe<SettingsOptionsInput> | null
-    taxClasses?:TaxInput | null
-    shippingClasses?: ShippingInput | null
+    settings?: any | null
+    taxClasses?: any | null
+    shippingClasses?: any | null
 }
 
 export default function SettingsForm({ settings, taxClasses, shippingClasses }: IProps) {
@@ -119,7 +119,7 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
     } = useForm<FormValues>({
         shouldUnregister: true,
         resolver: yupResolver(settingsValidationSchema),
-        // @ts-ignore
+
         defaultValues: {
             ...settings,
             contactDetails: {
@@ -132,23 +132,17 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                       }))
                     : [],
             },
-            // @ts-ignore
-            deliveryTime: settings?.deliveryTime ? settings?.deliveryTime : [],
+
+            //deliveryTime: settings?.deliveryTime ? settings?.deliveryTime : [],
             logo: settings?.logo ?? '',
             currency: settings?.currency ? CURRENCY.find((item) => item.code == settings?.currency) : '',
-            // @ts-ignore
+
             taxClass: !!taxClasses?.length ? taxClasses?.find((tax: Tax) => tax.id == settings?.taxClass) : '',
-            // @ts-ignore
+
             shippingClass: !!shippingClasses?.length
-            // @ts-ignore
                 ? shippingClasses?.find((shipping: Shipping) => shipping.id == settings?.shippingClass)
                 : '',
         },
-    })
-
-    const { fields, append, remove } = useFieldArray({
-        control,
-        name: 'deliveryTime',
     })
 
     const {
@@ -177,20 +171,20 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                 input: {
                     options: {
                         ...values,
-                        // @ts-ignore
-                        signupPoints: Number(values.signupPoints),
-                        currencyToWalletRatio: Number(values.currencyToWalletRatio),
+
+                        //signupPoints: Number(values.signupPoints),
+                        //currencyToWalletRatio: Number(values.currencyToWalletRatio),
                         minimumOrderAmount: Number(values.minimumOrderAmount),
                         currency: values.currency?.code,
                         taxClass: values?.taxClass?.id,
                         shippingClass: values?.shippingClass?.id,
                         logo: values?.logo,
                         contactDetails,
-                        //@ts-ignore
-                        seo: {
-                            ...values?.seo,
-                            ogImage: getFormattedImage(values?.seo?.ogImage),
-                        },
+
+                        // seo: {
+                        //     ...values?.seo,
+                        //     ogImage: getFormattedImage(values?.seo?.ogImage),
+                        // },
                     },
                 },
             },
@@ -352,20 +346,6 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
                         <Label>{t('form:input-label-og-image')}</Label>
                         <FileInput name="seo.ogImage" control={control} multiple={false} />
                     </div>
-                    <Input
-                        label={t('form:input-label-twitter-handle')}
-                        {...register('seo.twitterHandle')}
-                        variant="outline"
-                        className="mb-5"
-                        placeholder="your twitter username (exp: @username)"
-                    />
-                    <Input
-                        label={t('form:input-label-twitter-card-type')}
-                        {...register('seo.twitterCardType')}
-                        variant="outline"
-                        className="mb-5"
-                        placeholder="one of summary, summary_large_image, app, or player"
-                    />
                 </Card>
             </div>
 

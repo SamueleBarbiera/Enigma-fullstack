@@ -113,7 +113,7 @@ export const masonryBanner = [
 export const gridBanner = [
     {
         id: 1,
-        title: 'Women T-Shirts Collection',
+        title: 'Women T-Maglia Collection',
         slug: 'mens-collection',
         image: {
             mobile: {

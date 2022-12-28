@@ -28,9 +28,8 @@ export default function AttributePage() {
     const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc)
     const { data: shopData, isLoading: fetchingShop } = useShopQuery(shop as string)
     const shopId = shopData?.shop.id
-    function handleImportModal() {
-        openModal('EXPORT_IMPORT_ATTRIBUTE', shopId)
-    }
+
+    
     const {
         data,
         isLoading: loadingAttributes,
@@ -67,15 +66,6 @@ export default function AttributePage() {
                         </span>
                     </LinkButton>
 
-                    <Button onClick={handleImportModal} className="mt-5 w-full md:hidden">
-                        {t('common:text-export-import')}
-                    </Button>
-                    <button
-                        onClick={handleImportModal}
-                        className="hidden h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gray-50 transition duration-300 ms-6 hover:bg-gray-100 md:flex"
-                    >
-                        <MoreIcon className="w-3.5 text-body" />
-                    </button>
                 </div>
             </Card>
             <AttributeList attributes={data} onOrder={setOrder} onSort={setColumn} />
