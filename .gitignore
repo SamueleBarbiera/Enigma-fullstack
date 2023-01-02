@@ -41,3 +41,5 @@ sw.js
 # IDE
 .vscode/
 .idea/
+chawkbazar-api/database/schema/mysql-schema.sql
+database_backup_file.sql

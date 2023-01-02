@@ -1,4 +1,4 @@
-import { Attribute as atr, AttributeInput } from '@ts-types/generated'
+import { AttributeInput as atr, AttributeInput } from '@ts-types/generated'
 import { ROUTES } from '@utils/routes'
 import Attribute from '@repositories/attribute'
 import { useRouter } from 'next/router'

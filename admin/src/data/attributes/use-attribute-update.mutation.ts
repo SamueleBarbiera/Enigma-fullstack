@@ -1,4 +1,4 @@
-import { Attribute as atr } from '@ts-types/generated'
+import { AttributeInput as atr } from '@ts-types/generated'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import Attribute from '@repositories/attribute'

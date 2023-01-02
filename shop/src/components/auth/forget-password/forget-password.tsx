@@ -7,8 +7,8 @@ import { useVerifyForgetPasswordTokenMutation } from '@framework/auth/auth.query
 import { useResetPasswordMutation } from '@framework/auth/auth.query'
 import dynamic from 'next/dynamic'
 import { useTranslation } from 'next-i18next'
-import { useRouter } from 'next/router'
 import { ROUTES } from '@lib/routes'
+import { useRouter } from 'next/router'
 
 const EnterEmailView = dynamic(() => import('./enter-email-view'))
 const EnterTokenView = dynamic(() => import('./enter-token-view'))

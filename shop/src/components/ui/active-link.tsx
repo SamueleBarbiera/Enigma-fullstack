@@ -7,7 +7,7 @@ const ActiveLink = ({ children, activeClassName, href, ...props }) => {
     const className = pathname === href ? `${''} ${activeClassName}`.trim() : ''
 
     return (
-        <Link href={href} {...props} >
+        <Link href={href} {...props}>
             {children}
         </Link>
     )

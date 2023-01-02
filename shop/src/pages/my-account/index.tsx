@@ -15,36 +15,42 @@ export default function AccountPage() {
 
     return (
         <AccountLayout>
-            <h2 className="text-lg md:text-xl xl:text-2xl font-bold text-heading mb-3 xl:mb-5">
-                {t('text-dashboard')}
-            </h2>
-            <div className="text-sm leading-7 md:text-base md:leading-loose">
-                <p className="capitalize">
-                    {t('text-hello')} <span className="font-bold">{currentUserIdentity}</span> (not{' '}
-                    <span className="font-bold">{currentUserIdentity}</span>?{' '}
-                    <Link href={`${ROUTES.LOGOUT}`} className="font-bold underline cursor-pointer focus:outline-none">
-                        {t('text-logout')}
+            <>
+                {' '}
+                <h2 className="mb-3 text-lg font-bold text-heading md:text-xl xl:mb-5 xl:text-2xl">
+                    {t('text-dashboard')}
+                </h2>
+                <div className="text-sm leading-7 md:text-base md:leading-loose">
+                    <p className="capitalize">
+                        {t('text-hello')} <span className="font-bold">{currentUserIdentity}</span> (not{' '}
+                        <span className="font-bold">{currentUserIdentity}</span>?{' '}
+                        <Link
+                            href={`${ROUTES.LOGOUT}`}
+                            className="cursor-pointer font-bold underline focus:outline-none"
+                        >
+                            {t('text-logout')}
+                        </Link>
+                        )
+                    </p>
+                    <br />
+                    {t('text-account-dashboard')}{' '}
+                    <Link href={ROUTES.ACCOUNT_ORDERS} className="font-semibold text-heading underline">
+                        {t('text-recent-orders')}
                     </Link>
-                    )
-                </p>
-                <br />
-                {t('text-account-dashboard')}{' '}
-                <Link href={ROUTES.ACCOUNT_ORDERS} className="text-heading underline font-semibold">
-                    {t('text-recent-orders')}
-                </Link>
-                , {t('text-manage-your')}{' '}
-                <Link href={ROUTES.ACCOUNT_ADDRESS} className="text-heading underline font-semibold">
-                    {t('text-account-address')}
-                </Link>{' '}
-                {t('text-and')}{' '}
-                <Link href={ROUTES.ACCOUNT_CONTACT_NUMBER} className="text-heading underline font-semibold">
-                    {t('text-contact-number')}
-                </Link>{' '}
-                {t('text-and')}{' '}
-                <Link href={ROUTES.ACCOUNT_CHANGE_PASSWORD} className="text-heading underline font-semibold">
-                    {t('text-change-your-password')}
-                </Link>
-            </div>
+                    , {t('text-manage-your')}{' '}
+                    <Link href={ROUTES.ACCOUNT_ADDRESS} className="font-semibold text-heading underline">
+                        {t('text-account-address')}
+                    </Link>{' '}
+                    {t('text-and')}{' '}
+                    <Link href={ROUTES.ACCOUNT_CONTACT_NUMBER} className="font-semibold text-heading underline">
+                        {t('text-contact-number')}
+                    </Link>{' '}
+                    {t('text-and')}{' '}
+                    <Link href={ROUTES.ACCOUNT_CHANGE_PASSWORD} className="font-semibold text-heading underline">
+                        {t('text-change-your-password')}
+                    </Link>
+                </div>
+            </>
         </AccountLayout>
     )
 }

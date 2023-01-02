@@ -1,5 +1,5 @@
 import React, { FC, useRef, useEffect } from 'react'
-import Portal from '@reach/portal'
+import { Portal } from '@reach/portal'
 import { motion, AnimatePresence } from 'framer-motion'
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import cn from 'classnames'
@@ -76,8 +76,8 @@ const Modal = ({
                         exit="from"
                         variants={fadeInOut(0.25)}
                         className={cn(
-                            'modal-root fixed bg-black bg-opacity-70 inset-0 z-50',
-                            useBlurBackdrop && 'backdrop-filter backdrop-blur-sm',
+                            'modal-root fixed inset-0 z-50 bg-black bg-opacity-70',
+                            useBlurBackdrop && 'backdrop-blur-sm backdrop-filter',
                             rootClasses[variant],
                             rootClassName
                         )}
@@ -87,11 +87,11 @@ const Modal = ({
                             animate="to"
                             exit="from"
                             variants={zoomOutIn()}
-                            className="relative h-full mx-auto w-full"
+                            className="relative mx-auto h-full w-full"
                         >
                             <div
                                 className={cn(
-                                    'w-full sm:w-auto absolute left-1/2 transform -translate-x-1/2 shadow-xl',
+                                    'shadow-xl absolute left-1/2 w-full -translate-x-1/2 transform sm:w-auto',
                                     containerClasses[variant],
                                     containerClassName
                                 )}
@@ -100,7 +100,7 @@ const Modal = ({
                                     onClick={onClose}
                                     aria-label="Close panel"
                                     className={cn(
-                                        'fixed z-10 inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full bg-white shadow text-gray-600 transition duration-200 focus:outline-none focus:text-gray-800 focus:shadow-md hover:text-gray-800 hover:shadow-md',
+                                        'shadow focus:shadow-md hover:shadow-md fixed z-10 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-gray-600 transition duration-200 hover:text-gray-800 focus:text-gray-800 focus:outline-none md:h-8 md:w-8',
                                         closeBtnClasses[variant]
                                     )}
                                 >

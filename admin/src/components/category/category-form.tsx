@@ -8,7 +8,7 @@ import Description from '@components/ui/description'
 import * as categoriesIcon from '@components/icons/category'
 import { getIcon } from '@utils/get-icon'
 import { useRouter } from 'next/router'
-import { AttachmentInput, Category, CreateCategory } from '@ts-types/generated'
+import { AttachmentInput, AttachmentInputMap, Category, CreateCategory } from '@ts-types/generated'
 import { useUpdateCategoryMutation } from '@data/category/use-category-update.mutation'
 import { useCreateCategoryMutation } from '@data/category/use-category-create.mutation'
 import { categoryIcons } from './category-icons'
@@ -34,13 +34,7 @@ export const updatedIcons = categoryIcons.map((item: any) => {
     return item
 })
 
-type FormValues = {
-    name: string
-    details: string
-    parent: any
-    image: AttachmentInput[]
-    icon: any
-}
+
 
 const defaultValues = {
     image: [],
@@ -81,14 +75,18 @@ export default function CreateOrUpdateCategoriesForm({ initialValues }: IProps) 
         const input = {
             name: values.name,
             details: values.details,
-            image: values?.image,
+            image: values?.image?.map(({ thumbnail, original, id }) => ({
+                thumbnail,
+                original,
+                id,
+            })),
             banner_image: {
-                thumbnail: values?.image?.thumbnail,
-                original: values?.image?.original,
-                id: values?.image?.id,
+                thumbnail: values?.banner_image?.thumbnail,
+                original: values?.banner_image?.original,
+                id: values?.banner_image?.id,
             },
-            icon: values.icon?.toString() || '',
-            parent: values?.parent ?? null,
+            icon: values.icon?.value || '',
+            parent: values?.parent?.id ?? null,
         }
         if (initialValues) {
             updateCategory({
@@ -102,7 +100,6 @@ export default function CreateOrUpdateCategoriesForm({ initialValues }: IProps) 
         } else {
             createCategory({
                 variables: {
-                    // @ts-ignore
                     input,
                 },
             })

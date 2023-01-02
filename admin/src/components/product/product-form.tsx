@@ -414,7 +414,7 @@ export default function CreateOrUpdateProductForm({ initialValues }: IProps) {
 
                     {/* Simple Type */}
                     {productTypeValue?.value === ProductType.Simple && (
-                        <ProductSimpleForm initialValues={initialValues} />
+                        <ProductSimpleForm shopId={shopId} initialValues={initialValues} />
                     )}
 
                     {/* Variation Type */}

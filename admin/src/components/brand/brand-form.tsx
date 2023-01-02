@@ -86,7 +86,6 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
                 },
             })
         } else {
-            console.log('🚀 - file: brand-form.tsx:97 - onSubmit - updateType', initialValues)
             updateType({
                 variables: {
                     id: initialValues.id,

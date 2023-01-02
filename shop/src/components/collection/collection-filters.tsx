@@ -21,9 +21,9 @@ export const CollectionFilters = () => {
 
     return (
         <div className="pt-1">
-            <div className="block border-b border-gray-300 pb-3 xl:pb-5 mb-7">
-                <div className="flex items-center justify-between mb-2.5">
-                    <h2 className="font-semibold text-heading text-base md:text-xl lg:text-2xl">
+            <div className="mb-7 block border-b border-gray-300 pb-3 xl:pb-5">
+                <div className="mb-2.5 flex items-center justify-between">
+                    <h2 className="text-base font-semibold text-heading md:text-xl lg:text-2xl">
                         {t('text-collection-list')}
                     </h2>
                 </div>
@@ -31,16 +31,16 @@ export const CollectionFilters = () => {
             <div className="block pb-7">
                 <ul className="mt-2 flex flex-col space-y-5">
                     {items?.map((item: any) => (
-                        <li key={item.id} className="text-sm lg:text-[15px] cursor-pointer" onClick={closeFilter}>
+                        <li key={item.id} className="cursor-pointer text-sm lg:text-[15px]" onClick={closeFilter}>
                             <ActiveLink href={`${ROUTES.COLLECTIONS}/${item.slug}`} activeClassName={''}>
-                                <a
+                                <div
                                     className={classNames(
-                                        'block transition duration-300 ease-in-out text-heading hover:font-semibold py-0.5',
+                                        'block py-0.5 text-heading transition duration-300 ease-in-out hover:font-semibold',
                                         tags === item?.slug && 'font-semibold'
                                     )}
                                 >
                                     {item.name}
-                                </a>
+                                </div>
                             </ActiveLink>
                         </li>
                     ))}

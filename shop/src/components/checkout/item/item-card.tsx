@@ -23,6 +23,7 @@ const ItemCard = ({ item, notAvailable }: Props) => {
                     height={60}
                     quality={100}
                     className="bg-gray-100 object-cover"
+                    alt={''}
                 />
             </div>
             <div className="flex items-center justify-between text-base ltr:pr-1.5 ltr:pl-1.5 ltr:mr-auto rtl:ml-auto">

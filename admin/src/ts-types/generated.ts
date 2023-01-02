@@ -249,6 +249,7 @@ export declare interface Type {
     products?: Maybe<ProductPaginator>
     created_at: Scalars['DateTime']
     updated_at: Scalars['DateTime']
+    data: Type[]
 }
 
 export declare interface TypeSettings {
@@ -279,12 +280,14 @@ export declare interface Category {
     parent?: Maybe<Scalars['Int']>
     children: Category[]
     details?: Maybe<Scalars['String']>
-    image?: Maybe<Attachment[]>
+    image?: Maybe<AttachmentInput[]>
+    banner_image?: Maybe<AttachmentInput[]>
     icon?: Maybe<Scalars['String']>
     type: Type
     products: Product[]
     created_at: Scalars['DateTime']
     updated_at: Scalars['DateTime']
+    data?: any
 }
 export declare interface Attachment {
     thumbnail?: Maybe<Scalars['String']>
@@ -324,7 +327,7 @@ export declare interface CategoryPaginator {
     /** Pagination information about the list of items. */
     paginatorInfo: PaginatorInfo
     /** A list of Category items. */
-    data: Category[]
+    data?: Category[]
 }
 /** A paginated list of Coupon items. */
 export declare interface CouponPaginator {
@@ -404,14 +407,25 @@ export declare interface AttributeValueUpdateInput {
 export declare interface CreateCategory {
     name: Scalars['String']
     type_id?: Maybe<Scalars['ID']>
-    parent?: Maybe<Scalars['Int']>
+    parent?: any
     details?: Maybe<Scalars['String']>
-    image?: Maybe<AttachmentInput>
-    icon?: Maybe<Scalars['String']>
-    data: Category[]
+    image?: AttachmentInputMap
+    banner_image?: AttachmentInput
+    icon?: any
+    data?: Category[]
 }
 export declare interface ConnectTypeBelongsTo {
     connect?: Maybe<Scalars['ID']>
+}
+
+export declare interface AttachmentInputMap {
+    map(
+        arg0: ({ thumbnail, original,id }: AttachmentInput) => {
+            id: Maybe<string> | undefined
+            thumbnail: Maybe<string> | undefined
+            original: Maybe<string> | undefined
+        }
+    ): AttachmentInputMap | undefined
 }
 export declare interface AttachmentInput {
     thumbnail?: Maybe<Scalars['String']>
@@ -423,7 +437,7 @@ export declare interface UpdateCategory {
     type_id?: Maybe<Scalars['ID']>
     parent?: Maybe<Scalars['Int']>
     details?: Maybe<Scalars['String']>
-    image?: Maybe<AttachmentInput>
+    image?: Maybe<AttachmentInputMap>
     icon?: Maybe<Scalars['String']>
 }
 export declare interface CheckoutVerificationInput {
@@ -781,7 +795,7 @@ export interface CreateTypeInput {
     gallery?: Maybe<AttachmentInput[]>
     icon?: Maybe<Scalars['String']>
     banner_text?: Maybe<Scalars['String']>
-    data: any
+    data?: any
 }
 
 export enum ProductType {

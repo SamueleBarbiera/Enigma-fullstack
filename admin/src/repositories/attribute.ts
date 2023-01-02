@@ -1,7 +1,6 @@
 import Base from './base'
+import { AttributeInput } from '@ts-types/generated'
 
-import { Attribute as TAttribute } from '@ts-types/generated'
-
-class Attribute extends Base<TAttribute, TAttribute> {}
+class Attribute extends Base<AttributeInput, AttributeInput> {}
 
 export default new Attribute()

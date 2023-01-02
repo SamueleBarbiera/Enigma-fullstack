@@ -22,7 +22,6 @@ const fetchCategories = async ({ queryKey }: QueryParamsType): Promise<{ categor
         name: text,
         type,
     })
-    // @ts-ignore
     const queryParams = new URLSearchParams({
         searchJoin: 'and',
         orderBy,
@@ -31,7 +30,7 @@ const fetchCategories = async ({ queryKey }: QueryParamsType): Promise<{ categor
         limit: limit.toString(),
         ...(page && { page: page.toString() }),
         ...(Boolean(searchString) && { search: searchString }),
-    })
+    } as any) 
     const url = `${API_ENDPOINTS.CATEGORIES}?${queryParams.toString()}`
     const {
         data: { data, ...rest },

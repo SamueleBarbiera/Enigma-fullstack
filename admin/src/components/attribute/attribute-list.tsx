@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { Table } from '@components/ui/table'
 import ActionButtons from '@components/common/action-buttons'
-import { Attribute, AttributeValue, Shop, SortOrder } from '@ts-types/generated'
+import { Attribute, AttributeInput, AttributeValue, Shop, SortOrder } from '@ts-types/generated'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import TitleWithSort from '@components/ui/title-with-sort'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
 
 export type IProps = {
-    attributes: Attribute | undefined
+    attributes: AttributeInput | undefined
     onSort: (current: any) => void
     onOrder: (current: string) => void
 }

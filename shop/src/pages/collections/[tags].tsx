@@ -20,18 +20,18 @@ export default function Collections() {
         <div className="border-t-2 border-borderBottom">
             <Container>
                 <div className={`flex pt-8 pb-10 lg:pb-16 xl:pb-20`}>
-                    <div className="flex-shrink-0 ltr:pr-8 rtl:pl-8 ltr:xl:pr-12 ltr:2xl:pr-24 rtl:xl:pl-12 rtl:2xl:pl-24 hidden lg:block w-72 xl:w-80 2xl:w-96">
+                    <div className="hidden w-72 flex-shrink-0 ltr:pr-8 rtl:pl-8 lg:block xl:w-80 ltr:xl:pr-12 rtl:xl:pl-12 2xl:w-96 ltr:2xl:pr-24 rtl:2xl:pl-24">
                         <StickyBox offsetTop={50} offsetBottom={20}>
-                            <div className="pb-5 xl:pb-7 pt-1">
+                            <div className="pb-5 pt-1 xl:pb-7">
                                 <BreadcrumbItems separator="/">
                                     <ActiveLink href={'/'} activeClassName="font-semibold text-heading">
-                                        {t('breadcrumb-home')}
+                                        <> {t('breadcrumb-home')}</>
                                     </ActiveLink>
                                     <ActiveLink
                                         href={ROUTES.SEARCH}
                                         activeClassName="font-semibold text-heading capitalize"
                                     >
-                                        {t('breadcrumb-collection')}
+                                        <>{t('breadcrumb-collection')}</>
                                     </ActiveLink>
                                 </BreadcrumbItems>
                             </div>
@@ -39,7 +39,7 @@ export default function Collections() {
                         </StickyBox>
                     </div>
 
-                    <div className="w-full ltr:xl:-ml-4 ltr:2xl:-ml-9 rtl:xl:-mr-4 rtl:2xl:-mr-9">
+                    <div className="w-full ltr:xl:-ml-4 rtl:xl:-mr-4 ltr:2xl:-ml-9 rtl:2xl:-mr-9">
                         <CollectionProductsBlock tagSlug={query?.tags as string} />
                     </div>
                 </div>

@@ -5,7 +5,7 @@ import Description from '@components/ui/description'
 import Card from '@components/common/card'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
-import { Attribute } from '@ts-types/generated'
+import { Attribute, AttributeInput } from '@ts-types/generated'
 import { useShopQuery } from '@data/shop/use-shop.query'
 import { useCreateAttributeMutation } from '@data/attributes/use-attribute-create.mutation'
 import { useUpdateAttributeMutation } from '@data/attributes/use-attribute-update.mutation'
@@ -23,7 +23,7 @@ type FormValues = {
 }
 
 type IProps = {
-    initialValues?: Attribute
+    initialValues?: AttributeInput
 }
 export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
     const router = useRouter()
@@ -73,6 +73,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
         } else {
             updateAttribute({
                 variables: {
+                    // @ts-ignore
                     id: initialValues.id,
                     // @ts-ignore
                     input: {

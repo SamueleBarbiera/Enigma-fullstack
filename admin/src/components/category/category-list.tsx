@@ -8,6 +8,8 @@ import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 import TitleWithSort from '@components/ui/title-with-sort'
 import { ColumnGroupType, ColumnType } from 'rc-table/lib/interface'
+import { getIcon } from '@utils/get-icon'
+import * as categoryIcon from '@components/icons/tag'
 
 export interface IProps {
     categories: CategoryPaginator | undefined | null
@@ -74,6 +76,24 @@ const CategoryList = ({ categories, onPagination, onSort, onOrder }: IProps) => 
             render: (details: string) => {
                 if (!details) return null
                 return <div className="truncate">{details}</div>
+            },
+        },
+        {
+            title: t('table:table-item-icon'),
+            dataIndex: 'icon',
+            key: 'slug',
+            align: 'left',
+            render: (icon: string) => {
+                if (!icon) return null
+                return (
+                    <span className="flex items-center justify-center">
+                        {getIcon({
+                            iconList: categoryIcon,
+                            iconName: icon,
+                            className: 'w-5 h-5 max-h-full max-w-full',
+                        })}
+                    </span>
+                )
             },
         },
         {

@@ -3,7 +3,7 @@ import { stringifySearchQuery } from '@utils/data-mappers'
 import { useQuery } from '@tanstack/react-query'
 import Attribute from '@repositories/attribute'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
-import { Attribute as TAttribute } from '@ts-types/generated'
+import { AttributeInput as TAttribute } from '@ts-types/generated'
 
 const fetchAttributes = async ({ queryKey }: QueryParamsType) => {
     const [_key, params] = queryKey

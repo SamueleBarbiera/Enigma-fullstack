@@ -56,10 +56,6 @@ COPY php.ini /etc/php/7.4/cli/conf.d/99-sail.ini
 RUN apt-get install php-gd
 RUN composer install --optimize-autoloader --no-dev
 RUN npm install
-# RUN php artisan config:cache
-# RUN php artisan route:cache
-# RUN php artisan view:cache
-# RUN php artisan optimize
 RUN php artisan optimize:clear
 RUN php artisan vendor:publish --provider="Marvel\ShopServiceProvider" --tag="config"    
 RUN npm run prod

@@ -22,8 +22,8 @@ type CarouselPropsType = {
     autoplay?: {} | any
     loop?: boolean
     scrollbar?: {} | any
+    children?: any
     buttonPosition?: 'inside' | 'outside'
-    children: any
 }
 
 const Carousel: React.FunctionComponent<CarouselPropsType> = ({
@@ -56,6 +56,7 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
                     nextEl: nextRef.current ? nextRef.current : undefined,
                 }}
                 onInit={(swiper: SwiperCore): void => {
+                    console.log('🚀 - file: carousel.tsx:106 - swiper', swiper)
                     const navigation = swiper.params.navigation as NavigationOptions
                     navigation.prevEl = prevRef.current
                     navigation.nextEl = nextRef.current
@@ -65,20 +66,20 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
             >
                 {children}
             </Swiper>
-            <div className="flex items-center w-full absolute top-2/4 z-10">
+            <div className="absolute top-2/4 z-10 flex w-full items-center">
                 <button
                     ref={prevRef}
                     aria-label="prev-button"
                     className={`${buttonClassName} ${
                         buttonSize === 'default'
-                            ? 'w-7 h-7 md:w-7 md:h-7 lg:w-9 lg:h-9 xl:w-10 xl:h-10 3xl:w-12 3xl:h-12 text-sm md:text-base lg:text-xl 3xl:text-2xl'
-                            : 'w-7 h-7 md:w-7 md:h-7 lg:w-8 lg:h-8 text-sm md:text-base lg:text-lg'
-                    } text-black flex items-center justify-center rounded-full text-gray-0 bg-white absolute transition duration-250 hover:bg-gray-900 hover:text-white focus:outline-none ${
+                            ? 'h-7 w-7 text-sm md:h-7 md:w-7 md:text-base lg:h-9 lg:w-9 lg:text-xl xl:h-10 xl:w-10 3xl:h-12 3xl:w-12 3xl:text-2xl'
+                            : 'h-7 w-7 text-sm md:h-7 md:w-7 md:text-base lg:h-8 lg:w-8 lg:text-lg'
+                    } text-gray-0 duration-250 absolute flex items-center justify-center rounded-full bg-white text-black transition hover:bg-gray-900 hover:text-white focus:outline-none ${
                         buttonPosition === 'inside' ? 'ltr:left-16 rtl:right-16' : 'ltr:left-0 rtl:right-0'
                     } transform ${
                         dir === 'rtl'
-                            ? 'rotate-180 shadow-navigationReverse translate-x-1/2'
-                            : 'shadow-navigation -translate-x-1/2'
+                            ? 'translate-x-1/2 rotate-180 shadow-navigationReverse'
+                            : '-translate-x-1/2 shadow-navigation'
                     }`}
                 >
                     <IoIosArrowBack />
@@ -88,14 +89,14 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
                     aria-label="next-button"
                     className={`${buttonClassName} ${
                         buttonSize === 'default'
-                            ? 'w-7 h-7 lg:w-9 lg:h-9 xl:w-10 xl:h-10 3xl:w-12 3xl:h-12 text-sm md:text-base lg:text-xl 3xl:text-2xl'
-                            : 'w-7 h-7 lg:w-8 lg:h-8 text-sm md:text-base lg:text-lg'
-                    } text-black flex items-center justify-center rounded-full bg-white absolute transition duration-250 hover:bg-gray-900 hover:text-white focus:outline-none ${
+                            ? 'h-7 w-7 text-sm md:text-base lg:h-9 lg:w-9 lg:text-xl xl:h-10 xl:w-10 3xl:h-12 3xl:w-12 3xl:text-2xl'
+                            : 'h-7 w-7 text-sm md:text-base lg:h-8 lg:w-8 lg:text-lg'
+                    } duration-250 absolute flex items-center justify-center rounded-full bg-white text-black transition hover:bg-gray-900 hover:text-white focus:outline-none ${
                         buttonPosition === 'inside' ? 'ltr:right-16 rtl:left-16' : 'ltr:right-0 rtl:left-0'
                     } transform ${
                         dir === 'rtl'
-                            ? 'rotate-180 shadow-navigationReverse -translate-x-1/2'
-                            : 'shadow-navigation translate-x-1/2'
+                            ? '-translate-x-1/2 rotate-180 shadow-navigationReverse'
+                            : 'translate-x-1/2 shadow-navigation'
                     }`}
                 >
                     <IoIosArrowForward />

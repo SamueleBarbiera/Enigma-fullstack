@@ -1,20 +1,20 @@
 {
-  "name": "Enigma Moda",
+  "name": "enigma-moda",
   "version": "1.0.0",
   "private": true,
   "author": "Enigma Moda",
   "workspaces": [
     "admin/*",
-    "shop"
+    "shop/*"
   ],
   "scripts": {
     "clean": "npm workspaces run rimraf \"{.next,node_modules}\" && rimraf node_modules",
-    "dev:shop-rest": "npm workspace @chawkbazar/shop dev",
-    "build:shop-rest": "npm workspace @chawkbazar/shop build",
-    "start:shop-rest": "npm workspace @chawkbazar/shop start",
-    "dev:admin-rest": "npm workspace @chawkbazar/admin-rest dev",
-    "build:admin-rest": "npm workspace @chawkbazar/admin-rest build",
-    "start:admin-rest": "npm workspace @chawkbazar/admin-rest start",
+    "dev:shop-rest": "npm -w @enigma-moda/shop dev",
+    "build:shop-rest": "npm -w @enigma-moda/shop build",
+    "start:shop-rest": "npm -w @enigma-moda/shop start",
+    "dev:admin-rest": "npm -w @enigma-moda/admin-rest dev",
+    "build:admin-rest": "npm -w @enigma-moda/admin-rest build",
+    "start:admin-rest": "npm -w @enigma-moda/admin-rest start",
     "prepare": "husky install"
   },
   "devDependencies": {

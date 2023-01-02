@@ -1,6 +1,6 @@
 import Attribute from '@repositories/attribute'
 import { useQuery } from '@tanstack/react-query'
-import { Attribute as TAttribute } from '@ts-types/generated'
+import { AttributeInput as TAttribute } from '@ts-types/generated'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 
 export const fetchAttribute = async (id: string) => {

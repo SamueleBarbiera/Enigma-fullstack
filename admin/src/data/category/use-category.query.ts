@@ -1,6 +1,6 @@
 import Category from '@repositories/category'
 import { useQuery } from '@tanstack/react-query'
-import { Category as TCategory } from '@ts-types/generated'
+import { CreateCategory, Category as TCategory } from '@ts-types/generated'
 import { API_ENDPOINTS } from '@utils/api/endpoints'
 
 export const fetchCategory = async (id: string) => {
@@ -9,5 +9,5 @@ export const fetchCategory = async (id: string) => {
 }
 
 export const useCategoryQuery = (id: string) => {
-    return useQuery<any, Error>([API_ENDPOINTS.CATEGORIES, id], () => fetchCategory(id))
+    return useQuery<CreateCategory, Error>([API_ENDPOINTS.CATEGORIES, id], () => fetchCategory(id))
 }
